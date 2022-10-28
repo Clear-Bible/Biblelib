@@ -22,6 +22,8 @@ Book(usfmnumber='41', usfmname='MAT', osisID='Matt', clearID='', logosID=61, nam
 >>> allbooks.fromosis("Matt").n_chapters
 28
 
+See ../tests/test_books.py for additional examples.
+
 """
 
 from collections import UserList
