@@ -15,7 +15,7 @@ other units. Note this does _not_ include any actual Bible texts.
 - **Github repository**: <https://github.com/Clear-Bible/sboisen
 - **Documentation** may *eventually* arrive at <https://clear-bible.github.io/Biblelib/>
 
-An earlier version of this code was developed while the author at
+An earlier version of this code was developed while the author was at
 [Faithlife](https://faithlife.com) and published at
 https://github.com/Faithlife/python-BibleLib. This code has been
 completely rewritten, however, and so is free of any copyright
