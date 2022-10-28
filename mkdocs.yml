@@ -1,0 +1,30 @@
+site_name: Biblelib
+repo_url: https://github.com/sboisen/Biblelib
+site_url: https://sboisen.github.io/Biblelib
+site_description: Utilities for working with Bible books, references, pericopes, and other units.
+site_author: Sean Boisen
+
+nav:
+  - Home: index.md
+  - Modules: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+            setup_commands:
+                - import sys
+                - sys.path.append('../')
+copyright: Maintained by Sean Boisen.
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    primary: white
+    accent: blue
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
