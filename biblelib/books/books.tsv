@@ -14,7 +14,7 @@ logosID	usfmnumber	usfmname	osisID	name	altname
 #
 # Excluded by design:
 # - Different published Bibles have different names for books
-#   (e.g. 1SA is "1 Kings" in Douay-Rheims). So 'name' here is a -
+#   (e.g. 1SA is "1 Kings" in Douay-Rheims). So "name" here is a
 #   conventional one: more data would be required to capture published
 #   names in other editions.
 # - Some Clear data has a two-letter abbreviation, perhaps originating
