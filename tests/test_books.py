@@ -17,6 +17,7 @@ class TestMark(object):
         # will need updating if the list changes
         assert len(self.allbooks) == 101
         mark = self.allbooks["MRK"]
+        assert str(mark) == "<Book: MRK>"
         assert mark.usfmnumber == "41"
         assert mark.osisID == "Mark"
         assert mark.altname == "The Gospel according to Mark"
