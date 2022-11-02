@@ -25,7 +25,7 @@ See ../tests/test_books.py for additional examples.
 
 """
 
-from collections import UserList
+from collections import UserDict
 from csv import DictReader
 from dataclasses import dataclass
 from pathlib import Path
@@ -218,7 +218,6 @@ class Book:
     # keep this in sync with the attributes below
     _fieldnames: tuple = ("logosID", "usfmnumber", "usfmname", "osisID", "name", "altname")
 
-    # add __post_init__
     # - add in JPS sequence numbers for OT books?
 
     def __repr__(self) -> str:
@@ -288,7 +287,7 @@ class Book:
     # Ref.ly? Different Bible book abbreviations, not sure how important
 
 
-class Books(UserList):
+class Books(UserDict):
     """A canonical collection of Bible books."""
 
     # to add:
@@ -305,9 +304,13 @@ class Books(UserList):
     def __init__(self, sourcefile: str = "", canon: str = "Protestant") -> None:
         """Initialize a Books instance.
 
+        Instantiates a dict whose keys are 3-character USFM names.
+
         Args:
-            canon (str): the canon to use in selecting and ordering books
+            - sourcefile (str): TSV file with book data to load
+            - canon (str): the canon to use in selecting and ordering books
         """
+        super().__init__()
         if sourcefile:
             self.source = Path(sourcefile)
         # need implementation
@@ -324,7 +327,10 @@ class Books(UserList):
             assert not fieldnameset.difference(
                 self.mappingfields
             ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
-            self.data: list = [Book(**r) for r in reader]
+            for row in reader:
+                # logosID should be an int
+                row["logosID"] = int(row["logosID"])
+                self.data[row["usfmname"]] = Book(**row)
 
     def fromlogos(self, logosID: Union[int, str]) -> Book:
         """Return the book for a Logos bible book index.
@@ -349,7 +355,7 @@ class Books(UserList):
                 logosID = int(logosID)
         if not self.logosmap:
             # initialize on demand
-            self.logosmap = {b.logosID: b for b in self.data}
+            self.logosmap = {b.logosID: b for _, b in self.data.items()}
         return self.logosmap[logosID]
 
     def fromosis(self, osisID: str) -> Book:
@@ -364,23 +370,8 @@ class Books(UserList):
         """
         if not self.osismap:
             # initialize on demand
-            self.osismap = {b.osisID: b for b in self.data}
+            self.osismap = {b.osisID: b for _, b in self.data.items()}
         return self.osismap[osisID]
-
-    def fromusfmname(self, usfmname: str) -> Book:
-        """Return the book for a USFM name.
-
-        Args:
-        - usfmname (str): the USFM name to use in looking up the
-          Book, like "MATT".
-
-        Returns:
-        - a Book instance.
-        """
-        if not self.usfmnamemap:
-            # initialize on demand
-            self.usfmnamemap = {b.usfmname: b for b in self.data}
-        return self.usfmnamemap[usfmname.upper()]
 
 
 # maybe subclass Books for specific canons??
