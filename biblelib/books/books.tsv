@@ -61,6 +61,9 @@ logosID	usfmnumber	usfmname	osisIDname	altname
 58	86	ODA	Odes	Odae/Odes
 59	87	PSS	PssSol	Psalms of Solomon
 60	C3	LAO	EpLao	Letter to the Laodiceans
+# Some filenames and legacy data have USFM number for MAT as 41,
+# and +1 for subsequent NT books: use usfmnumberalt for that. But
+# most common current practice is MAT = 40.
 61	40	MAT	Matt	Matthew
 62	41	MRK	Mark	Mark
 63	42	LUK	Luke	Luke
@@ -89,10 +92,16 @@ logosID	usfmnumber	usfmname	osisIDname	altname
 86	65	JUD	Jude	Jude
 87	66	REV	Rev	Revelation
 88	B7	ENO	1En	Enoch
+# Logos also has 2 Baruch (99)??
+# LBD: "The Syriac Apocalypse of Baruch proper consists of 2
+# Baruch 1–77, while 2 Baruch 78–87 form the Letter of Baruch."
+# I'm guessing USFM doesn't distinguish?
 96	B4	2BA	2Bar	2 Baruch (Apocalypse)
 97	B5	LBA	EpBar	Letter of Baruch
 98	B2	DAG	DanGr	Daniel Greek
+# (99, "2 Baruch"),
 100	A4	EZA	4Ezra	Ezra Apocalypse
+# # no Logos number AFAIK: arbitrarily numbered from 200
 200	A5	5EZ	5Ezra	5 Ezra
 201	A6	6EZ	6Ezra	6 Ezra
 202	B3	PS3	5ApocSyrPss	Psalms 152-155
@@ -102,3 +111,17 @@ logosID	usfmnumber	usfmname	osisIDname	altname
 206	C0	3MQ	3Meq	3 Meqabyan/Mekabis
 207	C1	REP	Rep	Reproof
 208	C2	4BA	4Bar	4 Baruch
+# more from Logos, per
+# https://wiki.logos.com/Logos_Bible_Book_Names, but not in
+# USFM/OSIS? These seems to be from DSS5
+# `logosref:bibleNN` doesn't navigate for more in Logos for NN > 87
+# (89, "Plea for Deliverance"),
+# (90, "Apostrophe to Zion"),
+# (91, "Eschatalogical Hymn"),
+# (92, "Apostrophe to Judah"),
+# (93, "Hymn to the Creator"),
+# (94, "David's Compositions"),
+# (95, "Apocryphal Psalms"),
+# (101, "Catena"),
+# (102, "Psalm 151A"),
+# (103, "Psalm 151B"),

@@ -26,7 +26,9 @@ See ../tests/test_books.py for additional examples.
 """
 
 from collections import UserList
+from csv import DictReader
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Union
 
 
@@ -282,6 +284,8 @@ class Books(UserList):
     # - Catholic
     # - JPS/Tanakh
     # there are others: LXX? Syriac, Ethiopian, etc.
+    source: Path = Path("../../../macula-greek/sources/Clear/mappings/mappings-GNT-stripped.tsv")
+    mappingfields: list = list(Book.__dataclass_fields__.keys())
     canon: str = "Protestant"
     logosmap: dict = {}
     osismap: dict = {}
@@ -297,7 +301,16 @@ class Books(UserList):
         if canon != "Protestant":
             raise NotImplementedError("Canon support not yet implemented: default is Protestant.")
         # need smarts here about different canons
-        self.data = [Book(*b) for b in _bookdata]
+        # self.data = [Book(*b) for b in _bookdata]
+        with self.source.open(encoding="utf-8") as f:
+            reader: DictReader = DictReader(f, dialect="excel-tab")
+            # make sure the fieldnames in the file are the same as the
+            # dataclass attributes
+            fieldnameset: set = set(reader.fieldnames[0].split("\t"))
+            assert not fieldnameset.difference(
+                self.mappingfields
+            ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
+            self.data: list = [Book(**r) for r in reader]
 
     def fromlogos(self, logosID: Union[int, str]) -> Book:
         """Return the book for a Logos bible book index.
