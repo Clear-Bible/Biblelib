@@ -1,0 +1,104 @@
+logosID	usfmnumber	usfmname	osisIDname	altname
+1	01	GEN	Gen	Genesis
+2	02	EXO	Exod	Exodus
+3	03	LEV	Lev	Leviticus
+4	04	NUM	Num	Numbers
+5	05	DEU	Deut	Deuteronomy
+6	06	JOS	Josh	Joshua
+7	07	JDG	Judg	Judges
+8	08	RUT	Ruth	Ruth
+9	09	1SA	1Sam	1 Samuel
+10	10	2SA	2Sam	2 Samuel
+11	11	1KI	1Kgs	1 Kings
+12	12	2KI	2Kgs	2 Kings
+13	13	1CH	1Chr	1 Chronicles
+14	14	2CH	2Chr	2 Chronicles
+15	15	EZR	Ezra	Ezra
+16	16	NEH	Neh	Nehemiah
+17	17	EST	Esth	Esther (Hebrew)
+18	18	JOB	Job	Job
+19	19	PSA	Ps	Psalms
+20	20	PRO	Prov	Proverbs
+21	21	ECC	Eccl	Ecclesiastes
+22	22	SNG	Song	Song of Songs
+23	23	ISA	Isa	Isaiah
+24	24	JER	Jer	Jeremiah
+25	25	LAM	Lam	Lamentations
+26	26	EZK	Ezek	Ezekiel
+27	27	DAN	Dan	Daniel
+28	28	HOS	Hos	Hosea
+29	29	JOL	Joel	Joel
+30	30	AMO	Amos	Amos
+31	31	OBA	Obad	Obadiah
+32	32	JON	Jonah	Jonah
+33	33	MIC	Mic	Micah
+34	34	NAM	Nah	Nahum
+35	35	HAB	Hab	Habakkuk
+36	36	ZEP	Zeph	Zephaniah
+37	37	HAG	Hag	Haggai
+38	38	ZEC	Zech	Zechariah
+39	39	MAL	Mal	Malachi
+# gap in the USFM numbering sequence here because of the legacy
+# issue of MAT as 41 rather than 40.
+40	68	TOB	Tob	Tobit
+41	69	JDT	Jdt	Judith
+42	70	ESG	EsthGr	Esther Greek
+43	71	WIS	Wis	Wisdom of Solomon
+44	72	SIR	Sir	Sirach
+45	73	BAR	Bar	Baruch
+46	74	LJE	EpJer	Letter of Jeremiah
+47	75	S3Y	PrAzar	Song of the 3 Young Men
+48	76	SUS	Sus	Susanna
+49	77	BEL	Bel	Bel and the Dragon
+50	78	1MA	1Macc	1 Maccabees
+51	79	2MA	2Macc	2 Maccabees
+52	82	1ES	1Esd	1 Esdras (Greek)
+53	84	MAN	PrMan	Prayer of Manasseh
+54	85	PS2	AddPs	Psalm 151
+55	80	3MA	3Macc	3 Maccabees
+56	83	2ES	2Esd	2 Esdras (Latin)
+57	81	4MA	4Macc	4 Maccabees
+58	86	ODA	Odes	Odae/Odes
+59	87	PSS	PssSol	Psalms of Solomon
+60	C3	LAO	EpLao	Letter to the Laodiceans
+61	40	MAT	Matt	Matthew
+62	41	MRK	Mark	Mark
+63	42	LUK	Luke	Luke
+64	43	JHN	John	John
+65	44	ACT	Acts	Acts
+66	45	ROM	Rom	Romans
+67	46	1CO	1Cor	1 Corinthians
+68	47	2CO	2cor	2 Corinthians
+69	48	GAL	Gal	Galatians
+70	49	EPH	Eph	Ephesians
+71	50	PHP	Phil	Philippians
+72	51	COL	Col	Colossians
+73	52	1TH	1Thess	1 Thessalonians
+74	53	2TH	2Thess	2 Thessalonians
+75	54	1TI	1Tim	1 Timothy
+76	55	2TI	2Tim	2 Timothy
+77	56	TIT	Titus	Titus
+78	57	PHM	Phlm	Philemon
+79	58	HEB	Heb	Hebrews
+80	59	JAS	Jas	James
+81	60	1PE	1Pet	1 Peter
+82	61	2PE	2Pet	2 Peter
+83	62	1JN	1John	1 John
+84	63	2JN	2John	2 John
+85	64	3JN	3John	3 John
+86	65	JUD	Jude	Jude
+87	66	REV	Rev	Revelation
+88	B7	ENO	1En	Enoch
+96	B4	2BA	2Bar	2 Baruch (Apocalypse)
+97	B5	LBA	EpBar	Letter of Baruch
+98	B2	DAG	DanGr	Daniel Greek
+100	A4	EZA	4Ezra	Ezra Apocalypse
+200	A5	5EZ	5Ezra	5 Ezra
+201	A6	6EZ	6Ezra	6 Ezra
+202	B3	PS3	5ApocSyrPss	Psalms 152-155
+203	B6	JUB	Jub	Jubilees
+204	B8	1MQ	1Meq	1 Meqabyan/Mekabis
+205	B9	2MQ	2Meq	2 Meqabyan/Mekabis
+206	C0	3MQ	3Meq	3 Meqabyan/Mekabis
+207	C1	REP	Rep	Reproof
+208	C2	4BA	4Bar	4 Baruch
