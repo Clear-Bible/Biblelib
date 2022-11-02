@@ -1,4 +1,3 @@
-
 """Read and write word-level mappings.
 
 Source data is in ../sources/Clear/mappings/mappings-GNT-stripped.tsv.
@@ -33,6 +32,7 @@ class ClearID:
         - Book_ID: 2-character string
 
     """
+
     ID: str
     book_ID: str = field(init=False)
     chapter_ID: str = field(init=False)
@@ -42,8 +42,7 @@ class ClearID:
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        assert 12 >= len(self.ID) >= 11, \
-            "Invalid length: {self.ID}"
+        assert 12 >= len(self.ID) >= 11, "Invalid length: {self.ID}"
         self.book_ID = self.ID[:2]
         self.chapter_ID = self.ID[2:5]
         self.verse_ID = self.ID[5:8]
@@ -93,6 +92,10 @@ class Mapping:
     # USB MARBLE project: https://semanticdictionary.org/
     MARBLE_ID: str
 
+    def __repr__(self) -> str:
+        """Return a string representation."""
+        return f"<Mapping: {self.NA1904_ID}>"
+
 
 class Mappings(UserList):
     """Manage a sequence of Mapping instances.
@@ -101,7 +104,8 @@ class Mappings(UserList):
         - read(): read in data from source
     """
 
-    source: Path = Path("../sources/Clear/mappings/mappings-GNT-stripped.tsv")
+    # relative path assuming you have a local copy of this repo
+    source: Path = Path("../../macula-greek/sources/Clear/mappings/mappings-GNT-stripped.tsv")
     mappingfields: list = list(Mapping.__dataclass_fields__.keys())
 
     def __init__(self, sourcefile: str = "") -> None:
@@ -113,8 +117,9 @@ class Mappings(UserList):
             # make sure the fieldnames in the file are the same as the
             # dataclass attributes
             fieldnameset: set = set(reader.fieldnames[0].split("\t"))
-            assert not fieldnameset.difference(self.mappingfields), \
-                f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
+            assert not fieldnameset.difference(
+                self.mappingfields
+            ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
             self.data: list = [Mapping(**r) for r in reader]
 
     def add_prefix(self, outfile: str = "../sources/Clear/mappings/mappings-GNT-corrected.tsv") -> None:
