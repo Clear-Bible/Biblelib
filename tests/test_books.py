@@ -8,7 +8,9 @@ from biblelib import books
 class TestMark(object):
     """Test basic functionality for books."""
 
-    allbooks = books.Books()
+    # assumes test is run from Biblelib directory
+    sourcefile = "biblelib/books/books.tsv"
+    allbooks = books.Books(sourcefile=sourcefile)
 
     def test_attrs(self):
         """Test attribute values."""
