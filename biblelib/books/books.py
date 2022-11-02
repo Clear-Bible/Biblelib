@@ -192,16 +192,16 @@ class Book:
     subclasses (pending: for a given canon).
 
     Attributes:
-    - logosID: the index number of this book in the Logos bible
+    - logosID (int): the index number of this book in the Logos bible
       datatype. Provides a standard ordinal index for ordering.
-    - usfmnumber: the USFM string for this book
-    - usfmname: the USFM name for this book
-    - osisID: the OSIS identifier for this book
-    - name: the common English name for this book
-    - altname: a longer or alternate English name
+    - usfmnumber (str): the USFM string for this book
+    - usfmname (str): the USFM name for this book
+    - osisID (str): the OSIS identifier for this book
+    - name (str): the common English name for this book
+    - altname (str): a longer or alternate English name, or empty string
 
     Todo:
-    - Add chapter and canon information.
+    - Add canon information.
     """
 
     # from the Logos bible datatype: some gaps for Ethiopic canon
