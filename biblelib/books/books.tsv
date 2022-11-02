@@ -14,11 +14,11 @@ logosID	usfmnumber	usfmname	osisID	name	altname
 #
 # Excluded by design:
 # - Different published Bibles have different names for books
-#   (e.g. 1SA is "1 Kings" in Douay-Rheims). So "name" here is a
+#   (e.g. 1SA is '1 Kings' in Douay-Rheims). So 'name' here is a
 #   conventional one: more data would be required to capture published
 #   names in other editions.
 # - Some Clear data has a two-letter abbreviation, perhaps originating
-#   with Andi Wu (Gen = "gn", Lev = "lx", etc. ). Non-normative so excluded
+#   with Andi Wu (Gen = 'gn', Lev = 'lx', etc. ). Non-normative so excluded
 1	1	GEN	Gen	Genesis
 2	2	EXO	Exod	Exodus
 3	3	LEV	Lev	Leviticus
@@ -113,13 +113,13 @@ logosID	usfmnumber	usfmname	osisID	name	altname
 87	66	REV	Rev	Revelation	The Revelation to John
 88	B7	ENO	1En	Enoch
 # Logos also has 2 Baruch (99)??
-# LBD: "The Syriac Apocalypse of Baruch proper consists of 2
-# Baruch 1–77, while 2 Baruch 78–87 form the Letter of Baruch."
+# LBD: 'The Syriac Apocalypse of Baruch proper consists of 2
+# Baruch 1–77, while 2 Baruch 78–87 form the Letter of Baruch.'
 # I'm guessing USFM doesn't distinguish?
 96	B4	2BA	2Bar	2 Baruch (Apocalypse)	The Apocalypse of Baruch
 97	B5	LBA	EpBar	Letter of Baruch
 98	B2	DAG	DanGr	Daniel Greek
-# (99, "2 Baruch"),
+# (99, '2 Baruch'),
 100	A4	EZA	4Ezra	Ezra Apocalypse
 # # no Logos number AFAIK: arbitrarily numbered from 200
 200	A5	5EZ	5Ezra	5 Ezra
@@ -135,13 +135,13 @@ logosID	usfmnumber	usfmname	osisID	name	altname
 # https://wiki.logos.com/Logos_Bible_Book_Names, but not in
 # USFM/OSIS? These seems to be from DSS5
 # `logosref:bibleNN` doesn't navigate for more in Logos for NN > 87
-# (89, "Plea for Deliverance"),
-# (90, "Apostrophe to Zion"),
-# (91, "Eschatalogical Hymn"),
-# (92, "Apostrophe to Judah"),
-# (93, "Hymn to the Creator"),
-# (94, "David's Compositions"),
-# (95, "Apocryphal Psalms"),
-# (101, "Catena"),
-# (102, "Psalm 151A"),
-# (103, "Psalm 151B"),
+# (89, 'Plea for Deliverance'),
+# (90, 'Apostrophe to Zion'),
+# (91, 'Eschatalogical Hymn'),
+# (92, 'Apostrophe to Judah'),
+# (93, 'Hymn to the Creator'),
+# (94, 'David's Compositions'),
+# (95, 'Apocryphal Psalms'),
+# (101, 'Catena'),
+# (102, 'Psalm 151A'),
+# (103, 'Psalm 151B'),
