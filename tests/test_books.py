@@ -14,40 +14,41 @@ class TestMark(object):
 
     def test_attrs(self):
         """Test attribute values."""
-        mark = self.allbooks[61]
+        # will need updating if the list changes
+        assert len(self.allbooks) == 101
+        mark = self.allbooks["MRK"]
         assert mark.usfmnumber == "41"
-        assert mark.usfmname == "MRK"
         assert mark.osisID == "Mark"
+        assert mark.altname == "The Gospel according to Mark"
         assert mark.render() == "Mark"
         assert mark.render("usfmname") == "MRK"
+        assert mark.render("logosID") == "bible.62"
 
     def test_usfmalt(self):
         """Test the legacy USFM numbers for NT books."""
         # for OT and post-NT, alt is the same as standard
         # MAL
-        assert self.allbooks[39].usfmnumberalt == self.allbooks[39].usfmnumber
+        assert self.allbooks["MAL"].usfmnumberalt == self.allbooks["MAL"].usfmnumber
         # ENO
-        assert self.allbooks[87].usfmnumberalt == self.allbooks[87].usfmnumber
+        assert self.allbooks["ENO"].usfmnumberalt == self.allbooks["ENO"].usfmnumber
         # in the alternate scheme, MAT = 41 (not 40)
-        assert self.allbooks[60].usfmnumberalt == "41"
+        assert self.allbooks["MAT"].usfmnumberalt == "41"
 
     def test_comparison(self) -> None:
         """Test comparison functions."""
-        assert self.allbooks[61] == self.allbooks[61]
-        assert self.allbooks[61] < self.allbooks[62]
-        assert self.allbooks[61] <= self.allbooks[61]
-        assert self.allbooks[61] > self.allbooks[60]
-        assert self.allbooks[61] >= self.allbooks[61]
-        assert not (self.allbooks[61] < self.allbooks[60])
-        assert not (self.allbooks[61] > self.allbooks[62])
-        assert not (self.allbooks[61] != self.allbooks[61])
+        assert self.allbooks["MRK"] == self.allbooks["MRK"]
+        assert self.allbooks["MRK"] < self.allbooks["LUK"]
+        assert self.allbooks["MRK"] <= self.allbooks["MRK"]
+        assert self.allbooks["MRK"] > self.allbooks["MAT"]
+        assert self.allbooks["MRK"] >= self.allbooks["MRK"]
+        assert not (self.allbooks["MRK"] < self.allbooks["MAT"])
+        assert not (self.allbooks["MRK"] > self.allbooks["LUK"])
+        assert not (self.allbooks["MRK"] != self.allbooks["MRK"])
 
     def test_lookup(self):
         """Test lookup by attributes."""
         osismark = self.allbooks.fromosis("Mark")
         assert osismark.usfmname == "MRK"
-        usfmnamemark = self.allbooks.fromusfmname("MRK")
-        assert usfmnamemark.name == "Mark"
         logosIDmark = self.allbooks.fromlogos("bible.62")
         assert logosIDmark.name == "Mark"
         logosIDmark = self.allbooks.fromlogos(62)
