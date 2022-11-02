@@ -9,18 +9,19 @@ This defines canonical sets of Bible books, along with
 
 
 Examples:
->>> from biblelib import books
->>> allbooks = books.Books("biblelib/books/books.tsv")
->>> allbooks["MRK"]
-<Book: MRK>
->>> allbooks["MRK"].osisID
-'Mark'
+    >>> from biblelib import books
+    >>> allbooks = books.Books("biblelib/books/books.tsv")
+    >>> allbooks["MRK"]
+    <Book: MRK>
+    >>> allbooks["MRK"].osisID
+    'Mark'
 
-# retrive a Book instance from an OSIS ID
->>> allbooks.fromosis("Matt").name
-'Matthew'
+    # retrive a Book instance from an OSIS ID
+    >>> allbooks.fromosis("Matt").name
+    'Matthew'
 
 See ../tests/test_books.py for additional examples.
+
 
 """
 
@@ -104,7 +105,7 @@ class Book:
         """Return a string rendering the attrname property of Book.
 
         Args:
-            attrname (str): a dataclass attribute to use for rendering the book.
+            attrname: a dataclass attribute to use for rendering the book.
 
         Returns:
             str: a rendered representation of Book
@@ -149,8 +150,8 @@ class Books(UserDict):
         Instantiates a dict whose keys are 3-character USFM names.
 
         Args:
-            sourcefile (str): TSV file with book data to load
-            canon (str): the canon to use in selecting and ordering books
+            sourcefile: TSV file with book data to load
+            canon: the canon to use in selecting and ordering books
         """
         super().__init__()
         if sourcefile:
@@ -178,9 +179,9 @@ class Books(UserDict):
         """Return the book for a Logos bible book index.
 
         Args:
-            logosID (str or int): the Logos identifier to use in
-                looking up the Book. Either a datatype reference
-                string like 'bible.62', or a bare int.
+            logosID: the Logos identifier to use in looking up the
+                Book. Either a datatype reference string like
+                'bible.62', or a bare int.
 
         Returns:
             a Book instance.
@@ -200,11 +201,12 @@ class Books(UserDict):
         """Return the book for an OSIS identifier.
 
         Args:
-            osisID (str): the OSIS identifier to use in looking up the
-          Book, like "Matt".
+            osisID: the OSIS identifier to use in looking up the Book,
+          like "Matt".
 
         Returns:
             a Book instance.
+
         """
         if not self.osismap:
             # initialize on demand
