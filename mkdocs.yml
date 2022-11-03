@@ -1,12 +1,15 @@
 site_name: Biblelib
-repo_url: https://github.com/sboisen/Biblelib
-site_url: https://sboisen.github.io/Biblelib
-site_description: Utilities for working with Bible books, references, pericopes, and other units.
+repo_url: https://github.com/Clear-Bible/Biblelib
+site_url: https://Clear.bible
+site_description: Utilities for working with Bible book metadata, references, pericopes, and other units.
 site_author: Sean Boisen
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+#  - tutorials.md
+  - how-to-guides.md
+#  - reference.md
+  - explanation.md
 plugins:
   - search
   - mkdocstrings:
