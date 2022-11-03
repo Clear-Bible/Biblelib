@@ -1,40 +1,45 @@
-"""Utilities for working with Bible books.
+"""This module provides utilities for working with Bible book metadata and collections.
 
 This defines canonical sets of Bible books, along with
-- standard identifiers, abbreviations, and names
-- (forthcoming) the canons that recognize this book, ordered
-- (forthcoming) the chapter contents of each book and their final
+
+* standard identifiers, abbreviations, and names
+* (forthcoming) the canons that recognize this book, ordered
+* (forthcoming) the chapter contents of each book and their final
   verse. This is tradition-specific: Gen 31 has 55 verses in ESV, but
   54 in BHS.
 
 
 Examples:
     >>> from biblelib import books
-    >>> allbooks = books.Books("biblelib/books/books.tsv")
+    >>> allbooks = books.Books()
     >>> allbooks["MRK"]
     <Book: MRK>
     >>> allbooks["MRK"].osisID
     'Mark'
-
+    >>>
     # retrive a Book instance from an OSIS ID
     >>> allbooks.fromosis("Matt").name
     'Matthew'
 
-See ../tests/test_books.py for additional examples.
+See the tests `Biblelib/tests` for additional examples.
 
 
 """
 
 from collections import UserDict
 from csv import DictReader
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Union
 
 
-@dataclass(order=True)
+# This directory: where books.tsv is also located.
+BOOKSPATH = Path(__file__).parent
+
+
+@dataclass
 class Book:
-    """Dataclass with information about a book from the Bible.
+    """Dataclass for managing metadata identifying a book from the Bible.
 
     Typically accessed from Books, which instantiates the full set, or
     subclasses (pending: for a given canon).
@@ -67,6 +72,8 @@ class Book:
     _canon_traditions: tuple = ("Catholic", "Jewish", "Protestant")
     # keep this in sync with the attributes below
     _fieldnames: tuple = ("logosID", "usfmnumber", "usfmname", "osisID", "name", "altname")
+    # canon-specific
+    ordinal: int = field(init=False)
 
     # - add in JPS sequence numbers for OT books?
 
@@ -82,17 +89,38 @@ class Book:
         """
         return hash(self.osisID)
 
+    def __eq__(self, o) -> bool:
+        """Return True if self is == to other, else False, based on ordinals."""
+        return self.ordinal == o.ordinal
+
+    def __ge__(self, o) -> bool:
+        """Return True if self is >= other, else False, based on ordinals."""
+        return self.ordinal >= o.ordinal
+
+    def __gt__(self, o) -> bool:
+        """Return True if self is > other, else False, based on ordinals."""
+        return self.ordinal > o.ordinal
+
+    def __le__(self, o) -> bool:
+        """Return True if self is <= other, else False, based on ordinals."""
+        return self.ordinal <= o.ordinal
+
+    def __lt__(self, o) -> bool:
+        """Return True if self is < other, else False, based on ordinals."""
+        return self.ordinal < o.ordinal
+
     @property
     def usfmnumberalt(self) -> str:
-        """Return an alternate USFM number, based on Matt="41".
+        """Return an alternate USFM number, based on Matt="41" rather than "40".
 
         In some filenames associated with Paratext and legacy data,
-        Matt is "41" and subsequent book numbers are one higher.  See
-        https://github.com/usfm-bible/tcdocs/issues/3 for discussion
-        of this issue.
+        Matt is "41" and subsequent book numbers are one higher,
+        through Revelation.  See
+        [https://github.com/usfm-bible/tcdocs/issues/3](https://github.com/usfm-bible/tcdocs/issues/3)
+        for discussion of this issue.
 
         Returns:
-            int: an adjusted USFM number
+            a string representing an adjusted USFM number.
 
         """
         if 87 >= self.logosID >= 61:
@@ -121,7 +149,12 @@ class Book:
 
     @property
     def logosURI(self) -> str:
-        """Return a URI to open this book in Logos in your preferred Bible."""
+        """Return a URI to open this book in Logos Bible Software in your preferred Bible.
+
+        Example:
+            >>> Books()["MRK"].logosURI
+            'https://ref.ly/logosref/bible.62'
+        """
         return f"https://ref.ly/logosref/{self.render('logosID')}"
 
     # other URIs to consider
@@ -131,18 +164,18 @@ class Book:
 
 
 class Books(UserDict):
-    """A canonical collection of Bible books."""
+    """A canonical collection of Bible Book instances."""
 
     # to add:
     # - Catholic
     # - JPS/Tanakh
     # there are others: LXX? Syriac, Ethiopian, etc.
-    source: Path = Path("books.tsv")
+    source: Path = BOOKSPATH / "books.tsv"
     mappingfields: set = set(Book._fieldnames)
     canon: str = "Protestant"
     logosmap: dict = {}
     osismap: dict = {}
-    usfmnamemap: dict = {}
+    usfmnaumberap: dict = {}
 
     def __init__(self, sourcefile: str = "", canon: str = "Protestant") -> None:
         """Initialize a Books instance.
@@ -150,8 +183,11 @@ class Books(UserDict):
         Instantiates a dict whose keys are 3-character USFM names.
 
         Args:
-            sourcefile: TSV file with book data to load
+            sourcefile: TSV file with book data to load. Canonical
+                location is
+                https://github.com/Clear-Bible/Biblelib/blob/biblelib/books/books.tsv.
             canon: the canon to use in selecting and ordering books
+
         """
         super().__init__()
         if sourcefile:
@@ -176,16 +212,12 @@ class Books(UserDict):
                 self.data[row["usfmname"]] = Book(**row)
 
     def fromlogos(self, logosID: Union[int, str]) -> Book:
-        """Return the book for a Logos bible book index.
+        """Return the book instance for a Logos bible book index.
 
         Args:
             logosID: the Logos identifier to use in looking up the
                 Book. Either a datatype reference string like
                 'bible.62', or a bare int.
-
-        Returns:
-            a Book instance.
-
         """
         if isinstance(logosID, str):
             if logosID.startswith("bible."):
@@ -198,20 +230,82 @@ class Books(UserDict):
         return self.logosmap[logosID]
 
     def fromosis(self, osisID: str) -> Book:
-        """Return the book for an OSIS identifier.
+        """Return the book instance for an OSIS identifier.
 
         Args:
             osisID: the OSIS identifier to use in looking up the Book,
-          like "Matt".
-
-        Returns:
-            a Book instance.
-
+                like "Matt".
         """
         if not self.osismap:
             # initialize on demand
             self.osismap = {b.osisID: b for _, b in self.data.items()}
         return self.osismap[osisID]
+
+    def fromusfmnumber(self, usfmnumber: str) -> Book:
+        """Return the book instance for a USFM number.
+
+        Args:
+            usfmnumber: the USFM book number to use in looking up the Book,
+                like "40".
+        """
+        if not self.usfmnaumberap:
+            # initialize on demand
+            self.usfmnaumberap = {b.usfmnumber: b for _, b in self.data.items()}
+        return self.usfmnaumberap[usfmnumber]
+
+
+class _Canon(Books):
+    """Return an Books instance representing a specific canon and order."""
+
+    bookids = []
+
+    def __init__(self, *args, **kwargs) -> None:
+        """Initialize a Books instance for a Canon."""
+        super().__init__(*args, **kwargs)
+        # reset the data to only recognized bookids, adding an ordinal
+        # for ordering
+        srcdata = self.data
+        self.data = {}
+        for index, bookid in enumerate(self.bookids):
+            book = srcdata[bookid]
+            book.ordinal = index
+            self.data[bookid] = book
+
+
+class ProtestantCanon(_Canon):
+    """Return an Book instance representing the 66-book Protestant canon.
+
+    This does not include the Deuterocanonical books.
+    """
+
+    # fmt: off
+    bookids = [
+        "GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH",
+        "EZR", "NEH", "EST", "JOB", "PSA", "PRO", "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN",
+        "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
+        "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH",
+        "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"]
+    # fmt: on
+
+
+class CatholicCanon(_Canon):
+    """Return a  Book instance representing the 73-book Catholic canon.
+
+    This reflects the order in the New American Bible. The order may
+    differ in other editions.
+
+    """
+
+    # fmt: off
+    bookids = [
+        "GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH",
+        "EZR", "NEH", "TOB", "JDT", "ESG", "1MA", "2MA",
+        "JOB", "PSA", "PRO", "ECC", "SNG", "WIS", "SIR",
+        "ISA", "JER", "LAM", "BAR", "EZK", "DAN",
+        "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
+        "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH",
+        "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"]
+    # fmt: on
 
 
 # maybe subclass Books for specific canons??
