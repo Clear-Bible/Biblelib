@@ -8,9 +8,8 @@ from biblelib import books
 class TestMark(object):
     """Test basic functionality for books."""
 
-    # assumes test is run from Biblelib directory
-    sourcefile = "biblelib/books/books.tsv"
-    allbooks = books.Books(sourcefile=sourcefile)
+    allbooks = books.Books()
+    prot = books.ProtestantCanon()
 
     def test_attrs(self):
         """Test attribute values."""
@@ -37,14 +36,19 @@ class TestMark(object):
 
     def test_comparison(self) -> None:
         """Test comparison functions."""
-        assert self.allbooks["MRK"] == self.allbooks["MRK"]
-        assert self.allbooks["MRK"] < self.allbooks["LUK"]
-        assert self.allbooks["MRK"] <= self.allbooks["MRK"]
-        assert self.allbooks["MRK"] > self.allbooks["MAT"]
-        assert self.allbooks["MRK"] >= self.allbooks["MRK"]
-        assert not (self.allbooks["MRK"] < self.allbooks["MAT"])
-        assert not (self.allbooks["MRK"] > self.allbooks["LUK"])
-        assert not (self.allbooks["MRK"] != self.allbooks["MRK"])
+        assert self.prot["MRK"] == self.prot["MRK"]
+        assert self.prot["MRK"] < self.prot["LUK"]
+        assert self.prot["MRK"] <= self.prot["MRK"]
+        assert self.prot["MRK"] > self.prot["MAT"]
+        assert self.prot["MRK"] >= self.prot["MRK"]
+        assert not (self.prot["MRK"] < self.prot["MAT"])
+        assert not (self.prot["MRK"] > self.prot["LUK"])
+        assert not (self.prot["MRK"] != self.prot["MRK"])
+
+    def test_sorted(self):
+        """Test sorting in canon order."""
+        randbooks = [self.prot["1CO"], self.prot["ECC"], self.prot["LUK"], self.prot["MRK"]]
+        assert [b.usfmname for b in sorted(randbooks)] == ["ECC", "MRK", "LUK", "1CO"]
 
     def test_lookup(self):
         """Test lookup by attributes."""
