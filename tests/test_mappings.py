@@ -1,6 +1,5 @@
 """Test biblelib.words.mappings."""
 
-import pytest
 from biblelib.words import mappings
 
 
@@ -45,8 +44,7 @@ class TestMappings:
 
     def test_init(self) -> None:
         """Test initialization: reading, and resulting list length."""
-        # this path assumes tests are run from the Biblelib directory, and
-        # there's a local copy of the macula-greek repo
-        m = mappings.Mappings("../macula-greek/sources/Clear/mappings/mappings-GNT-stripped.tsv")
+        # Assumes a local copy of the macula-greek repo
+        m = mappings.Mappings()
         # fragile?
         len(m) == 138804
