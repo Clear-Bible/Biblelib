@@ -1,11 +1,11 @@
-"""Utilities for working with Bible books.
+"""This package provides utilities for working with Bible book metadata and collections."""
 
-More documentation here.
-"""
+from .books import Book, Books, ProtestantCanon, CatholicCanon
 
-from .books import Book, Books
 
 __all__ = [
     "Book",
     "Books",
+    "ProtestantCanon",
+    "CatholicCanon",
 ]
