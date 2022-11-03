@@ -13,23 +13,39 @@ from csv import DictReader, DictWriter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+# This directory: mappings-GNT-stripped.tsv is located relative to
+# this in a sibling repository
+WORDSPATH = Path(__file__).parent
+# Content from https://github.com/Clear-Bible/
+CLEARPATH = WORDSPATH.parent.parent.parent
+
 
 @dataclass
 class ClearID:
-    """Compactly Encodes book, chapter, verse, ord, and word part.
+    """Identifies words from Bible texts by book, chapter, verse, ord, and word part.
 
-    This supports two formats: BBCCCVVVWWW and BBCCCVVVWWWP, where
-    - BB identifies a Book using USFM identifiers
-    - CCC identifies a chapter number within that book
-    - VVV identifies a verse number within that chapter
-    - WWW identifies a word number within that verse
-    - P if present identifies a word part: this is only used for Hebrew
+    This supports two formats: BBCCCVVVWWW and BBCCCVVVWWWP, where BB
+        identifies a book, CCC identifies a chapter number, VVV
+        identifies a verse number, and WWW identifies a word number
+        within that verse. If P is present it identifies a word part:
+        this is only used for Hebrew.
 
     This dataclass does not validate whether any identifiers are in
-    the correct range: it only records the data. Use ??? for validation.
+    the correct range: it only records the data. Use TBD for
+    validation.
 
     Attributes:
-        - Book_ID: 2-character string
+        book_ID: 2-character string identifying the Bible book using
+            USFM numbers (like '40' for Matthew)
+        chapter_ID: 3-character string identifying a chapter number
+            within the book
+        verse_ID: 3-character string identifying the verse number
+        word_ID: 3-character string identifying the word number
+        part_ID: single character identifying the word part if
+            present: only used for Hebrew
+
+    See `books.Books.fromusfmnumber()` for how to convert this number
+    to other Book identifiers.
 
     """
 
@@ -66,13 +82,13 @@ class Mapping:
     are UTF-8 encoded, with final punctuation attached.
 
     Attributes:
-        - NA1904_ID: the identifier for this word in Nestle-Aland 1904
-        - NA1904_Text: the word form in Nestle-Aland 1904
-        - NA27_ID: the identifier in Nestle-Aland 27th Edition
-        - NA28_ID: the identifier in Nestle-Aland 28th Edition
-        - SBLGNT_ID: the identifier in SBL GNT
-        - SBLGNT_Text: the word form in SBL GNT
-        - MARBLE_ID: the identifier in Project MARBLE
+        NA1904_ID: the identifier for this word in Nestle-Aland 1904
+        NA1904_Text: the word form in Nestle-Aland 1904
+        NA27_ID: the identifier in Nestle-Aland 27th Edition
+        NA28_ID: the identifier in Nestle-Aland 28th Edition
+        SBLGNT_ID: the identifier in SBL GNT
+        SBLGNT_Text: the word form in SBL GNT
+        MARBLE_ID: the identifier in Project MARBLE
 
     """
 
@@ -98,20 +114,18 @@ class Mapping:
 
 
 class Mappings(UserList):
-    """Manage a sequence of Mapping instances.
+    """Manage a sequence of Mapping instances."""
 
-    Methods:
-        - read(): read in data from source
-    """
-
-    # relative path assuming you have a local copy of this repo
-    source: Path = Path("../../macula-greek/sources/Clear/mappings/mappings-GNT-stripped.tsv")
+    # relative path assuming you have a local copy of the macule-greek repo
+    source: Path = CLEARPATH / "macula-greek/sources/Clear/mappings/mappings-GNT-stripped.tsv"
     mappingfields: list = list(Mapping.__dataclass_fields__.keys())
 
     def __init__(self, sourcefile: str = "") -> None:
         """Initialize Mappings."""
+        super().__init__()
         if sourcefile:
             self.source = Path(sourcefile)
+        assert self.source.exists(), f"No file {self.source}: do you have a local copy of the macula-greek repository?"
         with self.source.open(encoding="utf-8") as f:
             reader: DictReader = DictReader(f, dialect="excel-tab")
             # make sure the fieldnames in the file are the same as the
@@ -122,7 +136,10 @@ class Mappings(UserList):
             ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
             self.data: list = [Mapping(**r) for r in reader]
 
-    def add_prefix(self, outfile: str = "../sources/Clear/mappings/mappings-GNT-corrected.tsv") -> None:
+    # short-term need
+    def _add_prefix(
+        self, outfile: str = CLEARPATH / "macula-greek/sources/Clear/mappings/mappings-GNT-corrected.tsv"
+    ) -> None:
         """Rewrite the source, adding 'n' to NA1904_ID values."""
         outpath = Path(outfile)
         with outpath.open("w", encoding="utf-8") as f:
