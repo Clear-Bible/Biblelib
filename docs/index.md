@@ -44,4 +44,5 @@ and consists of four separate parts:
     * the United Bible Societies and [Project MARBLE](https://semanticdictionary.org/)
     * the [SBL Greek New Testament](https://sblgnt.com/)
     * [Clear Bible](https://clear.bible)
-* Versification data comes from the [Copenhagen Alliance](https://github.com/Copenhagen-Alliance).
+* Versification data comes from the [Copenhagen
+  Alliance](https://github.com/Copenhagen-Alliance).
