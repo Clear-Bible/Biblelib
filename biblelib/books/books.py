@@ -23,6 +23,12 @@ Examples:
 
 See the tests `Biblelib/tests` for additional examples.
 
+To do:
+
+    Add other canons: [Logos' Canon Comparison
+    interactive](https://ref.ly/logosres/interactive:canon-comparison?pos=index.html)
+    has 14.
+    Indicate relations to alternate books, e.g. 'DAN' and 'DAG' (Greek Daniel, which includes other content)?
 
 """
 
@@ -292,7 +298,8 @@ class CatholicCanon(_Canon):
     """Return a  Book instance representing the 73-book Catholic canon.
 
     This reflects the order in the New American Bible. The order may
-    differ in other editions.
+    differ in other editions (e.g. Douay-Rheims puts "1MA" and "2MA"
+    after "MAL".)
 
     """
 
@@ -301,7 +308,9 @@ class CatholicCanon(_Canon):
         "GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH",
         "EZR", "NEH", "TOB", "JDT", "ESG", "1MA", "2MA",
         "JOB", "PSA", "PRO", "ECC", "SNG", "WIS", "SIR",
-        "ISA", "JER", "LAM", "BAR", "EZK", "DAN",
+        "ISA", "JER", "LAM", "BAR", "EZK",
+        # should this be Greek Daniel "DAG"?
+        "DAN",
         "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
         "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH",
         "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"]
