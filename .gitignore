@@ -1,3 +1,6 @@
+# Python Byte-compiled / optimized / DLL files
+*.py[cod]
+
 # Compiled
 *.elc
 
@@ -9,3 +12,11 @@
 
 # Undo-tree save-files
 *.~undo-tree
+
+# MacOS
+.DS_Store
+
+# project-specific
+# ignore luigi logging
+.ipynb_checkpoints/
+.pytest_cache/

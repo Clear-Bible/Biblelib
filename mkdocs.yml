@@ -1,0 +1,33 @@
+site_name: Biblelib
+repo_url: https://github.com/Clear-Bible/Biblelib
+site_url: https://Clear.bible
+site_description: Utilities for working with Bible book metadata, references, pericopes, and other units.
+site_author: Sean Boisen
+
+nav:
+  - Home: index.md
+#  - tutorials.md
+  - how-to-guides.md
+#  - reference.md
+  - explanation.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+            setup_commands:
+                - import sys
+                - sys.path.append('../')
+copyright: Maintained by Sean Boisen.
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    primary: white
+    accent: blue
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true

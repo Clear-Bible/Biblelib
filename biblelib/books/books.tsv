@@ -1,0 +1,147 @@
+logosID	usfmnumber	usfmname	osisID	name	altname
+# Data from https://ubsicap.github.io/usfm/identification/books.html
+# - Logos Bible datatype number. This supports ordinal sorting
+#   according to Protestant canon order. Other orders need other support.
+# - USFM Number (but really a string)
+# - USFM Identifier
+# - OSIS ID
+# - 'standard' English Name
+# - Long English Name/Alternate names (delimited by '/')
+#
+# Numerous alternate names in other canons are not included
+# Order of items here must match properties in Book for loading to
+# work correctly
+#
+# Excluded by design:
+# - Different published Bibles have different names for books
+#   (e.g. 1SA is '1 Kings' in Douay-Rheims). So 'name' here is a
+#   conventional one: more data would be required to capture published
+#   names in other editions.
+# - Some Clear data has a two-letter abbreviation, perhaps originating
+#   with Andi Wu (Gen = 'gn', Lev = 'lx', etc. ). Non-normative so excluded
+1	1	GEN	Gen	Genesis
+2	2	EXO	Exod	Exodus
+3	3	LEV	Lev	Leviticus
+4	4	NUM	Num	Numbers
+5	5	DEU	Deut	Deuteronomy
+6	6	JOS	Josh	Joshua
+7	7	JDG	Judg	Judges
+8	8	RUT	Ruth	Ruth
+9	9	1SA	1Sam	1 Samuel
+10	10	2SA	2Sam	2 Samuel
+11	11	1KI	1Kgs	1 Kings
+12	12	2KI	2Kgs	2 Kings
+13	13	1CH	1Chr	1 Chronicles
+14	14	2CH	2Chr	2 Chronicles
+15	15	EZR	Ezra	Ezra
+16	16	NEH	Neh	Nehemiah
+17	17	EST	Esth	Esther (Hebrew)
+18	18	JOB	Job	Job
+19	19	PSA	Ps	Psalms
+20	20	PRO	Prov	Proverbs
+21	21	ECC	Eccl	Ecclesiastes
+22	22	SNG	Song	Song of Songs	Song of Solomon
+23	23	ISA	Isa	Isaiah
+24	24	JER	Jer	Jeremiah
+25	25	LAM	Lam	Lamentations	The Lamentations of Jeremiah
+26	26	EZK	Ezek	Ezekiel
+27	27	DAN	Dan	Daniel
+28	28	HOS	Hos	Hosea
+29	29	JOL	Joel	Joel
+30	30	AMO	Amos	Amos
+31	31	OBA	Obad	Obadiah
+32	32	JON	Jonah	Jonah
+33	33	MIC	Mic	Micah
+34	34	NAM	Nah	Nahum
+35	35	HAB	Hab	Habakkuk
+36	36	ZEP	Zeph	Zephaniah
+37	37	HAG	Hag	Haggai
+38	38	ZEC	Zech	Zechariah
+39	39	MAL	Mal	Malachi
+# gap in the USFM numbering sequence here because of the legacy
+# issue of MAT as 41 rather than 40.
+40	68	TOB	Tob	Tobit
+41	69	JDT	Jdt	Judith
+42	70	ESG	EsthGr	Esther Greek
+43	71	WIS	Wis	Wisdom of Solomon
+44	72	SIR	Sir	Sirach
+45	73	BAR	Bar	Baruch
+46	74	LJE	EpJer	Letter of Jeremiah
+47	75	S3Y	PrAzar	Song of the 3 Young Men
+48	76	SUS	Sus	Susanna
+49	77	BEL	Bel	Bel and the Dragon
+50	78	1MA	1Macc	1 Maccabees
+51	79	2MA	2Macc	2 Maccabees
+52	82	1ES	1Esd	1 Esdras (Greek)
+53	84	MAN	PrMan	Prayer of Manasseh
+54	85	PS2	AddPs	Psalm 151
+55	80	3MA	3Macc	3 Maccabees
+56	83	2ES	2Esd	2 Esdras (Latin)
+57	81	4MA	4Macc	4 Maccabees
+58	86	ODA	Odes	Odae/Odes
+59	87	PSS	PssSol	Psalms of Solomon
+60	C3	LAO	EpLao	Letter to the Laodiceans
+# Some filenames and legacy data have USFM number for MAT as 41,
+# and +1 for subsequent NT books: use usfmnumberalt for that. But
+# most common current practice is MAT = 40.
+61	40	MAT	Matt	Matthew	The Gospel according to Matthew
+62	41	MRK	Mark	Mark	The Gospel according to Mark
+63	42	LUK	Luke	Luke	The Gospel according to Luke
+64	43	JHN	John	John	The Gospel according to John
+65	44	ACT	Acts	Acts	The Acts of the Apostles
+66	45	ROM	Rom	Romans	The Letter of Paul to the Romans
+67	46	1CO	1Cor	1 Corinthians	The First Letter of Paul to the Corinthians
+68	47	2CO	2cor	2 Corinthians	The Second Letter of Paul to the Corinthians
+69	48	GAL	Gal	Galatians	The Letter of Paul to the Galatians
+70	49	EPH	Eph	Ephesians	The Letter of Paul to the Ephesians
+71	50	PHP	Phil	Philippians	The Letter of Paul to the Philippians
+72	51	COL	Col	Colossians	The Letter of Paul to the Colossians
+73	52	1TH	1Thess	1 Thessalonians	The First Letter of Paul to the Thessalonians
+74	53	2TH	2Thess	2 Thessalonians	The Second Letter of Paul to the Thessalonians
+75	54	1TI	1Tim	1 Timothy	The First Letter of Paul to Timothy
+76	55	2TI	2Tim	2 Timothy	The Second Letter of Paul to Timothy
+77	56	TIT	Titus	Titus	The Letter of Paul to Titus
+78	57	PHM	Phlm	Philemon	The Letter of Paul to Philemon
+79	58	HEB	Heb	Hebrews	The Letter to the Hebrews
+80	59	JAS	Jas	James	The Letter of James
+81	60	1PE	1Pet	1 Peter	The First Letter of Peter
+82	61	2PE	2Pet	2 Peter	The Second Letter of Peter
+83	62	1JN	1John	1 John	The First Letter of John
+84	63	2JN	2John	2 John	The Second Letter of John
+85	64	3JN	3John	3 John	The Third Letter of John
+86	65	JUD	Jude	Jude	The Letter of Jude
+87	66	REV	Rev	Revelation	The Revelation to John
+88	B7	ENO	1En	Enoch
+# Logos also has 2 Baruch (99)??
+# LBD: 'The Syriac Apocalypse of Baruch proper consists of 2
+# Baruch 1–77, while 2 Baruch 78–87 form the Letter of Baruch.'
+# I'm guessing USFM doesn't distinguish?
+96	B4	2BA	2Bar	2 Baruch (Apocalypse)	The Apocalypse of Baruch
+97	B5	LBA	EpBar	Letter of Baruch
+98	B2	DAG	DanGr	Daniel Greek
+# (99, '2 Baruch'),
+100	A4	EZA	4Ezra	Ezra Apocalypse
+# # no Logos number AFAIK: arbitrarily numbered from 200
+200	A5	5EZ	5Ezra	5 Ezra
+201	A6	6EZ	6Ezra	6 Ezra
+202	B3	PS3	5ApocSyrPss	Psalms 152-155
+203	B6	JUB	Jub	Jubilees
+204	B8	1MQ	1Meq	1 Meqabyan/Mekabis	Book of Mekabis of Benjamin
+205	B9	2MQ	2Meq	2 Meqabyan/Mekabis	Book of Mekabis of Moab
+206	C0	3MQ	3Meq	3 Meqabyan/Mekabis	Book of Meqabyan
+207	C1	REP	Rep	Reproof
+208	C2	4BA	4Bar	4 Baruch
+# more from Logos, per
+# https://wiki.logos.com/Logos_Bible_Book_Names, but not in
+# USFM/OSIS? These seems to be from DSS5
+# `logosref:bibleNN` doesn't navigate for more in Logos for NN > 87
+# (89, 'Plea for Deliverance'),
+# (90, 'Apostrophe to Zion'),
+# (91, 'Eschatalogical Hymn'),
+# (92, 'Apostrophe to Judah'),
+# (93, 'Hymn to the Creator'),
+# (94, 'David's Compositions'),
+# (95, 'Apocryphal Psalms'),
+# (101, 'Catena'),
+# (102, 'Psalm 151A'),
+# (103, 'Psalm 151B'),
