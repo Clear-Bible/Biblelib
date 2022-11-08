@@ -15,21 +15,6 @@ TESTMAPPING = mappings.Mapping(
 )
 
 
-class TestClearID:
-    """Test basic functionality of ClearID dataclass."""
-
-    testid = mappings.ClearID(TESTMAPPING.NA1904_ID)
-
-    def test_init(self) -> None:
-        """Test initialization and attributes."""
-        self.testid.book_ID == "43"
-        self.testid.chapter_ID == "001"
-        self.testid.verse_ID == "001"
-        self.testid.word_ID == "005"
-        self.testid.part_ID == ""
-        repr(self.testid) == "<ClearID: 43001001005>"
-
-
 class TestMapping:
     """Test basic functionality of Mapping dataclass."""
 
