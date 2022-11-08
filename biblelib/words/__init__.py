@@ -14,6 +14,13 @@ The Hebrew and Greek source files are available from
 
 """
 
-from .mappings import ClearID, Mapping, Mappings
+from .mappings import Mapping, Mappings
+from .clearid import ClearID
 
-__all__ = ["ClearID", "Mapping", "Mappings"]
+__all__ = [
+    # clearid
+    "ClearID",
+    # words
+    "Mapping",
+    "Mappings",
+]
