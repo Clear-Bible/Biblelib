@@ -9,6 +9,11 @@ readme = "README.md"
 packages = [
   {include = "biblelib"}
 ]
+classifiers=[
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Operating System :: OS Independent",
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
