@@ -21,7 +21,7 @@ class TestMapping:
     def test_init(self) -> None:
         """Test initialization and attributes."""
         assert TESTMAPPING.NA1904_ID == "43001001005"
-        # this form should have NFC normalization
+        # this form should have correct NFC normalization
         assert TESTMAPPING.NA1904_Text == "Λόγος,"
 
 
