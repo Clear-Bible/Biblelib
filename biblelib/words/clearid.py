@@ -8,6 +8,8 @@ ToDo:
 
 from dataclasses import dataclass, field
 
+from biblelib import Books
+
 
 @dataclass
 class ClearID:
@@ -25,7 +27,7 @@ class ClearID:
 
     Attributes:
         book_ID: 2-character string identifying the Bible book using
-            USFM numbers (like '40' for Matthew)
+            USFM numbers (like '40' for Matthew, 'B7' for Enoch)
         chapter_ID: 3-character string identifying a chapter number
             within the book
         verse_ID: 3-character string identifying the verse number
@@ -38,6 +40,7 @@ class ClearID:
 
     """
 
+    # book mapping data
     ID: str
     book_ID: str = field(init=False)
     chapter_ID: str = field(init=False)
@@ -63,6 +66,7 @@ class ClearID:
     @staticmethod
     def fromlogos(ref) -> "ClearID":
         """Return a ClearID instance for a Logos-style reference."""
+        _books: Books = Books()
 
         def pad3(arg: str) -> str:
             # "title" is verse 0. Potential confusion with unspecified
@@ -79,6 +83,9 @@ class ClearID:
         # eventually we may need to handle different Bible versions
         refsplit = restref.split(".")
         assert len(refsplit) == 3, f"Invalid reference: {restref}"
-        book, chapter, verse = map(pad3, refsplit)
+        # convert e.g. 62 -> 41 (Logos -> USFM)
+        usfmbook = _books.fromlogos(refsplit[0]).usfmnumber
+        chapter = pad3(refsplit[1])
+        verse = pad3(refsplit[2])
         # append "00" for word
-        return ClearID(f"{book}{chapter}{verse}00")
+        return ClearID(f"{usfmbook}{chapter}{verse}000")
