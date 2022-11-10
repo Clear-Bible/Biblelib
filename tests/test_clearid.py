@@ -19,6 +19,11 @@ class TestClearID:
         assert repr(self.testid) == "<ClearID: 43001001005>"
 
     def test_fromlogos(self) -> None:
-        """"""
+        """Test conversion from Logos-style reference."""
+        assert ClearID.fromlogos("bible.62.4.8").ID == "41004008000"
+        # 'title' as verse -> '000', additional bible specification
+        assert ClearID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
+        # USFM book ID that's not an integer like EpLao
+        assert ClearID.fromlogos("bible.60.1.1").ID == "C3001001000"
 
     # should also test a real part_ID value
