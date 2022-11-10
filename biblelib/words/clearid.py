@@ -1,4 +1,9 @@
-"""Manage Clear-style identifiers for words and morphology."""
+"""Manage Clear-style identifiers for words and morphology.
+
+ToDo:
+    provide for references without word IDs, or even without chapter IDs?
+
+"""
 
 
 from dataclasses import dataclass, field
@@ -43,14 +48,37 @@ class ClearID:
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
         assert 12 >= len(self.ID) >= 11, "Invalid length: {self.ID}"
-        self.book_ID = self.ID[:2]
+        self.book_ID = self.ID[0:2]
         self.chapter_ID = self.ID[2:5]
         self.verse_ID = self.ID[5:8]
         self.word_ID = self.ID[8:11]
         if len(self.ID) == 12:
-            self.part_ID = self.ID[11]
+            self.part_ID = self.ID[12]
             # TODO: add tests, presumably a closed set of values
 
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"<ClearID: {self.ID}>"
+
+    @staticmethod
+    def fromlogos(ref) -> "ClearID":
+        """Return a ClearID instance for a Logos-style reference."""
+
+        def pad3(arg: str) -> str:
+            # "title" is verse 0. Potential confusion with unspecified
+            # verses vs. titles specified as 000.
+            if arg == "title":
+                return "000"
+            else:
+                return "{:03}".format(int(arg))
+
+        if ref.startswith("bible") and "." in ref:
+            bible, restref = ref.split(".", 1)
+        else:
+            restref = ref
+        # eventually we may need to handle different Bible versions
+        refsplit = restref.split(".")
+        assert len(refsplit) == 3, f"Invalid reference: {restref}"
+        book, chapter, verse = map(pad3, refsplit)
+        # append "00" for word
+        return ClearID(f"{book}{chapter}{verse}00")

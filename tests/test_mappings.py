@@ -20,8 +20,9 @@ class TestMapping:
 
     def test_init(self) -> None:
         """Test initialization and attributes."""
-        TESTMAPPING.NA1904_ID = "43001001005"
-        TESTMAPPING.NA1904_Text = "Λόγος,"
+        assert TESTMAPPING.NA1904_ID == "43001001005"
+        # this form should have NFC normalization
+        assert TESTMAPPING.NA1904_Text == "Λόγος,"
 
 
 class TestMappings:
@@ -32,4 +33,4 @@ class TestMappings:
         # Assumes a local copy of the macula-greek repo
         m = mappings.Mappings()
         # fragile?
-        len(m) == 138804
+        assert len(m) == 138804
