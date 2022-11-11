@@ -22,6 +22,8 @@ class TestClearID:
 
     def test_fromlogos(self) -> None:
         """Test conversion from Logos-style reference."""
+        # early OT books should be zero-padded
+        assert ClearID.fromlogos("bible.1.2.3").ID == "01002003000"
         assert ClearID.fromlogos("bible.62.4.8").ID == "41004008000"
         # 'title' as verse -> '000', additional bible specification
         assert ClearID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
