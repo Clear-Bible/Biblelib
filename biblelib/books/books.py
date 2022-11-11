@@ -54,8 +54,9 @@ class Book:
         logosID (int): the index number of this book in the Logos
             bible datatype. Provides a standard ordinal index for
             ordering.
-        usfmnumber (str): the USFM string for this book
-        usfmname (str): the USFM name for this book
+        usfmnumber (str): the USFM string for this book. 1-2
+            characters: single-digit strings are not zero-padded.
+        usfmname (str): the three-character USFM name for this book
         osisID (str): the OSIS identifier for this book
         name (str): the common English name for this book
         altname (str): a longer or alternate English name, or empty string
@@ -68,13 +69,13 @@ class Book:
     # from the Logos bible datatype: some gaps for Ethiopic canon
     # first to support ordinal sorting
     logosID: int
-    # despite the name, this is a 2-character string
+    # despite the name, this is a 1-2 character string
     usfmnumber: str
     # three characters
     usfmname: str
     osisID: str
     name: str
-    altname: str
+    altname: str = ""
     _canon_traditions: tuple = ("Catholic", "Jewish", "Protestant")
     # keep this in sync with the attributes below
     _fieldnames: tuple = ("logosID", "usfmnumber", "usfmname", "osisID", "name", "altname")
@@ -212,10 +213,19 @@ class Books(UserDict):
             assert not fieldnameset.difference(
                 self.mappingfields
             ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
-            for row in reader:
-                # logosID should be an int
-                row["logosID"] = int(row["logosID"])
-                self.data[row["usfmname"]] = Book(**row)
+            self.data = {row["usfmname"]: self.rowtobook(row) for row in reader}
+
+    @staticmethod
+    def rowtobook(row: dict) -> Book:
+        """Convert a raw dict read from TSV to data for Book."""
+        # logosID should be an int
+        row["logosID"] = int(row["logosID"])
+        # zero-pad initial USFM numbers
+        if len(row["usfmnumber"]) == 1:
+            row["usfmnumber"] = "0" + row["usfmnumber"]
+        if not row["altname"]:
+            row["altname"] = ""
+        return Book(**row)
 
     def fromlogos(self, logosID: Union[int, str]) -> Book:
         """Return the book instance for a Logos bible book index.
