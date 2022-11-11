@@ -83,7 +83,7 @@ class ClearID:
         # eventually we may need to handle different Bible versions
         refsplit = restref.split(".")
         assert len(refsplit) == 3, f"Invalid reference: {restref}"
-        # convert e.g. 62 -> 41 (Logos -> USFM)
+        # convert e.g. 62 -> "41" (Logos -> USFM), and 1 -> "01"
         usfmbook = _books.fromlogos(refsplit[0]).usfmnumber
         chapter = pad3(refsplit[1])
         verse = pad3(refsplit[2])
