@@ -1,6 +1,6 @@
 """Test biblelib.words.clearid."""
 
-from biblelib.words.clearid import ClearID
+from biblelib.words import ClearID
 
 
 class TestClearID:
