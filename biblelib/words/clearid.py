@@ -8,7 +8,7 @@ ToDo:
 
 from dataclasses import dataclass, field
 
-from biblelib import Books
+from biblelib.books import Books
 
 
 @dataclass
