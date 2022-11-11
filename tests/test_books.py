@@ -11,7 +11,19 @@ class TestMark(object):
     allbooks = books.Books()
     prot = books.ProtestantCanon()
 
-    def test_attrs(self):
+    def test_attrs_gen(self):
+        """Test attribute values for Genesis."""
+        # will need updating if the list changes
+        gen = self.allbooks["GEN"]
+        assert str(gen) == "<Book: GEN>"
+        assert gen.usfmnumber == "01"
+        assert gen.osisID == "Gen"
+        assert gen.altname == ""
+        assert gen.render() == "Gen"
+        assert gen.render("usfmname") == "GEN"
+        assert gen.render("logosID") == "bible.1"
+
+    def test_attrs_mark(self):
         """Test attribute values."""
         # will need updating if the list changes
         assert len(self.allbooks) == 101
