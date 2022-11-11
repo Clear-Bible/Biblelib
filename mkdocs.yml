@@ -10,6 +10,7 @@ nav:
   - how-to-guides.md
 #  - reference.md
   - explanation.md
+  - ReleaseNotes.md
 plugins:
   - search
   - mkdocstrings:
