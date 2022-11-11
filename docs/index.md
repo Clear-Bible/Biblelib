@@ -26,11 +26,18 @@ and consists of four separate parts:
   [Faithlife](https://faithlife.com) and the need for our team to
   process Bible data. This is all new code, however, and freely
   reusable without restriction.
-* The `books` metadata incorporates standards developed by [Open Scripture
-  Information Standard (OSIS)](https://crosswire.org/osis/),
-  [Unified Standard Format Markers
-  (USFM)](https://ubsicap.github.io/usfm/index.html), and [Logos Bible
-  Software](https://www.logos.com/).
+* The `books` metadata incorporates standards developed by [Clear
+  Bible](https://clear.bible), [Open Scripture Information Standard
+  (OSIS)](https://crosswire.org/osis/), [Unified Standard Format
+  Markers (USFM)](https://ubsicap.github.io/usfm/index.html), and
+  [Logos Bible Software](https://www.logos.com/).
+* Pericope divisions and headings are taken from the [Lexham English
+  Bible](http://www.lexhamenglishbible.com/) and used under the terms
+  of [License Information for the Lexham English
+  Bible](https://lexhampress.com/LEB-License). Commercial reuse of
+  this data may require special arrangements with Lexham Press to
+  inform them of the number of copies: contact them at
+  copyright@lexhampress.com for details.
 * The word-level mappings between Hebrew Bible versions in
   `words/mappings` come from ...
 * The word-level mappings between Greek Bible versions come from the
@@ -46,3 +53,7 @@ and consists of four separate parts:
     * [Clear Bible](https://clear.bible)
 * Versification data comes from the [Copenhagen
   Alliance](https://github.com/Copenhagen-Alliance).
+
+ ---
+
+Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
