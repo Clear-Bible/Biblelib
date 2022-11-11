@@ -50,7 +50,7 @@ class ClearID:
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        assert 12 >= len(self.ID) >= 11, "Invalid length: {self.ID}"
+        assert 12 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
         self.book_ID = self.ID[0:2]
         self.chapter_ID = self.ID[2:5]
         self.verse_ID = self.ID[5:8]

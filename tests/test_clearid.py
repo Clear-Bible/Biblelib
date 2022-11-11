@@ -1,5 +1,7 @@
 """Test biblelib.words.clearid."""
 
+import pytest
+
 from biblelib.words import ClearID
 
 
@@ -25,5 +27,14 @@ class TestClearID:
         assert ClearID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
         # USFM book ID that's not an integer like EpLao
         assert ClearID.fromlogos("bible.60.1.1").ID == "C3001001000"
+
+    def test_invalid_length(self) -> None:
+        """Test that length checks fail correction"""
+        with pytest.raises(AssertionError):
+            # only 10 chars
+            _ = ClearID("4300100100")
+        with pytest.raises(AssertionError):
+            # 13 chars
+            _ = ClearID("4300100100500")
 
     # should also test a real part_ID value
