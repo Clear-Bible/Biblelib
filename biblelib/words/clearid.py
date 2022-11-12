@@ -7,8 +7,26 @@ ToDo:
 
 
 from dataclasses import dataclass, field
+import re
 
 from biblelib.books import Books
+
+BOOKS = Books()
+
+
+def pad3(arg: str) -> str:
+    """Return a zero-padded string for an integer.
+
+    "title" is verse 0, so there's possible confusion with unspecified
+    verses vs. titles specified as 000.
+
+    """
+    if arg == "title":
+        return "000"
+    else:
+        assert len(arg) <= 3, f"Arg must be 3 chars or less: {arg}"
+        assert int(arg), f"Arg must convert to an int: {arg}"
+        return "{:03}".format(int(arg))
 
 
 @dataclass
@@ -64,18 +82,27 @@ class ClearID:
         return f"<ClearID: {self.ID}>"
 
     @staticmethod
+    def fromusfm(ref) -> "ClearID":
+        """Return a ClearID instance for a USFM-based reference.
+
+        Only handles single verse references with a specified chapter
+        and verse like MRK 4:8. Does not handle ranges, book + chapter
+        references, or non-numeric verses like 'title'. Does not check
+        the validity of chapter and verse numbers for the book.
+
+        """
+        book, chapter, verse = re.split(r"[: ]", ref, maxsplit=2)
+        # could be more generous here in matching other abbreviation
+        # schemes as well
+        assert book.upper() in BOOKS, f"Invalid book abbreviation: {book}"
+        usfmbook = BOOKS[book.upper()].usfmnumber
+        assert int(chapter), f"Chapter must be an integer: {chapter}"
+        assert int(verse), f"Verse must be an integer: {verse}"
+        return ClearID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}000")
+
+    @staticmethod
     def fromlogos(ref) -> "ClearID":
-        """Return a ClearID instance for a Logos-style reference."""
-        _books: Books = Books()
-
-        def pad3(arg: str) -> str:
-            # "title" is verse 0. Potential confusion with unspecified
-            # verses vs. titles specified as 000.
-            if arg == "title":
-                return "000"
-            else:
-                return "{:03}".format(int(arg))
-
+        """Return a ClearID instance for a Logos-style single verse reference."""
         if ref.startswith("bible") and "." in ref:
             bible, restref = ref.split(".", 1)
         else:
@@ -84,7 +111,7 @@ class ClearID:
         refsplit = restref.split(".")
         assert len(refsplit) == 3, f"Invalid reference: {restref}"
         # convert e.g. 62 -> "41" (Logos -> USFM), and 1 -> "01"
-        usfmbook = _books.fromlogos(refsplit[0]).usfmnumber
+        usfmbook = BOOKS.fromlogos(refsplit[0]).usfmnumber
         chapter = pad3(refsplit[1])
         verse = pad3(refsplit[2])
         # append "00" for word
