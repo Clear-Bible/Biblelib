@@ -23,8 +23,8 @@ attributes for identifying a Bible book:
 * Number: a two-character string (not actually a number, though the
   most common books use digits). For the early Old Testament books,
   this is zero-padded (so Genesis is "01").
-* Identifier:
-* English Name:
+* Identifier: a three-character string abbreviating the book name.
+* English Name: a conventional shorter book name.
 
 USFM [Book Identifiers — Unified Standard Format Markers 3.0.0 documentation](https://ubsicap.github.io/usfm/identification/books.html)
 
