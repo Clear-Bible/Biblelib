@@ -3,6 +3,23 @@
 import pytest
 
 from biblelib.words import ClearID
+from biblelib.words.clearid import pad3
+
+
+class TestPad3:
+    """Test basic functionality of pad3()."""
+
+    def test_return(self) -> None:
+        """Test returned values"""
+        assert pad3("title") == "000"
+        assert pad3("1") == "001"
+        assert pad3("23") == "023"
+        with pytest.raises(ValueError):
+            # not convertible to an int
+            _ = pad3("a")
+        with pytest.raises(AssertionError):
+            # too long
+            _ = pad3("1234")
 
 
 class TestClearID:
@@ -19,6 +36,16 @@ class TestClearID:
         assert self.testid.word_ID == "005"
         assert self.testid.part_ID == ""
         assert repr(self.testid) == "<ClearID: 43001001005>"
+
+    def test_fromusfm(self) -> None:
+        """Test conversion from USFM-style reference."""
+        # early OT books should be zero-padded
+        assert ClearID.fromusfm("Gen 3:16").ID == "01003016000"
+        with pytest.raises(AssertionError):
+            _ = ClearID.fromusfm("Genesis 3:16")
+        assert ClearID.fromusfm("MRK 4:8").ID == "41004008000"
+        with pytest.raises(AssertionError):
+            _ = ClearID.fromusfm("Mark 3:16")
 
     def test_fromlogos(self) -> None:
         """Test conversion from Logos-style reference."""
