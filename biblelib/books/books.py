@@ -182,7 +182,7 @@ class Books(UserDict):
     canon: str = "Protestant"
     logosmap: dict = {}
     osismap: dict = {}
-    usfmnaumberap: dict = {}
+    usfmnumbermap: dict = {}
 
     def __init__(self, sourcefile: str = "", canon: str = "Protestant") -> None:
         """Initialize a Books instance.
@@ -257,17 +257,28 @@ class Books(UserDict):
             self.osismap = {b.osisID: b for _, b in self.data.items()}
         return self.osismap[osisID]
 
-    def fromusfmnumber(self, usfmnumber: str) -> Book:
+    def fromusfmnumber(self, usfmnumber: str, legacynumbering: bool = False) -> Book:
         """Return the book instance for a USFM number.
 
         Args:
             usfmnumber: the USFM book number to use in looking up the Book,
                 like "40".
+            legacynumbering: if true, treat MAT and subsequent NT
+                books as 41, not 40. This is how some legacy resources
+                are numbered.
+
         """
-        if not self.usfmnaumberap:
-            # initialize on demand
-            self.usfmnaumberap = {b.usfmnumber: b for _, b in self.data.items()}
-        return self.usfmnaumberap[usfmnumber]
+        # maps "41" -> "40", etc. through 67/66, for the legacy
+        # numbering system that assigns 41 to MAT. The resulting book
+        # instance uses non-legacy numbers: this is just to get to the
+        # right Book instance.
+        _legacynumbermap = {str(i): str(i + 1) for i in list(range(40, 67))}
+        if legacynumbering:
+            usfmnumbermap = {_legacynumbermap.get(b.usfmnumber, b.usfmnumber): b for _, b in self.data.items()}
+        else:
+            usfmnumbermap = {b.usfmnumber: b for _, b in self.data.items()}
+        #        return usfmnumbermap[usfmnumber]
+        return usfmnumbermap[usfmnumber]
 
 
 class _Canon(Books):
@@ -286,6 +297,15 @@ class _Canon(Books):
             book = srcdata[bookid]
             book.ordinal = index
             self.data[bookid] = book
+
+
+class NTCanon(_Canon):
+    """Return an Book instance representing the New Testament canon."""
+
+    # fmt: off
+    bookids = [
+        "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH",
+        "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"]
 
 
 class ProtestantCanon(_Canon):

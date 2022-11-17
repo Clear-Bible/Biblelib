@@ -70,3 +70,14 @@ class TestMark(object):
         assert logosIDmark.name == "Mark"
         logosIDmark = self.allbooks.fromlogos(62)
         assert logosIDmark.name == "Mark"
+        usfmnumbermark = self.allbooks.fromusfmnumber("41")
+        assert usfmnumbermark.name == "Mark"
+        usfmnumberrev = self.allbooks.fromusfmnumber("66")
+        assert usfmnumberrev.name == "Revelation"
+        # access via the old numbering system where MAT=41, not
+        # 40. Note this doesn't change the 'correct' number on the
+        # Book instance, it just uses legacy numbers for retrieval.
+        usfmnumbermatt = self.allbooks.fromusfmnumber("41", legacynumbering=True)
+        assert usfmnumbermatt.name == "Matthew"
+        usfmnumberrev = self.allbooks.fromusfmnumber("67", legacynumbering=True)
+        assert usfmnumberrev.name == "Revelation"
