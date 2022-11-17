@@ -4,12 +4,13 @@
 
 """
 
-from .books import Book, Books, ProtestantCanon, CatholicCanon
+from .books import Book, Books, NTCanon, ProtestantCanon, CatholicCanon
 
 
 __all__ = [
     "Book",
     "Books",
+    "NTCanon",
     "ProtestantCanon",
     "CatholicCanon",
 ]
