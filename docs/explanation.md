@@ -28,6 +28,15 @@ attributes for identifying a Bible book:
 
 USFM [Book Identifiers — Unified Standard Format Markers 3.0.0 documentation](https://ubsicap.github.io/usfm/identification/books.html)
 
+## Words
+
+For the Greek New Testament, the primary sources are
+
+* The Nestle-Aland Greek text of 1904, which has an open license.
+* The SBLGNT, with a permissive (but not fully open) license.
+* The NA 27 and 28 texts, under copyright to the German Bible Society.
+
+
 ---
 
 > **Note:** Expand this section by considering the
