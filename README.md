@@ -12,7 +12,7 @@
 Utilities for working with Bible books, references, pericopes, and
 other units. Note this does _not_ include any actual Bible texts.
 
-- **Github repository**: <https://github.com/Clear-Bible/sboisen
+- **Github repository**: <https://github.com/Clear-Bible/Biblelib
 - **Documentation** may *eventually* arrive at
   <https://clear-bible.github.io/Biblelib/> but can be found in the
   `docs` directory, and built using `mkdocs`.
