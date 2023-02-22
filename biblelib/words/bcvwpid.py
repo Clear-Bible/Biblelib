@@ -1,4 +1,10 @@
-"""Manage Clear-style identifiers for words and morphology.
+"""Manage BCVWP identifiers for words and morphology.
+
+BCVWP = Book, Chapter, Verse, Word, Part as sequential numerical
+indices. This is typically encoded as BBCCCVVVWWWP, but there are
+variants: sometimes the Part index is omitted. Individual Bible
+editions might have different text indexed in different ways, so you
+should not assume that BCVWP value for one Bible maps directly to another.
 
 ToDo:
     provide for references without word IDs, or even without chapter IDs?
@@ -30,8 +36,8 @@ def pad3(arg: str) -> str:
 
 
 @dataclass
-class ClearID:
-    """Identifies words from Bible texts by book, chapter, verse, ord, and word part.
+class BCVWPID:
+    """Identifies words from Bible texts by book, chapter, verse, word, and word part.
 
     This supports two formats: BBCCCVVVWWW and BBCCCVVVWWWP, where BB
         identifies a book, CCC identifies a chapter number, VVV
@@ -74,16 +80,16 @@ class ClearID:
         self.verse_ID = self.ID[5:8]
         self.word_ID = self.ID[8:11]
         if len(self.ID) == 12:
-            self.part_ID = self.ID[12]
+            self.part_ID = self.ID[11]
             # TODO: add tests, presumably a closed set of values
 
     def __repr__(self) -> str:
         """Return a string representation."""
-        return f"<ClearID: {self.ID}>"
+        return f"<BCVWPID: {self.ID}>"
 
     @staticmethod
-    def fromusfm(ref) -> "ClearID":
-        """Return a ClearID instance for a USFM-based reference.
+    def fromusfm(ref) -> "BCVWPID":
+        """Return a BCVWPID instance for a USFM-based reference.
 
         Only handles single verse references with a specified chapter
         and verse like MRK 4:8. Does not handle ranges, book + chapter
@@ -98,11 +104,11 @@ class ClearID:
         usfmbook = BOOKS[book.upper()].usfmnumber
         assert int(chapter), f"Chapter must be an integer: {chapter}"
         assert int(verse), f"Verse must be an integer: {verse}"
-        return ClearID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}000")
+        return BCVWPID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}000")
 
     @staticmethod
-    def fromlogos(ref) -> "ClearID":
-        """Return a ClearID instance for a Logos-style single verse reference."""
+    def fromlogos(ref) -> "BCVWPID":
+        """Return a BCVWPID instance for a Logos-style single verse reference."""
         if ref.startswith("bible") and "." in ref:
             bible, restref = ref.split(".", 1)
         else:
@@ -115,4 +121,27 @@ class ClearID:
         chapter = pad3(refsplit[1])
         verse = pad3(refsplit[2])
         # append "00" for word
-        return ClearID(f"{usfmbook}{chapter}{verse}000")
+        return BCVWPID(f"{usfmbook}{chapter}{verse}000")
+
+
+# @dataclass
+# class MarbleID(BCVWPID:
+#     """Like a standard BCVWPID, but with an extra leading digit for books.
+
+#     Format is BBBCCCVVVWWWP."""
+
+#     def __post_init__(self) -> None:
+#         """Compute other values on initialization."""
+#         # part is not optional
+#         assert len(self.ID) == 12, f"Invalid length: {self.ID}"
+#         self.book_ID = self.ID[0:2]
+#         self.chapter_ID = self.ID[2:5]
+#         self.verse_ID = self.ID[5:8]
+#         self.word_ID = self.ID[8:11]
+#         if len(self.ID) == 12:
+#             self.part_ID = self.ID[12]
+#             # TODO: add tests, presumably a closed set of values
+
+#     def __repr__(self) -> str:
+#         """Return a string representation."""
+#         return f"<BCVWPID: {self.ID}>"

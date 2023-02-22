@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.4
+
+- Renamed "Clear ID" to "BCVWP ID" throughout.
+
 ## 0.2.3
 
 - Bug fix: USFM numbers for single-digit OT books like Genesis are now
