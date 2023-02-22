@@ -1,10 +1,15 @@
 """Manage BCVWP identifiers for words and morphology.
 
+Technically, this should be called BBCCCVVVWWWP format, but that's a
+mouthful.
+
 BCVWP = Book, Chapter, Verse, Word, Part as sequential numerical
 indices. This is typically encoded as BBCCCVVVWWWP, but there are
 variants: sometimes the Part index is omitted. Individual Bible
 editions might have different text indexed in different ways, so you
 should not assume that BCVWP value for one Bible maps directly to another.
+
+Technically, this should be called BBCCCVVVWWWP format, but that's a mouthful.
 
 ToDo:
     provide for references without word IDs, or even without chapter IDs?
