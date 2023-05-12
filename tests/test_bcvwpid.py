@@ -1,9 +1,9 @@
-"""Test biblelib.words.bcvwpid."""
+"""Test biblelib.word.bcvwpid."""
 
 import pytest
 
-from biblelib.words import BCVWPID
-from biblelib.words.bcvwpid import pad3
+from biblelib.word import fromlogos, BID, BCID, BCVID, BCVWPID
+from biblelib.word.bcvwpid import pad3
 
 
 class TestPad3:
@@ -22,6 +22,165 @@ class TestPad3:
             _ = pad3("1234")
 
 
+class TestFromLogos:
+    """Test basic functionality of fromlogos()."""
+
+    def test_fromlogos_book(self) -> None:
+        """Test returned values"""
+        assert fromlogos("bible.1") == BID("01")
+        assert fromlogos("bible.62") == BID("41")
+        assert fromlogos("62") == BID("41")
+        # this fails in
+        with pytest.raises(AssertionError):
+            # out of range
+            _ = fromlogos("00")
+        with pytest.raises(AssertionError):
+            # out of range
+            _ = fromlogos("89")
+
+    def test_fromlogos_chapter(self) -> None:
+        """Test returned values"""
+        assert fromlogos("bible.1.2") == BCID("01002")
+        assert fromlogos("bible.1.12") == BCID("01012")
+        assert fromlogos("bible.19.119") == BCID("19119")
+        assert fromlogos("62.4") == BCID("41004")
+
+    def test_fromlogos_chapter_verse(self) -> None:
+        """Test returned values"""
+        assert fromlogos("bible.1.2.3") == BCVID("01002003")
+        assert fromlogos("bible.1.12.10") == BCVID("01012010")
+        assert fromlogos("bible.19.119.1") == BCVID("19119001")
+        assert fromlogos("62.4.1") == BCVID("41004001")
+
+
+class TestBID:
+    """Test basic functionality of BID dataclass."""
+
+    genid = "01"
+    markid = "41"
+
+    def test_init(self) -> None:
+        """Test initialization and attributes."""
+        assert BID(self.genid).book_ID == self.genid
+        assert BID(self.markid).book_ID == self.markid
+
+    # def test_fromusfm(self) -> None:
+    #     """Test fromusfm()."""
+    #     assert BID.fromusfm("GEN").book_ID == self.genid
+    #     assert BID.fromusfm("MRK").book_ID == self.markid
+
+    # def test_fromlogos(self) -> None:
+    #     """Test fromlogos()."""
+    #     assert BID.fromlogos("bible.62").book_ID == self.markid
+
+
+class TestBCVID:
+    """Test basic functionality of BCVID dataclass."""
+
+    NA1904_ID = "43001001"
+    testid = BCVID(NA1904_ID)
+
+    def test_init(self) -> None:
+        """Test initialization and attributes."""
+        assert self.testid.book_ID == "43"
+        assert self.testid.chapter_ID == "001"
+        assert self.testid.verse_ID == "001"
+        assert repr(self.testid) == "BCVID('43001001')"
+
+    # def test_fromusfm(self) -> None:
+    #     """Test conversion from USFM-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCVID.fromusfm("Gen 3:16").ID == "01003016"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCVID.fromusfm("Genesis 3:16")
+    #     assert BCVID.fromusfm("MRK 4:8").ID == "41004008"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCVID.fromusfm("Mark 3:16")
+
+    # def test_fromlogos(self) -> None:
+    #     """Test conversion from Logos-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCVID.fromlogos("bible.1.2.3").ID == "01002003"
+    #     assert BCVID.fromlogos("bible.62.4.8").ID == "41004008"
+    #     # 'title' as verse -> '000', additional bible specification
+    #     assert BCVID.fromlogos("bible+leb2.19.3.title").ID == "19003000"
+    #     # USFM book ID that's not an integer like EpLao
+    #     assert BCVID.fromlogos("bible.60.1.1").ID == "C3001001"
+
+    def test_invalid_length(self) -> None:
+        """Test that length checks fail correction"""
+        with pytest.raises(AssertionError):
+            # only 10 chars
+            _ = BCVID("4300100100")
+        with pytest.raises(AssertionError):
+            # 13 chars
+            _ = BCVID("4300100100")
+
+    def test_order(self) -> None:
+        """Test that order comparisons are correct."""
+        assert self.testid == self.testid
+        lessid = BCVID("42004001")
+        greaterid = BCVID("43001002")
+        assert lessid < self.testid
+        assert lessid <= self.testid
+        assert greaterid > self.testid
+        assert greaterid >= self.testid
+        assert greaterid != self.testid
+
+
+class TestBCID:
+    """Test basic functionality of BCID dataclass."""
+
+    NA1904_ID = "43001"
+    testid = BCID(NA1904_ID)
+
+    def test_init(self) -> None:
+        """Test initialization and attributes."""
+        assert self.testid.book_ID == "43"
+        assert self.testid.chapter_ID == "001"
+        assert repr(self.testid) == "BCID('43001')"
+
+    # def test_fromusfm(self) -> None:
+    #     """Test conversion from USFM-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCID.fromusfm("Gen 3").ID == "01003"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCID.fromusfm("Genesis 3")
+    #     assert BCID.fromusfm("MRK 4").ID == "41004"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCID.fromusfm("Mark 3")
+    # add tests to fail if verse supplied
+
+    # def test_fromlogos(self) -> None:
+    #     """Test conversion from Logos-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCID.fromlogos("bible.1.2").ID == "01002"
+    #     assert BCID.fromlogos("bible.62.4").ID == "41004"
+    #     # USFM book ID that's not an integer like EpLao
+    #     assert BCID.fromlogos("bible.60.1").ID == "C3001"
+    # add tests to fail if verse supplied
+
+    def test_invalid_length(self) -> None:
+        """Test that length checks fail correction"""
+        with pytest.raises(AssertionError):
+            # too long
+            _ = BCID("43001001")
+        with pytest.raises(AssertionError):
+            # too short
+            _ = BCID("4301")
+
+    def test_order(self) -> None:
+        """Test that order comparisons are correct."""
+        assert self.testid == self.testid
+        lessid = BCID("42004")
+        greaterid = BCID("43004")
+        assert lessid < self.testid
+        assert lessid <= self.testid
+        assert greaterid > self.testid
+        assert greaterid >= self.testid
+        assert greaterid != self.testid
+
+
 class TestBCVWPID:
     """Test basic functionality of BCVWPID dataclass."""
 
@@ -35,7 +194,7 @@ class TestBCVWPID:
         assert self.testid.verse_ID == "001"
         assert self.testid.word_ID == "005"
         assert self.testid.part_ID == ""
-        assert repr(self.testid) == "<BCVWPID: 43001001005>"
+        assert repr(self.testid) == "BCVWPID('43001001005')"
 
     def test_init_with_part(self) -> None:
         """Test initialization and attributes for an ID with a part."""
@@ -45,27 +204,27 @@ class TestBCVWPID:
         assert testid.verse_ID == "003"
         assert testid.word_ID == "001"
         assert testid.part_ID == "1"
-        assert repr(testid) == "<BCVWPID: 010020030011>"
+        assert repr(testid) == "BCVWPID('010020030011')"
 
-    def test_fromusfm(self) -> None:
-        """Test conversion from USFM-style reference."""
-        # early OT books should be zero-padded
-        assert BCVWPID.fromusfm("Gen 3:16").ID == "01003016000"
-        with pytest.raises(AssertionError):
-            _ = BCVWPID.fromusfm("Genesis 3:16")
-        assert BCVWPID.fromusfm("MRK 4:8").ID == "41004008000"
-        with pytest.raises(AssertionError):
-            _ = BCVWPID.fromusfm("Mark 3:16")
+    # def test_fromusfm(self) -> None:
+    #     """Test conversion from USFM-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCVWPID.fromusfm("Gen 3:16").ID == "01003016000"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCVWPID.fromusfm("Genesis 3:16")
+    #     assert BCVWPID.fromusfm("MRK 4:8").ID == "41004008000"
+    #     with pytest.raises(AssertionError):
+    #         _ = BCVWPID.fromusfm("Mark 3:16")
 
-    def test_fromlogos(self) -> None:
-        """Test conversion from Logos-style reference."""
-        # early OT books should be zero-padded
-        assert BCVWPID.fromlogos("bible.1.2.3").ID == "01002003000"
-        assert BCVWPID.fromlogos("bible.62.4.8").ID == "41004008000"
-        # 'title' as verse -> '000', additional bible specification
-        assert BCVWPID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
-        # USFM book ID that's not an integer like EpLao
-        assert BCVWPID.fromlogos("bible.60.1.1").ID == "C3001001000"
+    # def test_fromlogos(self) -> None:
+    #     """Test conversion from Logos-style reference."""
+    #     # early OT books should be zero-padded
+    #     assert BCVWPID.fromlogos("bible.1.2.3").ID == "01002003000"
+    #     assert BCVWPID.fromlogos("bible.62.4.8").ID == "41004008000"
+    #     # 'title' as verse -> '000', additional bible specification
+    #     assert BCVWPID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
+    #     # USFM book ID that's not an integer like EpLao
+    #     assert BCVWPID.fromlogos("bible.60.1.1").ID == "C3001001000"
 
     def test_invalid_length(self) -> None:
         """Test that length checks fail correction"""
