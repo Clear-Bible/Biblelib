@@ -4,7 +4,7 @@
 
 """
 
-from .books import Book, Books, NTCanon, ProtestantCanon, CatholicCanon
+from .book import Book, Books, NTCanon, ProtestantCanon, CatholicCanon
 
 
 __all__ = [

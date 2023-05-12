@@ -10,8 +10,8 @@ This defines canonical sets of Bible books, along with
 
 
 Examples:
-    >>> from biblelib import books
-    >>> allbooks = books.Books()
+    >>> from biblelib import book
+    >>> allbooks = book.Books()
     >>> allbooks["MRK"]
     <Book: MRK>
     >>> allbooks["MRK"].osisID
@@ -20,6 +20,10 @@ Examples:
     # retrive a Book instance from an OSIS ID
     >>> allbooks.fromosis("Matt").name
     'Matthew'
+    # convert number from Logos scheme to USFM: Tobit should be 68,
+    # not 40
+    >>> allbooks.fromlogos("bible.40").usfmnumber
+    '68'
 
 See the tests `Biblelib/tests` for additional examples.
 
@@ -243,6 +247,7 @@ class Books(UserDict):
         if not self.logosmap:
             # initialize on demand
             self.logosmap = {b.logosID: b for _, b in self.data.items()}
+        assert logosID in self.logosmap, f"Invalid logosID {logosID}"
         return self.logosmap[logosID]
 
     def fromosis(self, osisID: str) -> Book:
