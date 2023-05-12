@@ -1,6 +1,6 @@
 # Biblelib
 
-[![Release](https://img.shields.io/github/v/release/sboisen/Biblelib)](https://img.shields.io/github/v/release/sboisen/Biblelib)
+[![Release](https://img.shields.io/github/v/release/Clear-Bible/Biblelib)](https://img.shields.io/github/v/release/Clear-Bible/Biblelib)
 [![Build status](https://img.shields.io/github/workflow/status/sboisen/Biblelib/merge-to-main)](https://img.shields.io/github/workflow/status/sboisen/Biblelib/merge-to-main)
 [![codecov](https://codecov.io/gh/sboisen/Biblelib/branch/main/graph/badge.svg)](https://codecov.io/gh/sboisen/Biblelib)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/sboisen/Biblelib)](https://img.shields.io/github/commit-activity/m/sboisen/Biblelib)
@@ -22,3 +22,12 @@ other units. Note this does _not_ include any actual Bible texts.
 ```bash
 $ pip install biblelib
 ```
+## Acknowledgements
+
+* Book abbreviations incorporate public conventions developed by
+    * [Unified Standard Format Markers
+      3.0.0](https://ubsicap.github.io/usfm/index.html) (USFM), which
+      is © Copyright 2018, United Bible Societies.
+    * [The Open Scripture Information Standard
+      (OSIS)](https://crosswire.org/osis/)
+    * [Logos Bible Software](http://www.logos.com/)
