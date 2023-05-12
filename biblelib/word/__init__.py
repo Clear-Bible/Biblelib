@@ -15,10 +15,14 @@ The Hebrew and Greek source files are available from
 """
 
 from .mappings import Mapping, Mappings
-from .bcvwpid import BCVWPID
+from .bcvwpid import fromlogos, BID, BCID, BCVID, BCVWPID
 
 __all__ = [
     # bcvwpid
+    "fromlogos",
+    "BID",
+    "BCID",
+    "BCVID",
     "BCVWPID",
     # words
     "Mapping",
