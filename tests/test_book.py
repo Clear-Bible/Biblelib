@@ -1,15 +1,15 @@
-"""Pytest tests for biblelib.books."""
+"""Pytest tests for biblelib.book."""
 # import pytest
 
 
-from biblelib import books
+from biblelib import book
 
 
 class TestMark(object):
     """Test basic functionality for books."""
 
-    allbooks = books.Books()
-    prot = books.ProtestantCanon()
+    allbooks = book.Books()
+    prot = book.ProtestantCanon()
 
     def test_attrs_gen(self):
         """Test attribute values for Genesis."""
