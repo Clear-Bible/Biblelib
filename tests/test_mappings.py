@@ -1,6 +1,6 @@
-"""Test biblelib.words.mappings."""
+"""Test biblelib.word.mappings."""
 
-from biblelib.words import mappings
+from biblelib.word import mappings
 
 
 # Example mapping: JHN 1:1
