@@ -31,3 +31,6 @@ $ pip install biblelib
     * [The Open Scripture Information Standard
       (OSIS)](https://crosswire.org/osis/)
     * [Logos Bible Software](http://www.logos.com/)
+* Versification information included consulting sources from:
+    * [The Copenhagen Alliance for Open Biblical Resources](http://copenhagen-alliance.org/)
+    * [Paratext](https://paratext.org/)

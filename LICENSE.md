@@ -38,7 +38,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 These datasets include:
 
 1. Book abbreviations (`../biblelib/book/books.tsv`).
-2. Versification data (`../biblelib/`)
+2.
+3.
+4.
+
+
+2. Information on book, chapter, and verse contents
+   (`../biblelib/units`).
+3. Versification information (`../biblelib/versification`).
+
+Other sources that were consulted include:
+
+* [The Copenhagen Alliance for Open Biblical Resources
+  ](http://copenhagen-alliance.org/)
+* [Paratext](https://paratext.org/)
 
 ### License
 
