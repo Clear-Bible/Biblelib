@@ -390,6 +390,31 @@ def fromlogos(ref) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapterref)}{pad3(verseref)}")
 
 
+def fromosis(ref) -> BID | BCID | BCVID:
+    """Return a BCV instance for a OSIS-based name reference.
+
+    Only handles book, book + chapter, and book chapter verse
+    references like MRK 4:8. Does not handle ranges or non-numeric
+    verses like 'title'. Does not check the validity of chapter and
+    verse numbers for the book. Book name must be correctly cased.
+
+    """
+    if " " not in ref:
+        # book only
+        usfmbook = BOOKS.fromosis(ref.capitalize()).usfmnumber
+        return BID((usfmbook))
+    else:
+        bookabbrev, rest = ref.split(" ", 1)
+        usfmbook = BOOKS.fromosis(bookabbrev.capitalize()).usfmnumber
+        if ":" not in rest:
+            # book and chapter
+            return BCID(f"{usfmbook}{pad3(rest)}")
+        else:
+            # book, chapter, verse
+            chapter, verse = rest.split(":", 1)
+            return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
+
+
 def fromusfm(ref) -> BID | BCID | BCVID:
     """Return a BCV instance for a USFM-based reference.
 
