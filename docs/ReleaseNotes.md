@@ -1,5 +1,18 @@
 # Release Notes
 
+## 0.2.6
+
+- Add fromosis and fromusfm to bcvwpid, along with tests.
+
+## 0.2.5
+
+- Added `unit` module for structures below the book.
+- Pulled documentation on books.tsv into its own file.
+- Added tests.
+- Module renames: words -> word, books -> book.
+- Added versification data.
+- Delete words/mappings.
+
 ## 0.2.4
 
 - Renamed "Clear ID" to "BCVWP ID" throughout.
