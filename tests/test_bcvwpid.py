@@ -2,7 +2,7 @@
 
 import pytest
 
-from biblelib.word import fromlogos, BID, BCID, BCVID, BCVWPID
+from biblelib.word import fromlogos, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID
 from biblelib.word.bcvwpid import pad3
 
 
@@ -51,6 +51,52 @@ class TestFromLogos:
         assert fromlogos("bible.1.12.10") == BCVID("01012010")
         assert fromlogos("bible.19.119.1") == BCVID("19119001")
         assert fromlogos("62.4.1") == BCVID("41004001")
+
+
+class TestFromOsis:
+    """Test basic functionality of fromosis()."""
+
+    def test_fromosis_book(self) -> None:
+        """Test returned values"""
+        assert fromosis("Gen") == BID("01")
+        assert fromosis("Mark") == BID("41")
+
+    def test_fromosis_chapter(self) -> None:
+        """Test returned values"""
+        assert fromosis("Gen 2") == BCID("01002")
+        assert fromosis("Gen 12") == BCID("01012")
+        assert fromosis("Ps 119") == BCID("19119")
+        assert fromosis("Mark 4") == BCID("41004")
+
+    def test_fromosis_chapter_verse(self) -> None:
+        """Test returned values"""
+        assert fromosis("Gen 2:3") == BCVID("01002003")
+        assert fromosis("Gen 12:10") == BCVID("01012010")
+        assert fromosis("Ps 119:1") == BCVID("19119001")
+        assert fromosis("Mark 4:1") == BCVID("41004001")
+
+
+class TestFromUsfm:
+    """Test basic functionality of fromusfm()."""
+
+    def test_fromusfm_book(self) -> None:
+        """Test returned values"""
+        assert fromusfm("GEN") == BID("01")
+        assert fromusfm("MRK") == BID("41")
+
+    def test_fromusfm_chapter(self) -> None:
+        """Test returned values"""
+        assert fromusfm("GEN 2") == BCID("01002")
+        assert fromusfm("GEN 12") == BCID("01012")
+        assert fromusfm("PSA 119") == BCID("19119")
+        assert fromusfm("MRK 4") == BCID("41004")
+
+    def test_fromusfm_chapter_verse(self) -> None:
+        """Test returned values"""
+        assert fromusfm("GEN 2:3") == BCVID("01002003")
+        assert fromusfm("GEN 12:10") == BCVID("01012010")
+        assert fromusfm("PSA 119:1") == BCVID("19119001")
+        assert fromusfm("MRK 4:1") == BCVID("41004001")
 
 
 class TestBID:
