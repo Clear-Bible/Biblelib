@@ -27,7 +27,7 @@ BCVID("01002003")
 Similar things work with BCID (book and chapter) and BCVWPID.
 
 ToDo:
-
+- rewrite with pydantic
 - one set of `from_X` methods that return the right kind of instance
   depending on the number of characters
 - figure out whether this is a case for composition (rather than
@@ -38,8 +38,9 @@ ToDo:
 
 
 from dataclasses import dataclass, field
-import re
-from typing import Union
+
+# import re
+# from typing import Union
 
 from biblelib.book import Books
 
