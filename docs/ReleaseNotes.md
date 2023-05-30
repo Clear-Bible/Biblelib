@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.7
+
+- Bug fix in fromosis().
+
 ## 0.2.6
 
 - Add fromosis and fromusfm to bcvwpid, along with tests.
