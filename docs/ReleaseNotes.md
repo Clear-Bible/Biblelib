@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.8
+
+- Bug fix to "2Cor" capitalization in books.tsv.
+
 ## 0.2.7
 
 - Bug fix in fromosis().
