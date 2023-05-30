@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.9
+
+- Added bcvwpid.fromname() and nameregexp for full-name matching:
+  hacks don't cut it here.
+
 ## 0.2.8
 
 - Bug fix to "2Cor" capitalization in books.tsv.
