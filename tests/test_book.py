@@ -81,3 +81,12 @@ class TestMark(object):
         assert usfmnumbermatt.name == "Matthew"
         usfmnumberrev = self.allbooks.fromusfmnumber("67", legacynumbering=True)
         assert usfmnumberrev.name == "Revelation"
+
+    def test_fromname(self):
+        """Test fromname()."""
+        assert self.allbooks.nameregexp.match("Genesis")
+        assert self.allbooks.nameregexp.match("Song of Songs")
+        name2cor = self.allbooks.fromname("2 Corinthians")
+        assert name2cor.usfmname == "2CO"
+        assert self.allbooks.nameregexp.match("1 Corinthians 13")
+        assert self.allbooks.nameregexp.match("1 Corinthians 13:1")

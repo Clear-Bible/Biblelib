@@ -40,6 +40,7 @@ from collections import UserDict
 from csv import DictReader
 from dataclasses import dataclass, field
 from pathlib import Path
+import re
 from typing import Union
 
 
@@ -185,6 +186,8 @@ class Books(UserDict):
     mappingfields: set = set(Book._fieldnames)
     canon: str = "Protestant"
     logosmap: dict = {}
+    namemap: dict = {}
+    nameregexp: str = ""
     osismap: dict = {}
     usfmnumbermap: dict = {}
 
@@ -218,6 +221,12 @@ class Books(UserDict):
                 self.mappingfields
             ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
             self.data = {row["usfmname"]: self.rowtobook(row) for row in reader}
+        # initialize here so you have nameregexp before calling fromname()
+        self.namemap = {b.name: b for _, b in self.data.items()}
+        # use this for matching a reference string to determine if
+        # it's only a book name. Hack like checking for a space or
+        # number are not roubst enough.
+        self.nameregexp = re.compile("|".join(self.namemap.keys()))
 
     @staticmethod
     def rowtobook(row: dict) -> Book:
@@ -249,6 +258,15 @@ class Books(UserDict):
             self.logosmap = {b.logosID: b for _, b in self.data.items()}
         assert logosID in self.logosmap, f"Invalid logosID {logosID}"
         return self.logosmap[logosID]
+
+    def fromname(self, bookname: str) -> Book:
+        """Return the book instance for a book name.
+
+        Args:
+            bookname: the full name  to use in looking up the Book,
+                like "Matthew".
+        """
+        return self.namemap[bookname]
 
     def fromosis(self, osisID: str) -> Book:
         """Return the book instance for an OSIS identifier.

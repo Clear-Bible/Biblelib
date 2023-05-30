@@ -39,9 +39,6 @@ ToDo:
 
 from dataclasses import dataclass, field
 
-# import re
-# from typing import Union
-
 from biblelib.book import Books
 
 BOOKS = Books()
@@ -401,7 +398,7 @@ def fromosis(ref) -> BID | BCID | BCVID:
     """
     if " " not in ref:
         # book only
-        usfmbook = BOOKS.fromosis(ref.capitalize()).usfmnumber
+        usfmbook = BOOKS.fromosis(ref).usfmnumber
         return BID((usfmbook))
     else:
         bookabbrev, rest = ref.split(" ", 1)
@@ -413,6 +410,40 @@ def fromosis(ref) -> BID | BCID | BCVID:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
+
+
+def fromname(ref) -> BID | BCID | BCVID:
+    """Return a BCV instance for a full name reference.
+
+    Only handles book, book + chapter, and book chapter verse
+    references like 1 Corinthians 4:8. Does not handle ranges or
+    non-numeric verses like 'title'. Does not check the validity of
+    chapter and verse numbers for the book. Book name must be
+    correctly cased.
+
+    """
+    # complex check because book names can contain spaces and other numbers
+    # must match a regexp of all the book names, and be the same length
+    namematch = BOOKS.nameregexp.match(ref)
+    assert namematch, f"Invalid name reference: {ref}"
+    if len(ref) == (namematch.end() - namematch.start()):
+        # book only
+        usfmbook = BOOKS.fromname(ref).usfmnumber
+        return BID((usfmbook))
+    else:
+        # split namematch at the end of the match
+        bookname, rest = ref[: namematch.end()], ref[(namematch.end() + 1) :]
+        usfmbook = BOOKS.fromname(bookname).usfmnumber
+        if ":" not in rest:
+            # book and chapter
+            return BCID(f"{usfmbook}{pad3(rest)}")
+        else:
+            # book, chapter, verse
+            try:
+                chapter, verse = rest.split(":", 1)
+                return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
+            except Exception as e:
+                raise ValueError(f"Invalid BCV values: {ref}\n{e}")
 
 
 def fromusfm(ref) -> BID | BCID | BCVID:

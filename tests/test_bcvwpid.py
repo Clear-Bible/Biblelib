@@ -2,7 +2,7 @@
 
 import pytest
 
-from biblelib.word import fromlogos, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID
 from biblelib.word.bcvwpid import pad3
 
 
@@ -53,6 +53,41 @@ class TestFromLogos:
         assert fromlogos("62.4.1") == BCVID("41004001")
 
 
+class TestFromName:
+    """Test basic functionality of fromname()."""
+
+    def test_fromname_book(self) -> None:
+        """Test returned values"""
+        assert fromname("Genesis") == BID("01")
+        assert fromname("1 Corinthians") == BID("46")
+        with pytest.raises(AssertionError):
+            # cannot handle USFM names
+            _ = fromname("1CO")
+
+    def test_fromname_case(self) -> None:
+        """Test returned values"""
+        with pytest.raises(AssertionError):
+            # wrong case
+            _ = fromname("1 corinthians")
+
+    def test_fromname_chapter(self) -> None:
+        """Test returned values"""
+        assert fromname("Genesis 2") == BCID("01002")
+        assert fromname("Genesis 12") == BCID("01012")
+        assert fromname("Psalms 119") == BCID("19119")
+        assert fromname("Mark 4") == BCID("41004")
+
+    def test_fromname_chapter_verse(self) -> None:
+        """Test returned values"""
+        assert fromname("Genesis 2:3") == BCVID("01002003")
+        assert fromname("Genesis 12:10") == BCVID("01012010")
+        assert fromname("Psalms 119:1") == BCVID("19119001")
+        assert fromname("Mark 4:1") == BCVID("41004001")
+        with pytest.raises(AssertionError):
+            # space not allowed here
+            _ = fromname("1 Corinthians 13 3")
+
+
 class TestFromOsis:
     """Test basic functionality of fromosis()."""
 
@@ -64,10 +99,10 @@ class TestFromOsis:
     def test_fromosis_case(self) -> None:
         """Test returned values"""
         assert fromosis("1Cor") == BID("46")
-        with pytest.raises(AssertionError):
+        with pytest.raises(KeyError):
             # wrong case
             _ = fromosis("1cor")
-        with pytest.raises(AssertionError):
+        with pytest.raises(KeyError):
             # wrong case
             _ = fromosis("1COR")
 
