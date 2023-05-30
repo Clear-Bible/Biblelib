@@ -61,6 +61,16 @@ class TestFromOsis:
         assert fromosis("Gen") == BID("01")
         assert fromosis("Mark") == BID("41")
 
+    def test_fromosis_case(self) -> None:
+        """Test returned values"""
+        assert fromosis("1Cor") == BID("46")
+        with pytest.raises(AssertionError):
+            # wrong case
+            _ = fromosis("1cor")
+        with pytest.raises(AssertionError):
+            # wrong case
+            _ = fromosis("1COR")
+
     def test_fromosis_chapter(self) -> None:
         """Test returned values"""
         assert fromosis("Gen 2") == BCID("01002")

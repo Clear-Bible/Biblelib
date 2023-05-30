@@ -405,7 +405,7 @@ def fromosis(ref) -> BID | BCID | BCVID:
         return BID((usfmbook))
     else:
         bookabbrev, rest = ref.split(" ", 1)
-        usfmbook = BOOKS.fromosis(bookabbrev.capitalize()).usfmnumber
+        usfmbook = BOOKS.fromosis(bookabbrev).usfmnumber
         if ":" not in rest:
             # book and chapter
             return BCID(f"{usfmbook}{pad3(rest)}")
