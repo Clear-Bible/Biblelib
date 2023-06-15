@@ -14,6 +14,7 @@ Examples:
     >>> allbooks = book.Books()
     >>> allbooks["MRK"]
     <Book: MRK>
+    # return an OSIS id for a book instance
     >>> allbooks["MRK"].osisID
     'Mark'
     >>>
@@ -268,6 +269,12 @@ class Books(UserDict):
         """
         return self.namemap[bookname]
 
+    def _ensure_osismap(self) -> dict[str, str]:
+        """Generate the OSIS map if needed."""
+        if not self.osismap:
+            # initialize on demand
+            self.osismap = {b.osisID: b for _, b in self.data.items()}
+
     def fromosis(self, osisID: str) -> Book:
         """Return the book instance for an OSIS identifier.
 
@@ -275,9 +282,7 @@ class Books(UserDict):
             osisID: the OSIS identifier to use in looking up the Book,
                 like "Matt".
         """
-        if not self.osismap:
-            # initialize on demand
-            self.osismap = {b.osisID: b for _, b in self.data.items()}
+        self._ensure_osismap()
         return self.osismap[osisID]
 
     def fromusfmnumber(self, usfmnumber: str, legacynumbering: bool = False) -> Book:
