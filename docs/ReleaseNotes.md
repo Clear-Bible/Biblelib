@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.10
+
+- Added `to_usfm` to word.bcvwpid.BCVID so references can be
+  round-tripped back to USFM style (e.g., "41004008" -> "MRK 4:8").
+
 ## 0.2.9
 
 - Added bcvwpid.fromname() and nameregexp for full-name matching:
