@@ -124,6 +124,11 @@ class BCVID:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
 
+    def to_usfm(self) -> str:
+        """Return a USFM representation."""
+        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
+        return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
     # @staticmethod
     # def fromusfm(ref) -> "BCVID":
     #     """Return a BCVID instance for a USFM-based reference.
