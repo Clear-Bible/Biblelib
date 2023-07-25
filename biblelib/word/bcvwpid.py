@@ -38,6 +38,7 @@ ToDo:
 
 
 from dataclasses import dataclass, field
+from typing import Union
 
 from biblelib.book import Books
 
@@ -64,6 +65,11 @@ class BID:
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
+
+    def to_usfm(self) -> str:
+        """Return a USFM representation."""
+        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
+        return f"{usfmbook}"
 
     # @staticmethod
     # def fromusfm(ref) -> "BID":
@@ -204,6 +210,11 @@ class BCID:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
 
+    def to_usfm(self) -> str:
+        """Return a USFM representation."""
+        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
+        return f"{usfmbook} {int(self.chapter_ID)}"
+
     # @staticmethod
     # def fromusfm(ref) -> "BCID":
     #     """Return a BCID instance for a USFM-based reference.
@@ -286,6 +297,12 @@ class BCVWPID(BCVID):
             self.part_ID = self.ID[11]
             # TODO: add tests, presumably a closed set of values
 
+    # not sure this is a proper USFM-ification
+    def to_usfm(self) -> str:
+        """Return a USFM representation."""
+        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
+        return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
     # @staticmethod
     # def fromusfm(ref) -> "BCVWPID":
     #     """Return a BCVWPID instance for a USFM-based reference.
@@ -344,6 +361,33 @@ class BCVWPID(BCVID):
 #     def __repr__(self) -> str:
 #         """Return a string representation."""
 #         return f"<BCVWPID: {self.ID}>"
+
+
+reftypes = Union[BID, BCID, BCVID, BCVWPID]
+
+
+def simplify(refinst, newtype) -> reftypes:
+    """Return a 'simpler' new instance for refinst.
+
+    For a BCID, the only simpler form is BID.
+    For BCVID, BCID or BID.
+    For BCVWID, those or BCVID.
+    For BCVWPID, any of the other types.
+    """
+    assert isinstance(refinst, reftypes), "Must be a reference instance"
+    validtypes = {
+        "BCID": ["BID"],
+        "BCVID": ["BID", "BCID"],
+        # no BCVWID yet
+        "BCVWPID": ["BID", "BCID", "BCVID"],
+    }
+    assert refinst.__class__.__name__ in validtypes, f"{newtype} is not a valid simpler type."
+    if newtype == "BID":
+        return BID(refinst.ID[:2])
+    elif newtype == "BCID":
+        return BCID(refinst.ID[:5])
+    elif newtype == "BCVID":
+        return BCVID(refinst.ID[:8])
 
 
 def pad3(arg: str) -> str:
