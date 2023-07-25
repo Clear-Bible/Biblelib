@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "biblelib"
-version = "0.2.10"
+version = "0.2.11"
 description = "Utilities for working with metadata for Bible books, references, pericopes, and other units."
 authors = ["Sean Boisen <sean.boisen@gmail.com>"]
 repository = "https://github.com/Clear-Bible/Biblelib/"

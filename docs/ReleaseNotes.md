@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.11
+
+- Added `simplify()` method to bcvwpid. Expanded to_usfm to other
+  classes. Added test cases.
+
 ## 0.2.10
 
 - Added `to_usfm` to word.bcvwpid.BCVID so references can be
