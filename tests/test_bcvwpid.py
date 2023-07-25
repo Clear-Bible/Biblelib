@@ -2,7 +2,8 @@
 
 import pytest
 
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID, simplify
+
 from biblelib.word.bcvwpid import pad3
 
 
@@ -218,6 +219,13 @@ class TestBCVID:
         assert greaterid >= self.testid
         assert greaterid != self.testid
 
+    def test_to_usfm(self) -> None:
+        """Test to_usfm()."""
+        assert self.testid.to_usfm() == "JHN 1:1"
+        mrk481 = BCVWPID("410040080011")
+        # this drops the word and part indices (by design)
+        assert mrk481.to_usfm() == "MRK 4:8"
+
 
 class TestBCID:
     """Test basic functionality of BCID dataclass."""
@@ -327,3 +335,15 @@ class TestBCVWPID:
             _ = BCVWPID("4300100100500")
 
     # should also test a real part_ID value
+
+
+class TestSimplify:
+    """Test simplify()."""
+
+    mrk4811 = BCVWPID("410040080011")
+
+    def test_simplify(self) -> None:
+        """Test simplify()."""
+        assert simplify(self.mrk4811, "BID").ID == "41"
+        assert simplify(self.mrk4811, "BCID").ID == "41004"
+        assert simplify(self.mrk4811, "BCVID").ID == "41004008"
