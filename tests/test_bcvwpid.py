@@ -61,6 +61,12 @@ class TestFromName:
         """Test returned values"""
         assert fromname("Genesis") == BID("01")
         assert fromname("1 Corinthians") == BID("46")
+        # fixed bug
+        assert fromname("Esther") == BID("17")
+        assert fromname("Song of Songs") == BID("22")
+        # not handling alternate names yet
+        # assert fromname("Song of Solomon") == BID("22")
+        # should probably test some DC books too
         with pytest.raises(AssertionError):
             # cannot handle USFM names
             _ = fromname("1CO")
