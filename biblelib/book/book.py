@@ -191,6 +191,9 @@ class Books(UserDict):
     nameregexp: str = ""
     osismap: dict = {}
     usfmnumbermap: dict = {}
+    # some minor standardization: this is not an extensible approach,
+    # and long form names should use a different approach
+    quickfixes = {"Psalm": "Psalms", "Song of Solomon": "Song of Songs"}
 
     def __init__(self, sourcefile: str = "", canon: str = "Protestant") -> None:
         """Initialize a Books instance.
@@ -222,8 +225,11 @@ class Books(UserDict):
                 self.mappingfields
             ), f"Fieldname discrepancy header: {fieldnameset} vs {self.mappingfields}"
             self.data = {row["usfmname"]: self.rowtobook(row) for row in reader}
-        # initialize here so you have nameregexp before calling fromname()
+        # initialize here so you have nameregexp before calling fromname().
         self.namemap = {b.name: b for _, b in self.data.items()}
+        # Includes some hacks for common variations
+        self.namemap.update({alt: self.namemap[std] for alt, std in self.quickfixes.items()})
+        # self.namemap = {b.name: b for _, b in (list(self.data.items()) + list(self.quickfixes.items()))}
         # use this for matching a reference string to determine if
         # it's only a book name. Hack like checking for a space or
         # number are not roubst enough.
@@ -267,6 +273,10 @@ class Books(UserDict):
             bookname: the full name  to use in looking up the Book,
                 like "Matthew".
         """
+        # some minor standardization: this is not an extensible
+        # approach, and long form names should use a different
+        # approach
+        bookname = self.quickfixes.get(bookname, bookname)
         return self.namemap[bookname]
 
     def _ensure_osismap(self) -> dict[str, str]:
