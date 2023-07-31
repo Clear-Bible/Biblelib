@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.2.13
+
+- Bug fix/extension: handle "Psalm" and "Song of Solomon" as book
+  names. This takes a little hackery that isn't very extensible: it's
+  not a general solution to the alternate names issue.
+
 ## 0.2.12
 
 - Bug fix: book name for Esther in books.tsv was non-standard,
