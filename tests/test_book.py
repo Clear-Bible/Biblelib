@@ -86,6 +86,9 @@ class TestMark(object):
         """Test fromname()."""
         assert self.allbooks.nameregexp.match("Genesis")
         assert self.allbooks.nameregexp.match("Song of Songs")
+        # some hacked quickfixes for close-but-not-quite common names
+        assert self.allbooks.fromname("Psalm")
+        assert self.allbooks.fromname("Song of Solomon")
         name2cor = self.allbooks.fromname("2 Corinthians")
         assert name2cor.usfmname == "2CO"
         assert self.allbooks.nameregexp.match("1 Corinthians 13")
