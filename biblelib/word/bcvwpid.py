@@ -468,7 +468,7 @@ def fromname(ref) -> BID | BCID | BCVID:
     references like 1 Corinthians 4:8. Does not handle ranges or
     non-numeric verses like 'title'. Does not check the validity of
     chapter and verse numbers for the book. Book name must be
-    correctly cased.
+    correctly cased and match the `name` column in book/books.tsv.
 
     """
     # complex check because book names can contain spaces and other numbers
