@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.12
+
+- Bug fix: book name for Esther in books.tsv was non-standard,
+  causing an error with bcvwpid.fromname.
+
 ## 0.2.11
 
 - Added `simplify()` method to bcvwpid. Expanded to_usfm to other
