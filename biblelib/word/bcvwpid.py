@@ -50,29 +50,46 @@ BOOKS = Books()
 
 
 @dataclass(order=True)
-class BID:
-    """Identifies a book identifier.
-
-    Also a base class for other BCV identifiers.
-    """
+class _Base:
+    """Base class for units."""
 
     # book mapping data
     ID: str
     book_ID: str = field(init=False)
     # the longth of the book portion of an ID
-    _idlen: int = 2
+    _idlen: int = 0
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        assert len(self.ID) == 2, f"length should be 2 characters: {self.ID}"
-        self.book_ID = self.ID
+        assert len(self.ID) == self._idlen, f"length should be {self._idlen} characters: {self.ID}"
         # also test that they're all digits, in the right range, etc.
 
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
 
-    # this could go in a base class
+    # class is mutable because of post_init, but otherwise logically immutable
+    def __hash__(self) -> int:
+        """Return a hash value."""
+        return hash(self.ID)
+
+
+@dataclass(repr=False)
+class BID(_Base):
+    """Identifies a book identifier.
+
+    Also a base class for other BCV identifiers.
+    """
+
+    # the longth of the book portion of an ID
+    _idlen: int = 2
+
+    def __post_init__(self) -> None:
+        """Compute other values on initialization."""
+        super().__post_init__()
+        self.book_ID = self.ID[0:2]
+
+    # could go in a base class?
     # can't reference B*ID types until defined :-/
     def includes(self, other: str) -> bool:
         """Return True if other is included in the scope of self.
@@ -95,26 +112,59 @@ class BID:
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook}"
 
-    # @staticmethod
-    # def fromusfm(ref) -> "BID":
-    #     """Return a BID instance for a USFM-based book name."""
-    #     assert ref.upper() in BOOKS, f"Invalid book abbreviation: {ref}"
-    #     usfmbook = BOOKS[ref.upper()].usfmnumber
-    #     return BID(usfmbook)
 
-    # @staticmethod
-    # def fromlogos(ref) -> "BID":
-    #     """Return a BID instance for a Logos-style book reference."""
-    #     if ref.startswith("bible") and "." in ref:
-    #         bible, restref = ref.split(".", 1)
-    #     else:
-    #         restref = ref
-    #     usfmbook = BOOKS.fromlogos(restref).usfmnumber
-    #     return BID(usfmbook)
+@dataclass(repr=False)
+class BCID(BID):
+    """Identifies book and chapter from Bible texts.
+
+    This supports BBCCC, where BB identifies a book, and CCC
+        identifies a chapter number. Verse is unspecified.
+
+    This dataclass does not validate whether any identifiers are in
+    the correct range: it only records the data. Use <TBD> for
+    validation. All sequence indices are one-based, not zero-based.
+
+    Attributes:
+        book_ID: 2-character string identifying the Bible book using
+            USFM numbers (like '40' for Matthew, 'B7' for Enoch)
+        chapter_ID: 3-character string identifying a chapter number
+            within the book
+
+    See `books.Books.fromusfmnumber()` for how to convert this number
+    to other Book identifiers.
+
+    """
+
+    chapter_ID: str = field(init=False)
+    # the longth of the book+chapter portion of an ID
+    _idlen: int = 5
+
+    def __post_init__(self) -> None:
+        """Compute other values on initialization."""
+        super().__post_init__()
+        self.chapter_ID = self.ID[2:5]
+        # also test that they're all digits, in the right range, etc.
+
+    def includes(self, other: str) -> bool:
+        """Return True if other is included in the scope of self.
+
+        Simply based on substring matching. Any instance includes
+        itself therefore.
+
+        """
+        assert (
+            isinstance(other, BCID) or isinstance(other, BCVID) or isinstance(other, BCVWPID)
+        ), f"Invalid type with includes(): {other}"
+        return other.ID[: self._idlen].startswith(self.ID)
+
+    def to_usfm(self) -> str:
+        """Return a USFM representation."""
+        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
+        return f"{usfmbook} {int(self.chapter_ID)}"
 
 
-@dataclass(order=True)
-class BCVID:
+@dataclass(repr=False)
+class BCVID(BCID):
     """Identifies book, chapter, verse from Bible texts.
 
     This supports the format BBCCCVVV, where BB identifies a book,
@@ -136,25 +186,15 @@ class BCVID:
 
     """
 
-    # book mapping data
-    ID: str
-    book_ID: str = field(init=False)
-    chapter_ID: str = field(init=False)
     verse_ID: str = field(init=False)
     # the longth of the book+chapter+verse portion of an ID
-    _idlen = 8
+    _idlen: int = 8
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        assert len(self.ID) == 8, f"length should be 8 characters: {self.ID}"
-        self.book_ID = self.ID[0:2]
-        self.chapter_ID = self.ID[2:5]
+        super().__post_init__()
         self.verse_ID = self.ID[5:8]
         # also test that they're all digits, in the right range, etc.
-
-    def __repr__(self) -> str:
-        """Return a string representation."""
-        return f"{type(self).__name__}('{self.ID}')"
 
     def includes(self, other: str) -> bool:
         """Return True if other is included in the scope of self.
@@ -175,135 +215,8 @@ class BCVID:
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
-    # @staticmethod
-    # def fromusfm(ref) -> "BCVID":
-    #     """Return a BCVID instance for a USFM-based reference.
 
-    #     Only handles single verse references with a specified chapter
-    #     and verse like MRK 4:8. Does not handle ranges, book + chapter
-    #     references, or non-numeric verses like 'title'. Does not check
-    #     the validity of chapter and verse numbers for the book.
-
-    #     """
-    #     book, chapter, verse = re.split(r"[: ]", ref, maxsplit=2)
-    #     # could be more generous here in matching other abbreviation
-    #     # schemes as well
-    #     assert book.upper() in BOOKS, f"Invalid book abbreviation: {book}"
-    #     usfmbook = BOOKS[book.upper()].usfmnumber
-    #     assert int(chapter), f"Chapter must be an integer: {chapter}"
-    #     assert int(verse), f"Verse must be an integer: {verse}"
-    #     return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
-
-    # @staticmethod
-    # def fromlogos(ref) -> "BCVID":
-    #     """Return a BCVID instance for a Logos-style single verse reference."""
-    #     if ref.startswith("bible") and "." in ref:
-    #         bible, restref = ref.split(".", 1)
-    #     else:
-    #         restref = ref
-    #     # eventually we may need to handle different Bible versions
-    #     refsplit = restref.split(".")
-    #     assert len(refsplit) == 3, f"Invalid reference: {restref}"
-    #     # convert e.g. 62 -> "41" (Logos -> USFM), and 1 -> "01"
-    #     usfmbook = BOOKS.fromlogos(refsplit[0]).usfmnumber
-    #     chapter = pad3(refsplit[1])
-    #     verse = pad3(refsplit[2])
-    #     return BCVID(f"{usfmbook}{chapter}{verse}")
-
-
-# really should figure out inheritance here
-@dataclass(order=True)
-class BCID:
-    """Identifies book and chapter from Bible texts.
-
-    This supports BBCCC, where BB identifies a book, and CCC
-        identifies a chapter number. Verse is unspecified.
-
-    This dataclass does not validate whether any identifiers are in
-    the correct range: it only records the data. Use <TBD> for
-    validation. All sequence indices are one-based, not zero-based.
-
-    Attributes:
-        book_ID: 2-character string identifying the Bible book using
-            USFM numbers (like '40' for Matthew, 'B7' for Enoch)
-        chapter_ID: 3-character string identifying a chapter number
-            within the book
-
-    See `books.Books.fromusfmnumber()` for how to convert this number
-    to other Book identifiers.
-
-    """
-
-    # book mapping data
-    ID: str
-    book_ID: str = field(init=False)
-    chapter_ID: str = field(init=False)
-    # the longth of the book+chapter portion of an ID
-    _idlen: int = 5
-
-    def __post_init__(self) -> None:
-        """Compute other values on initialization."""
-        assert len(self.ID) == 5, f"length should be 5 characters: {self.ID}"
-        self.book_ID = self.ID[0:2]
-        self.chapter_ID = self.ID[2:5]
-        # also test that they're all digits, in the right range, etc.
-
-    def __repr__(self) -> str:
-        """Return a string representation."""
-        return f"{type(self).__name__}('{self.ID}')"
-
-    def includes(self, other: str) -> bool:
-        """Return True if other is included in the scope of self.
-
-        Simply based on substring matching. Any instance includes
-        itself therefore.
-
-        """
-        assert (
-            isinstance(other, BCID) or isinstance(other, BCVID) or isinstance(other, BCVWPID)
-        ), f"Invalid type with includes(): {other}"
-        return other.ID[: self._idlen].startswith(self.ID)
-
-    def to_usfm(self) -> str:
-        """Return a USFM representation."""
-        usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
-        return f"{usfmbook} {int(self.chapter_ID)}"
-
-    # @staticmethod
-    # def fromusfm(ref) -> "BCID":
-    #     """Return a BCID instance for a USFM-based reference.
-
-    #     Only handles single verse references with a specified chapter
-    #     and verse like MRK 4. Does not handle ranges, or non-numeric
-    #     verses like 'title'. Does not check the validity of chapter
-    #     numbers for the book.
-
-    #     """
-    #     book, chapter = re.split(r"[ ]", ref, maxsplit=1)
-    #     # could be more generous here in matching other abbreviation
-    #     # schemes as well
-    #     assert book.upper() in BOOKS, f"Invalid book abbreviation: {book}"
-    #     usfmbook = BOOKS[book.upper()].usfmnumber
-    #     assert int(chapter), f"Chapter must be an integer: {chapter}"
-    #     return BCID(f"{usfmbook}{pad3(chapter)}")
-
-    # @staticmethod
-    # def fromlogos(ref) -> "BCID":
-    #     """Return a BCVID instance for a Logos-style single chapter reference."""
-    #     if ref.startswith("bible") and "." in ref:
-    #         bible, restref = ref.split(".", 1)
-    #     else:
-    #         restref = ref
-    #     # eventually we may need to handle different Bible versions
-    #     refsplit = restref.split(".")
-    #     assert len(refsplit) == 2, f"Invalid reference: {restref}"
-    #     # convert e.g. 62 -> "41" (Logos -> USFM), and 1 -> "01"
-    #     usfmbook = BOOKS.fromlogos(refsplit[0]).usfmnumber
-    #     chapter = pad3(refsplit[1])
-    #     return BCID(f"{usfmbook}{chapter}")
-
-
-@dataclass(order=True, repr=False)
+@dataclass(repr=False)
 class BCVWPID(BCVID):
     """Identifies words from Bible texts by book, chapter, verse, word, and word part.
 
@@ -333,8 +246,6 @@ class BCVWPID(BCVID):
     """
 
     # book mapping data
-    ID: str
-    verse_ID: str = field(init=False)
     word_ID: str = field(init=False)
     part_ID: str = ""
     # the longth of the bcvwp ID
@@ -342,7 +253,7 @@ class BCVWPID(BCVID):
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        # this should probably delegate to the super class
+        # cannot call super because allows either 11 or 12 length
         # super()__post_init__()
         assert 12 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
         self.book_ID = self.ID[0:2]
@@ -369,42 +280,6 @@ class BCVWPID(BCVID):
         """Return a USFM representation."""
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
-
-    # @staticmethod
-    # def fromusfm(ref) -> "BCVWPID":
-    #     """Return a BCVWPID instance for a USFM-based reference.
-
-    #     Only handles single verse references with a specified chapter
-    #     and verse like MRK 4:8. Does not handle ranges, book + chapter
-    #     references, or non-numeric verses like 'title'. Does not check
-    #     the validity of chapter and verse numbers for the book.
-
-    #     """
-    #     book, chapter, verse = re.split(r"[: ]", ref, maxsplit=2)
-    #     # could be more generous here in matching other abbreviation
-    #     # schemes as well
-    #     assert book.upper() in BOOKS, f"Invalid book abbreviation: {book}"
-    #     usfmbook = BOOKS[book.upper()].usfmnumber
-    #     assert int(chapter), f"Chapter must be an integer: {chapter}"
-    #     assert int(verse), f"Verse must be an integer: {verse}"
-    #     return BCVWPID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}000")
-
-    # @staticmethod
-    # def fromlogos(ref) -> "BCVWPID":
-    #     """Return a BCVWPID instance for a Logos-style single verse reference."""
-    #     if ref.startswith("bible") and "." in ref:
-    #         bible, restref = ref.split(".", 1)
-    #     else:
-    #         restref = ref
-    #     # eventually we may need to handle different Bible versions
-    #     refsplit = restref.split(".")
-    #     assert len(refsplit) == 3, f"Invalid reference: {restref}"
-    #     # convert e.g. 62 -> "41" (Logos -> USFM), and 1 -> "01"
-    #     usfmbook = BOOKS.fromlogos(refsplit[0]).usfmnumber
-    #     chapter = pad3(refsplit[1])
-    #     verse = pad3(refsplit[2])
-    #     # append "00" for word
-    #     return BCVWPID(f"{usfmbook}{chapter}{verse}000")
 
 
 # @dataclass
