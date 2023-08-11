@@ -1,5 +1,20 @@
 # Release Notes
 
+## 0.2.14
+
+- Add `includes()` to `word.bcvwpid` for all unit types (BID, BCID,
+  BCVID, BCVWPID). This allows testing whether one unit is included in
+  another, larger one.
+
+  ```
+  # is Mark 4:8 in Mark?
+  >>> BID("41").includes(BCVID("41004008"))
+  True
+  # is Matt 1 in Mark?
+  >>> BID("41").includes(BCID("40001"))
+  False
+  ```
+
 ## 0.2.13
 
 - Bug fix/extension: handle "Psalm" and "Song of Solomon" as book
