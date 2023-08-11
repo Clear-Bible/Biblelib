@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.15
+
+- Add base class `_Base` to simplify the code.
+
 ## 0.2.14
 
 - Add `includes()` to `word.bcvwpid` for all unit types (BID, BCID,
