@@ -27,7 +27,11 @@ BCVID("01002003")
 Similar things work with BCID (book and chapter) and BCVWPID.
 
 ToDo:
-- rewrite with pydantic
+- add a containment hierarchy:
+    - BID().includes(BCVID()) -> bool
+    - BID().includes(BCVWPID()) (because of transitivity)
+    - maybe just treat this internally as substring matching?
+- rewrite with pydantic?
 - one set of `from_X` methods that return the right kind of instance
   depending on the number of characters
 - figure out whether this is a case for composition (rather than
@@ -55,6 +59,8 @@ class BID:
     # book mapping data
     ID: str
     book_ID: str = field(init=False)
+    # the longth of the book portion of an ID
+    _idlen: int = 2
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
@@ -65,6 +71,24 @@ class BID:
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
+
+    # this could go in a base class
+    # can't reference B*ID types until defined :-/
+    def includes(self, other: str) -> bool:
+        """Return True if other is included in the scope of self.
+
+        Simply based on substring matching. Any instance includes
+        itself therefore.
+
+        """
+        assert (
+            isinstance(other, BID)
+            or isinstance(other, BCID)
+            or isinstance(other, BCVID)
+            # or isinstance(other, BCVWID)
+            or isinstance(other, BCVWPID)
+        ), f"Invalid type with includes(): {other}"
+        return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -117,6 +141,8 @@ class BCVID:
     book_ID: str = field(init=False)
     chapter_ID: str = field(init=False)
     verse_ID: str = field(init=False)
+    # the longth of the book+chapter+verse portion of an ID
+    _idlen = 8
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
@@ -129,6 +155,20 @@ class BCVID:
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
+
+    def includes(self, other: str) -> bool:
+        """Return True if other is included in the scope of self.
+
+        Simply based on substring matching. Any instance includes
+        itself therefore.
+
+        """
+        assert (
+            isinstance(other, BCVID)
+            # or isinstance(other, BCVWID)
+            or isinstance(other, BCVWPID)
+        ), f"Invalid type with includes(): {other}"
+        return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -198,6 +238,8 @@ class BCID:
     ID: str
     book_ID: str = field(init=False)
     chapter_ID: str = field(init=False)
+    # the longth of the book+chapter portion of an ID
+    _idlen: int = 5
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
@@ -209,6 +251,18 @@ class BCID:
     def __repr__(self) -> str:
         """Return a string representation."""
         return f"{type(self).__name__}('{self.ID}')"
+
+    def includes(self, other: str) -> bool:
+        """Return True if other is included in the scope of self.
+
+        Simply based on substring matching. Any instance includes
+        itself therefore.
+
+        """
+        assert (
+            isinstance(other, BCID) or isinstance(other, BCVID) or isinstance(other, BCVWPID)
+        ), f"Invalid type with includes(): {other}"
+        return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -283,6 +337,8 @@ class BCVWPID(BCVID):
     verse_ID: str = field(init=False)
     word_ID: str = field(init=False)
     part_ID: str = ""
+    # the longth of the bcvwp ID
+    _idlen = 11
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
@@ -296,6 +352,17 @@ class BCVWPID(BCVID):
         if len(self.ID) == 12:
             self.part_ID = self.ID[11]
             # TODO: add tests, presumably a closed set of values
+
+    def includes(self, other: str) -> bool:
+        """Return True if other is included in the scope of self.
+
+        Simply based on substring matching. Any instance includes
+        itself therefore.
+
+        """
+        assert isinstance(other, BCVWPID), f"Invalid type with includes(): {other}"
+        # only vacuous inclusion
+        return self.ID == other.ID
 
     # not sure this is a proper USFM-ification
     def to_usfm(self) -> str:

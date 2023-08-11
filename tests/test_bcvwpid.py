@@ -162,6 +162,18 @@ class TestBID:
         assert BID(self.genid).book_ID == self.genid
         assert BID(self.markid).book_ID == self.markid
 
+    def test_includes(self) -> None:
+        """Test includes operator."""
+        mark = BID(self.markid)
+        assert mark.includes(mark)
+        assert mark.includes(BCID("41004"))
+        assert mark.includes(BCVID("41004008"))
+        assert mark.includes(BCVWPID("410040080011"))
+        assert not mark.includes(BID("40"))
+        assert not mark.includes(BCID("40001"))
+        assert not mark.includes(BCVID("40001001"))
+        assert not mark.includes(BCVWPID("400010010011"))
+
     # def test_fromusfm(self) -> None:
     #     """Test fromusfm()."""
     #     assert BID.fromusfm("GEN").book_ID == self.genid
@@ -184,6 +196,15 @@ class TestBCVID:
         assert self.testid.chapter_ID == "001"
         assert self.testid.verse_ID == "001"
         assert repr(self.testid) == "BCVID('43001001')"
+
+    def test_includes(self) -> None:
+        """Test includes operator."""
+        mark4_8 = BCVID("41004008")
+        assert mark4_8.includes(mark4_8)
+        assert mark4_8.includes(BCVWPID("410040080011"))
+        assert not mark4_8.includes(BCVID("41001001"))
+        assert not mark4_8.includes(BCVID("40001001"))
+        assert not mark4_8.includes(BCVWPID("400010010011"))
 
     # def test_fromusfm(self) -> None:
     #     """Test conversion from USFM-style reference."""
@@ -244,6 +265,16 @@ class TestBCID:
         assert self.testid.book_ID == "43"
         assert self.testid.chapter_ID == "001"
         assert repr(self.testid) == "BCID('43001')"
+
+    def test_includes(self) -> None:
+        """Test includes operator."""
+        mark4 = BCID("41004")
+        assert mark4.includes(mark4)
+        assert mark4.includes(BCVID("41004008"))
+        assert mark4.includes(BCVWPID("410040080011"))
+        assert not mark4.includes(BCID("40001"))
+        assert not mark4.includes(BCVID("40001001"))
+        assert not mark4.includes(BCVWPID("400010010011"))
 
     # def test_fromusfm(self) -> None:
     #     """Test conversion from USFM-style reference."""
@@ -310,6 +341,12 @@ class TestBCVWPID:
         assert testid.word_ID == "001"
         assert testid.part_ID == "1"
         assert repr(testid) == "BCVWPID('010020030011')"
+
+    def test_includes(self) -> None:
+        """Test includes operator."""
+        testid = BCVWPID("010020030011")
+        assert testid.includes(testid)
+        assert not testid.includes(BCVWPID("400010010011"))
 
     # def test_fromusfm(self) -> None:
     #     """Test conversion from USFM-style reference."""
