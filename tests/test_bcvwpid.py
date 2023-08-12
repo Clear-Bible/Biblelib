@@ -1,5 +1,7 @@
 """Test biblelib.word.bcvwpid."""
 
+import typing
+
 import pytest
 
 from biblelib.word import fromlogos, fromname, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID, simplify
@@ -162,6 +164,15 @@ class TestBID:
         assert BID(self.genid).book_ID == self.genid
         assert BID(self.markid).book_ID == self.markid
 
+    def test_hash(self) -> int:
+        """Ensure hashable.
+
+        Values are mysteriously different, but this test seems
+        ... ok.
+
+        """
+        assert isinstance(BID(self.markid), typing.Hashable)
+
     def test_includes(self) -> None:
         """Test includes operator."""
         mark = BID(self.markid)
@@ -196,6 +207,15 @@ class TestBCVID:
         assert self.testid.chapter_ID == "001"
         assert self.testid.verse_ID == "001"
         assert repr(self.testid) == "BCVID('43001001')"
+
+    def test_hash(self) -> int:
+        """Ensure hashable.
+
+        Values are mysteriously different, but this test seems
+        ... ok.
+
+        """
+        assert isinstance(self.testid, typing.Hashable)
 
     def test_includes(self) -> None:
         """Test includes operator."""
@@ -265,6 +285,15 @@ class TestBCID:
         assert self.testid.book_ID == "43"
         assert self.testid.chapter_ID == "001"
         assert repr(self.testid) == "BCID('43001')"
+
+    def test_hash(self) -> int:
+        """Ensure hashable.
+
+        Values are mysteriously different, but this test seems
+        ... ok.
+
+        """
+        assert isinstance(self.testid, typing.Hashable)
 
     def test_includes(self) -> None:
         """Test includes operator."""
@@ -341,6 +370,15 @@ class TestBCVWPID:
         assert testid.word_ID == "001"
         assert testid.part_ID == "1"
         assert repr(testid) == "BCVWPID('010020030011')"
+
+    def test_hash(self) -> int:
+        """Ensure hashable.
+
+        Values are mysteriously different, but this test seems
+        ... ok.
+
+        """
+        assert isinstance(self.testid, typing.Hashable)
 
     def test_includes(self) -> None:
         """Test includes operator."""

@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.16
+
+- Bug fix to `hash()` for unit types. They don't get inherited from
+  `_Base` without `unsafe_hash=True`.
+
 ## 0.2.15
 
 - Add base class `_Base` to simplify the code.

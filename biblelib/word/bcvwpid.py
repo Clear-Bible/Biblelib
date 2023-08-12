@@ -69,12 +69,14 @@ class _Base:
         return f"{type(self).__name__}('{self.ID}')"
 
     # class is mutable because of post_init, but otherwise logically immutable
+    # note that, for subclasses, hash(self) != hash(self.ID). I do not
+    # know why, but dataclass hash functions are special.
     def __hash__(self) -> int:
         """Return a hash value."""
         return hash(self.ID)
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, unsafe_hash=True)
 class BID(_Base):
     """Identifies a book identifier.
 
@@ -113,7 +115,7 @@ class BID(_Base):
         return f"{usfmbook}"
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, unsafe_hash=True)
 class BCID(BID):
     """Identifies book and chapter from Bible texts.
 
@@ -163,7 +165,7 @@ class BCID(BID):
         return f"{usfmbook} {int(self.chapter_ID)}"
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, unsafe_hash=True)
 class BCVID(BCID):
     """Identifies book, chapter, verse from Bible texts.
 
@@ -216,7 +218,7 @@ class BCVID(BCID):
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, unsafe_hash=True)
 class BCVWPID(BCVID):
     """Identifies words from Bible texts by book, chapter, verse, word, and word part.
 
