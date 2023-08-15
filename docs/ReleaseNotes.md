@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.17
+
+- Bug fix to `bcvwpid.simplify()`: need to handle class *types*, not names.
+
 ## 0.2.16
 
 - Bug fix to `hash()` for unit types. They don't get inherited from
