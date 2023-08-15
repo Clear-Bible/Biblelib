@@ -310,7 +310,7 @@ class BCVWPID(BCVID):
 reftypes = Union[BID, BCID, BCVID, BCVWPID]
 
 
-def simplify(refinst, newtype) -> reftypes:
+def simplify(refinst, newclass) -> reftypes:
     """Return a 'simpler' new instance for refinst.
 
     For a BCID, the only simpler form is BID.
@@ -325,12 +325,12 @@ def simplify(refinst, newtype) -> reftypes:
         # no BCVWID yet
         "BCVWPID": ["BID", "BCID", "BCVID"],
     }
-    assert refinst.__class__.__name__ in validtypes, f"{newtype} is not a valid simpler type."
-    if newtype == "BID":
+    assert refinst.__class__.__name__ in validtypes, f"{newclass} is not a valid simpler type."
+    if newclass == BID:
         return BID(refinst.ID[:2])
-    elif newtype == "BCID":
+    elif newclass == BCID:
         return BCID(refinst.ID[:5])
-    elif newtype == "BCVID":
+    elif newclass == BCVID:
         return BCVID(refinst.ID[:8])
 
 

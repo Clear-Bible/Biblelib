@@ -425,6 +425,6 @@ class TestSimplify:
 
     def test_simplify(self) -> None:
         """Test simplify()."""
-        assert simplify(self.mrk4811, "BID").ID == "41"
-        assert simplify(self.mrk4811, "BCID").ID == "41004"
-        assert simplify(self.mrk4811, "BCVID").ID == "41004008"
+        assert simplify(self.mrk4811, BID).ID == "41"
+        assert simplify(self.mrk4811, BCID).ID == "41004"
+        assert simplify(self.mrk4811, BCVID).ID == "41004008"
