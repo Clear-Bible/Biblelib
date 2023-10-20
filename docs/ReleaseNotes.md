@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.2.18
+
+- added `word.bcvwpid.fromubs()` to convert from 14-character
+  references to `BCVWPID`
+- generalized Python version for future-proofing
+- a few other fixes
+
 ## 0.2.17
 
 - Bug fix to `bcvwpid.simplify()`: need to handle class *types*, not names.
