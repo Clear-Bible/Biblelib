@@ -4,7 +4,7 @@ import typing
 
 import pytest
 
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, BID, BCID, BCVID, BCVWPID, simplify
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, BID, BCID, BCVID, BCVWPID, simplify
 
 from biblelib.word.bcvwpid import pad3
 
@@ -151,6 +151,15 @@ class TestFromUsfm:
         assert fromusfm("GEN 12:10") == BCVID("01012010")
         assert fromusfm("PSA 119:1") == BCVID("19119001")
         assert fromusfm("MRK 4:1") == BCVID("41004001")
+
+
+class TestFromUBS:
+    """Test basic functionality of fromubs()."""
+
+    def test_from_ubs(self) -> None:
+        """Test returned values"""
+        # probably need more
+        assert fromubs("02306000600008") == BCVWPID("23060006004")
 
 
 class TestBID:
