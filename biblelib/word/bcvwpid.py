@@ -42,7 +42,7 @@ ToDo:
 
 
 from dataclasses import dataclass, field
-from typing import Union
+from typing import Union, get_args
 
 from biblelib.book import Books
 
@@ -310,15 +310,16 @@ class BCVWPID(BCVID):
 reftypes = Union[BID, BCID, BCVID, BCVWPID]
 
 
-def simplify(refinst, newclass) -> reftypes:
+def simplify(refinst: reftypes, newclass: reftypes) -> reftypes:
     """Return a 'simpler' new instance for refinst.
 
+    Simpler here means less specified.
     For a BCID, the only simpler form is BID.
     For BCVID, BCID or BID.
-    For BCVWID, those or BCVID.
+    For BCVWID, BCID, BID, or BCVID.
     For BCVWPID, any of the other types.
     """
-    assert isinstance(refinst, reftypes), "Must be a reference instance"
+    assert refinst.__class__ in get_args(reftypes), "Must be a reference instance"
     validtypes = {
         "BCID": ["BID"],
         "BCVID": ["BID", "BCID"],
@@ -332,6 +333,8 @@ def simplify(refinst, newclass) -> reftypes:
         return BCID(refinst.ID[:5])
     elif newclass == BCVID:
         return BCVID(refinst.ID[:8])
+    else:
+        raise ValueError(f"Invalid refinst to simplify: {refinst}")
 
 
 def pad3(arg: str) -> str:
@@ -352,7 +355,7 @@ def pad3(arg: str) -> str:
 #        return "{:03}".format(int(arg))
 
 
-def fromlogos(ref) -> BID | BCID | BCVID:
+def fromlogos(ref: str) -> BID | BCID | BCVID:
     """Return a instance for a Logos-style single verse reference.
 
     The number of characters determines what kind of instance is returned. At most verse granularity.
@@ -380,7 +383,7 @@ def fromlogos(ref) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapterref)}{pad3(verseref)}")
 
 
-def fromosis(ref) -> BID | BCID | BCVID:
+def fromosis(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a OSIS-based name reference.
 
     Only handles book, book + chapter, and book chapter verse
@@ -405,7 +408,7 @@ def fromosis(ref) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 
-def fromname(ref) -> BID | BCID | BCVID:
+def fromname(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a full name reference.
 
     Only handles book, book + chapter, and book chapter verse
@@ -417,6 +420,7 @@ def fromname(ref) -> BID | BCID | BCVID:
     """
     # complex check because book names can contain spaces and other numbers
     # must match a regexp of all the book names, and be the same length
+    # type complaint here: 'str' has no attribute 'match'. Not quite right.
     namematch = BOOKS.nameregexp.match(ref)
     assert namematch, f"Invalid name reference: {ref}"
     if len(ref) == (namematch.end() - namematch.start()):
@@ -439,7 +443,7 @@ def fromname(ref) -> BID | BCID | BCVID:
                 raise ValueError(f"Invalid BCV values: {ref}\n{e}")
 
 
-def fromusfm(ref) -> BID | BCID | BCVID:
+def fromusfm(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a USFM-based reference.
 
     Only handles book, book + chapter, and book chapter verse
@@ -462,3 +466,32 @@ def fromusfm(ref) -> BID | BCID | BCVID:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
+
+
+def fromubs(ref: str) -> BCVWPID:
+    """Return a BCVWP instance for a UBS reference.
+
+    UBS references are 14 characters with an extra leading digit, a
+    segment code that is empty except for DC and LXX books, and the
+    word numbers are doubled.
+
+    """
+
+    def evenp(digits: int | str) -> bool:
+        """Return True if digits is an even-numbered integer, else False."""
+        return (int(digits) % 2) == 0
+
+    assert len(ref) == 14, f"Not a UBS reference: {ref}"
+    # drop leading digit
+    assert ref[0] == "0", f"Leading digit should be 0: {ref}"
+    book = ref[1:3]
+    chapter = ref[3:6]
+    verse = ref[6:9]
+    # next two digits are the segment: per
+    # https://docs.google.com/document/d/1hAGSokibAXkxL28fKXQQzYV_BkMnzs7ILX7W07q3JN0/
+    # "relevant for DC books and LXX only, otherwise 00"
+    assert ref[9:11] == "00", f"Segment code should be 00: {ref}"
+    # MARBLE data only uses even numbers for word positions, so divide by 2
+    word = ref[11:14]
+    assert evenp(word), f"Word code should be an even number: {ref}"
+    return BCVWPID(ID=f"{book}{chapter}{verse}{pad3(str(int(int(word) / 2)))}")
