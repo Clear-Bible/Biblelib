@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.2.19
+
+- Refactored `unit.Unit` and subclasses (Book, Chapter, Verse) for
+  clearer parameter names. Tests updated to match.
+- Fixed a bunch of type hint complains and mismatches
+
 ## 0.2.18
 
 - added `word.bcvwpid.fromubs()` to convert from 14-character
