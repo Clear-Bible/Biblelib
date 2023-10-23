@@ -3,7 +3,7 @@
 
 from collections import UserList
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 
 class Unit(UserList):
@@ -18,9 +18,9 @@ class Unit(UserList):
     # each unit should define its own parent types (if any)
     parent: dict[str, Any] = {}
 
-    def __init__(self, list: list = None, identifier: str = "(MISSING)") -> None:
+    def __init__(self, initlist: Optional[list] = None, identifier: Any = "(MISSING)") -> None:
         """Instantiate a Unit."""
-        super().__init__(list)
+        super().__init__(initlist)
         # Unique identifier for this unit. All conventional units
         # should have some kind of identifier that supports comparison
         # operators.
@@ -33,37 +33,37 @@ class Unit(UserList):
         """Return a string representation."""
         return f"{type(self).__name__}(identifier='{self.identifier}')"
 
-    def __lt__(self, other):
+    def __lt__(self, other: Any) -> bool:
         """Return true if self < other."""
-        return self.identifier < other.identifier
+        return bool(self.identifier < other.identifier)
 
-    def __le__(self, other):
+    def __le__(self, other: Any) -> bool:
         """Return true if self is <= other."""
-        return self.identifier <= other.identifier
+        return bool(self.identifier <= other.identifier)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         """Return true if self == other (same identifier)."""
-        return self.identifier == other.identifier
+        return bool(self.identifier == other.identifier)
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any) -> bool:
         """Return true if self != other (same identifier)."""
-        return self.identifier != other.identifier
+        return bool(self.identifier != other.identifier)
 
-    def __ge__(self, other):
+    def __ge__(self, other: Any) -> bool:
         """Return true if self >= other."""
-        return self.identifier >= other.identifier
+        return bool(self.identifier >= other.identifier)
 
-    def __gt__(self, other):
+    def __gt__(self, other: Any) -> bool:
         """Return true if self is > other."""
-        return self.identifier > other.identifier
+        return bool(self.identifier > other.identifier)
 
     # maybe this only makes sense for verse ranges?
-    def intersection(self, other) -> set:
+    def intersection(self, other: Any) -> set:
         """Return the intersection of self's items and other's.
 
         Only defined for objects of the same type.
         """
-        assert type(self) == type(other), f"intersection not defined for {type(self)} and {other}"
+        assert type(self) is type(other), f"intersection not defined for {type(self)} and {other}"
         return set(self.data).intersection(set(other.data))
 
 

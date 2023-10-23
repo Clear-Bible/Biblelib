@@ -15,7 +15,7 @@ The Hebrew and Greek source files are available from
 """
 
 from .mappings import Mapping, Mappings
-from .bcvwpid import fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, BID, BCID, BCVID, BCVWPID
+from .bcvwpid import fromlogos, fromname, fromosis, fromusfm, fromubs, reftypes, simplify, BID, BCID, BCVID, BCVWPID
 
 __all__ = [
     # bcvwpid
@@ -24,6 +24,7 @@ __all__ = [
     "fromosis",
     "fromusfm",
     "fromubs",
+    "reftypes",
     "simplify",
     "BID",
     "BCID",

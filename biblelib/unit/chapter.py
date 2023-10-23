@@ -1,6 +1,5 @@
 """Define Chapter class.
 
-
 >>> from biblelib.unit import chapter
 # how many chapters in all?
 >>> len(chapter.Chapters())
@@ -37,9 +36,9 @@ from collections import UserDict
 from csv import DictReader
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, Union
 
-from biblelib.word import BCID, BCVID
+from biblelib.word import BCID, BCVID, BCVWPID, simplify, reftypes
 from biblelib import book
 from .unit import Unit, Versification, pad
 from .verse import Verse
@@ -88,8 +87,8 @@ class ChapterVerses:
         # correct the index: USFM puts DC after protestant canon
         usfmbook = ALLBOOKS.fromlogos(f"bible.{bookindex}")
         bookid = usfmbook.usfmnumber
-        chapter_ID = bookid + pad(chapterindex, count=3)
-        end_ID = chapter_ID + pad(lastverse, count=3)
+        chapter_ID = bookid + pad(int(chapterindex), count=3)
+        end_ID = chapter_ID + pad(int(lastverse), count=3)
         return ChapterVerses(chapter_ID=chapter_ID, end_ID=end_ID)
 
 
@@ -111,6 +110,9 @@ class Chapters(UserDict):
 
 
 # TODO: cache these
+# parameter names here are confusing: "identifier" is really an
+# instance of BCID, etc., and for the superclass it needs comparison
+# methods
 class Chapter(Unit):
     """Manage Chapter units.
 
@@ -130,23 +132,27 @@ class Chapter(Unit):
     parent: dict[str, Any] = {"Book": None}
 
     def __init__(
-        self, list: list = None, identifier: BCID = "", versification: Versification = Versification.ENG
+        self,
+        inst: Union[BCID, BCVID, BCVWPID],
+        initlist: Optional[list] = None,
+        versification: Versification = Versification.ENG,
     ) -> None:
         """Instantiate a Chapter.
 
-        - identifier is a BCID instance
+        - inst is a BCID instance
         """
-        super().__init__(list=list, identifier=identifier)
-        assert isinstance(identifier, BCID), f"Identifier must be a BCID instance: {identifier}"
+        # not sure how to silence the type complaint hre
+        self.inst: reftypes = simplify(inst, BCID)
+        super().__init__(initlist=initlist, identifier=self.inst)
         assert versification in Versification, f"Invalid versification: {versification}"
         self.versification = versification
         # populate with verse instances
-        self.book_ID = self.identifier.book_ID
+        self.book_ID = self.inst.book_ID
         self.parent["Book"] = self._books.fromusfmnumber(self.book_ID)
         self.parentbook = self.parent["Book"]
         self.book_usfmname = self.parentbook.usfmname
         # assumes the first verse of every chapter has index 1: fragile
-        self.chapverses: ChapterVerses = self._chapters[self.identifier.ID]
+        self.chapverses: ChapterVerses = self._chapters[self.inst.ID]
         self.lastverse = self.chapverses.lastverse
         self.data = self.enumerate(self.chapverses.lastverse)
 
@@ -163,4 +169,4 @@ class Chapter(Unit):
         else:
             assert arg0 > 0, "0 is not a valid value for arg0"
             verserange = range(arg0 - 1, arg1)
-        return [Verse(identifier=(BCVID(self.identifier.ID + pad(index + 1, count=3)))) for index in verserange]
+        return [Verse(inst=(BCVID(self.inst.ID + pad(index + 1, count=3)))) for index in verserange]

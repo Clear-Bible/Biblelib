@@ -188,7 +188,7 @@ class Books(UserDict):
     canon: str = "Protestant"
     logosmap: dict = {}
     namemap: dict = {}
-    nameregexp: str = ""
+    nameregexp: re.Pattern = re.compile("")
     osismap: dict = {}
     usfmnumbermap: dict = {}
     # some minor standardization: this is not an extensible approach,

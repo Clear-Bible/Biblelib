@@ -25,7 +25,7 @@ class TestBook(object):
     """Test basic functionality for books."""
 
     testid = "41"
-    mark = book.Book(identifier=BID(testid))
+    mark = book.Book(inst=BID(testid))
 
     def test_book(self) -> None:
         """Test for book."""

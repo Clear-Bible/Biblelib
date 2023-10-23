@@ -21,6 +21,7 @@ Book(identifier='BID('41')')
 
 from collections import UserDict
 from dataclasses import dataclass
+from typing import Optional
 
 # from collections import UserDict
 # from csv import DictReader
@@ -109,9 +110,9 @@ class AllBookChapters(UserDict):
                 self.data[lastbookid] = chaps
                 # start a new one
                 lastbookid = chapverses.book_ID
-                chaps = [Chapter(identifier=BCID(chapter_ID))]
+                chaps = [Chapter(inst=BCID(chapter_ID))]
             else:
-                chaps.append(Chapter(identifier=BCID(chapter_ID)))
+                chaps.append(Chapter(inst=BCID(chapter_ID)))
         # finish the last one
         self.data[lastbookid] = chaps
 
@@ -119,20 +120,21 @@ class AllBookChapters(UserDict):
 class Book(Unit):
     """Manage Book units (chapters), identified by a 2-char book ID."""
 
-    bookchapters = AllBookChapters()
+    bookchapters: UserDict = AllBookChapters()
 
     def __init__(
-        self, list: list = None, identifier: BID = "", versification: Versification = Versification.ENG
+        self, inst: Optional[BID], initlist: Optional[list] = None, versification: Versification = Versification.ENG
     ) -> None:
         """Instantiate a Book.
 
-        - identifier is a BID instance
+        - inst is a BID instance
         """
-        super().__init__(list=list, identifier=identifier)
-        assert isinstance(identifier, BID), f"Identifier must be a BID instance: {identifier}"
+        super().__init__(initlist=initlist, identifier=inst)
+        self.inst = inst
+        assert isinstance(inst, BID), f"must be a BID instance: {inst}"
         assert versification in Versification, f"Invalid versification: {versification}"
         self.versification = versification
-        self.data = self.bookchapters[self.identifier.book_ID]
+        self.data = self.bookchapters[self.inst.book_ID]
         # not right for LJE
         self.lastchapter = len(self.data)
         # self.data = self.enumerate(self.chapverses.lastverse)
@@ -150,4 +152,4 @@ class Book(Unit):
         else:
             assert arg0 > 0, "0 is not a valid value for arg0"
             chaprange = range(arg0 - 1, arg1)
-        return [Chapter(identifier=(BCID(self.identifier.ID + pad(index + 1, count=3)))) for index in chaprange]
+        return [Chapter(inst=(BCID(self.inst.ID + pad(index + 1, count=3)))) for index in chaprange]

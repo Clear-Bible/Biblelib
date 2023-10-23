@@ -9,11 +9,11 @@ class TestChapter(object):
     """Test basic functionality for chapters."""
 
     testid = "41004"
-    mark_4 = chapter.Chapter(identifier=BCID(testid))
+    mark_4 = chapter.Chapter(inst=BCID(testid))
 
     def test_chapter(self) -> None:
         """Test for chapter."""
-        assert self.mark_4.identifier.ID == self.testid
+        assert self.mark_4.inst.ID == self.testid
         assert len(self.mark_4) == 41
         assert self.mark_4.versification.name == "ENG"
         assert self.mark_4.book_ID == "41"
@@ -38,13 +38,13 @@ class TestChapter(object):
         """Test for enumerate."""
         # check a stop enumeration
         range4 = self.mark_4.enumerate(4)
-        assert range4[0].identifier.ID == "41004001"
-        assert range4[-1].identifier.ID == "41004004"
+        assert range4[0].inst.ID == "41004001"
+        assert range4[-1].inst.ID == "41004004"
         # check a start, stop enumeration
         range2_4 = self.mark_4.enumerate(2, 4)
-        assert range2_4[0].identifier.ID == "41004002"
-        assert range2_4[-1].identifier.ID == "41004004"
+        assert range2_4[0].inst.ID == "41004002"
+        assert range2_4[-1].inst.ID == "41004004"
         # check the last verse of the chapter
         markrange = self.mark_4.enumerate(self.mark_4.lastverse)
-        assert markrange[0].identifier.ID == "41004001"
-        assert markrange[-1].identifier.ID == "41004041"
+        assert markrange[0].inst.ID == "41004001"
+        assert markrange[-1].inst.ID == "41004041"

@@ -26,6 +26,17 @@ BCVID("01002003")
 
 Similar things work with BCID (book and chapter) and BCVWPID.
 
+# 'simplify' a reference to contain less granular information
+>>> mrk_4_3_1 = BCVWPID("41004003001")
+>>> simplify(mrk_4_3_1, BCVID)
+BCVID('41004003')
+>>> simplify(mrk_4_3_1, BCID)
+BCID('41004')
+>>> simplify(mrk_4_3_1, BID)
+BID('41')
+
+
+
 ToDo:
 - add a containment hierarchy:
     - BID().includes(BCVID()) -> bool

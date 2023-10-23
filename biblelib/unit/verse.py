@@ -1,6 +1,6 @@
 """Define Verse class."""
 
-from typing import Any
+from typing import Any, Optional
 
 from biblelib.word import BCVID
 from .unit import Unit, Versification
@@ -26,10 +26,11 @@ class Verse(Unit):
     parent: dict[str, Any] = {"Chapter": None}
 
     def __init__(
-        self, list: list = None, identifier: BCVID = "", versification: Versification = Versification.ENG
+        self, inst: Optional[BCVID], initlist: Optional[list] = None, versification: Versification = Versification.ENG
     ) -> None:
         """Instantiate a Verse."""
-        super().__init__(list=list, identifier=identifier)
-        assert isinstance(identifier, BCVID), f"Identifier must be a BCVID instance: {identifier}"
+        super().__init__(initlist=initlist, identifier=inst)
+        self.inst = inst
+        assert isinstance(inst, BCVID), f"Inst must be a BCVID instance: {inst}"
         assert versification in Versification, f"Invalid versification: {versification}"
         self.versification = versification

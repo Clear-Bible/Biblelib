@@ -1,4 +1,5 @@
 """Pytest tests for biblelib.book."""
+
 # import pytest
 
 
@@ -11,7 +12,7 @@ class TestMark(object):
     allbooks = book.Books()
     prot = book.ProtestantCanon()
 
-    def test_attrs_gen(self):
+    def test_attrs_gen(self) -> None:
         """Test attribute values for Genesis."""
         # will need updating if the list changes
         gen = self.allbooks["GEN"]
@@ -23,7 +24,7 @@ class TestMark(object):
         assert gen.render("usfmname") == "GEN"
         assert gen.render("logosID") == "bible.1"
 
-    def test_attrs_mark(self):
+    def test_attrs_mark(self) -> None:
         """Test attribute values."""
         # will need updating if the list changes
         assert len(self.allbooks) == 101
@@ -36,7 +37,7 @@ class TestMark(object):
         assert mark.render("usfmname") == "MRK"
         assert mark.render("logosID") == "bible.62"
 
-    def test_usfmalt(self):
+    def test_usfmalt(self) -> None:
         """Test the legacy USFM numbers for NT books."""
         # for OT and post-NT, alt is the same as standard
         # MAL
@@ -57,12 +58,12 @@ class TestMark(object):
         assert not (self.prot["MRK"] > self.prot["LUK"])
         assert not (self.prot["MRK"] != self.prot["MRK"])
 
-    def test_sorted(self):
+    def test_sorted(self) -> None:
         """Test sorting in canon order."""
         randbooks = [self.prot["1CO"], self.prot["ECC"], self.prot["LUK"], self.prot["MRK"]]
         assert [b.usfmname for b in sorted(randbooks)] == ["ECC", "MRK", "LUK", "1CO"]
 
-    def test_lookup(self):
+    def test_lookup(self) -> None:
         """Test lookup by attributes."""
         osismark = self.allbooks.fromosis("Mark")
         assert osismark.usfmname == "MRK"
@@ -82,7 +83,7 @@ class TestMark(object):
         usfmnumberrev = self.allbooks.fromusfmnumber("67", legacynumbering=True)
         assert usfmnumberrev.name == "Revelation"
 
-    def test_fromname(self):
+    def test_fromname(self) -> None:
         """Test fromname()."""
         assert self.allbooks.nameregexp.match("Genesis")
         assert self.allbooks.nameregexp.match("Song of Songs")
