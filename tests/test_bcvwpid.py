@@ -173,7 +173,7 @@ class TestBID:
         assert BID(self.genid).book_ID == self.genid
         assert BID(self.markid).book_ID == self.markid
 
-    def test_hash(self) -> int:
+    def test_hash(self) -> None:
         """Ensure hashable.
 
         Values are mysteriously different, but this test seems
@@ -217,7 +217,7 @@ class TestBCVID:
         assert self.testid.verse_ID == "001"
         assert repr(self.testid) == "BCVID('43001001')"
 
-    def test_hash(self) -> int:
+    def test_hash(self) -> None:
         """Ensure hashable.
 
         Values are mysteriously different, but this test seems
@@ -295,7 +295,7 @@ class TestBCID:
         assert self.testid.chapter_ID == "001"
         assert repr(self.testid) == "BCID('43001')"
 
-    def test_hash(self) -> int:
+    def test_hash(self) -> None:
         """Ensure hashable.
 
         Values are mysteriously different, but this test seems
@@ -380,7 +380,7 @@ class TestBCVWPID:
         assert testid.part_ID == "1"
         assert repr(testid) == "BCVWPID('010020030011')"
 
-    def test_hash(self) -> int:
+    def test_hash(self) -> None:
         """Ensure hashable.
 
         Values are mysteriously different, but this test seems
@@ -388,6 +388,15 @@ class TestBCVWPID:
 
         """
         assert isinstance(self.testid, typing.Hashable)
+
+    def test_get_id(self) -> None:
+        """Test get_id()."""
+        gen = BCVWPID("010010010051")
+        assert gen.get_id() == "o010010010051"
+        assert gen.get_id(prefix=False) == "010010010051"
+        assert self.testid.get_id() == "n43001001005"
+        assert self.testid.get_id(prefix=False) == "43001001005"
+        # should also test "x" canon prefix
 
     def test_includes(self) -> None:
         """Test includes operator."""
