@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.2.21
+
+- Added support for chapter and verse ranges.
+- Added support for Macula canon prefix for BCVWPID identifiers ("o"
+  for Old Testament, "n" for New Testament, otherwise "x").
+- Messed up and missed 0.2.20.
+
 ## 0.2.19
 
 - Refactored `unit.Unit` and subclasses (Book, Chapter, Verse) for
