@@ -38,6 +38,7 @@ BID('41')
 
 
 ToDo:
+- support Macula-style identifiers: "o"/"n" prefix, no part for Greek
 - add a containment hierarchy:
     - BID().includes(BCVID()) -> bool
     - BID().includes(BCVWPID()) (because of transitivity)
@@ -53,7 +54,7 @@ ToDo:
 
 
 from dataclasses import dataclass, field
-from typing import Union, get_args
+from typing import Any, Union, get_args
 
 from biblelib.book import Books
 
@@ -73,7 +74,6 @@ class _Base:
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
         assert len(self.ID) == self._idlen, f"length should be {self._idlen} characters: {self.ID}"
-        # also test that they're all digits, in the right range, etc.
 
     def __repr__(self) -> str:
         """Return a string representation."""
@@ -101,10 +101,14 @@ class BID(_Base):
         """Compute other values on initialization."""
         super().__post_init__()
         self.book_ID = self.ID[0:2]
+        # also test that they're all digits, in the right range, etc.
+        # this covers the protestant canon and deuterocanon, but not perfectly
+        # this breaks code in book.py
+        # assert re.match("^[0-8][0-9]", self.book_ID), f"Invalid book number {self.book_ID}"
 
     # could go in a base class?
     # can't reference B*ID types until defined :-/
-    def includes(self, other: str) -> bool:
+    def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
         Simply based on substring matching. Any instance includes
@@ -158,7 +162,7 @@ class BCID(BID):
         self.chapter_ID = self.ID[2:5]
         # also test that they're all digits, in the right range, etc.
 
-    def includes(self, other: str) -> bool:
+    def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
         Simply based on substring matching. Any instance includes
@@ -209,7 +213,7 @@ class BCVID(BCID):
         self.verse_ID = self.ID[5:8]
         # also test that they're all digits, in the right range, etc.
 
-    def includes(self, other: str) -> bool:
+    def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
         Simply based on substring matching. Any instance includes
@@ -261,6 +265,7 @@ class BCVWPID(BCVID):
     # book mapping data
     word_ID: str = field(init=False)
     part_ID: str = ""
+    canon_prefix: str = ""
     # the longth of the bcvwp ID
     _idlen = 11
 
@@ -276,8 +281,27 @@ class BCVWPID(BCVID):
         if len(self.ID) == 12:
             self.part_ID = self.ID[11]
             # TODO: add tests, presumably a closed set of values
+        if self.book_ID < "40":
+            self.canon_prefix = "o"
+        elif self.book_ID < "67":
+            self.canon_prefix = "n"
+        else:
+            # not sure what's required here
+            self.canon_prefix = "x"
 
-    def includes(self, other: str) -> bool:
+    def get_id(self, prefix: bool = True) -> str:
+        """Return a string identifier for the instance.
+
+        With prefix (default=True), prefix OT references with 'o' and
+        NT references with 'n'.
+
+        """
+        if prefix:
+            return f"{self.canon_prefix}{self.ID}"
+        else:
+            return self.ID
+
+    def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
         Simply based on substring matching. Any instance includes
