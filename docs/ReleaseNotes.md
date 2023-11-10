@@ -1,5 +1,19 @@
 # Release Notes
 
+## 0.2.22
+
+- Breaking changes for `bcvwpid.BCVWPID` output: now use `get_id()` to
+  return an identifier string, which now has a corpus prefix ("o" for
+  OT, "n" for NT). Also, NT tokens now have no part
+  identifier. Parameters to `get_id()` can modify this behavior for
+  backward compatibility.
+- Can now initialize `bcvwpid.BCVWPID` with a corpus prefix. The
+  corpus prefix is defined whether supplied on initialization or not.
+- Two Greek instances compare as equal even if only one is initialized
+  with a word part = "1".
+- You can now product the reduced identifier for a `BCVWPID` instance
+  with new properties `to_bid`, `to_bcid`, and `to_bcvid`.
+
 ## 0.2.21
 
 - Added support for chapter and verse ranges.
