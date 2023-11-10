@@ -194,14 +194,57 @@ class TestBID:
         assert not mark.includes(BCVID("40001001"))
         assert not mark.includes(BCVWPID("400010010011"))
 
-    # def test_fromusfm(self) -> None:
-    #     """Test fromusfm()."""
-    #     assert BID.fromusfm("GEN").book_ID == self.genid
-    #     assert BID.fromusfm("MRK").book_ID == self.markid
 
-    # def test_fromlogos(self) -> None:
-    #     """Test fromlogos()."""
-    #     assert BID.fromlogos("bible.62").book_ID == self.markid
+class TestBCID:
+    """Test basic functionality of BCID dataclass."""
+
+    NA1904_ID = "43001"
+    testid = BCID(NA1904_ID)
+
+    def test_init(self) -> None:
+        """Test initialization and attributes."""
+        assert self.testid.book_ID == "43"
+        assert self.testid.chapter_ID == "001"
+        assert repr(self.testid) == "BCID('43001')"
+
+    def test_hash(self) -> None:
+        """Ensure hashable.
+
+        Values are mysteriously different, but this test seems
+        ... ok.
+
+        """
+        assert isinstance(self.testid, typing.Hashable)
+
+    def test_includes(self) -> None:
+        """Test includes operator."""
+        mark4 = BCID("41004")
+        assert mark4.includes(mark4)
+        assert mark4.includes(BCVID("41004008"))
+        assert mark4.includes(BCVWPID("410040080011"))
+        assert not mark4.includes(BCID("40001"))
+        assert not mark4.includes(BCVID("40001001"))
+        assert not mark4.includes(BCVWPID("400010010011"))
+
+    def test_invalid_length(self) -> None:
+        """Test that length checks fail correction"""
+        with pytest.raises(AssertionError):
+            # too long
+            _ = BCID("43001001")
+        with pytest.raises(AssertionError):
+            # too short
+            _ = BCID("4301")
+
+    def test_order(self) -> None:
+        """Test that order comparisons are correct."""
+        assert self.testid == self.testid
+        lessid = BCID("42004")
+        greaterid = BCID("43004")
+        assert lessid < self.testid
+        assert lessid <= self.testid
+        assert greaterid > self.testid
+        assert greaterid >= self.testid
+        assert greaterid != self.testid
 
 
 class TestBCVID:
@@ -235,26 +278,6 @@ class TestBCVID:
         assert not mark4_8.includes(BCVID("40001001"))
         assert not mark4_8.includes(BCVWPID("400010010011"))
 
-    # def test_fromusfm(self) -> None:
-    #     """Test conversion from USFM-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCVID.fromusfm("Gen 3:16").ID == "01003016"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCVID.fromusfm("Genesis 3:16")
-    #     assert BCVID.fromusfm("MRK 4:8").ID == "41004008"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCVID.fromusfm("Mark 3:16")
-
-    # def test_fromlogos(self) -> None:
-    #     """Test conversion from Logos-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCVID.fromlogos("bible.1.2.3").ID == "01002003"
-    #     assert BCVID.fromlogos("bible.62.4.8").ID == "41004008"
-    #     # 'title' as verse -> '000', additional bible specification
-    #     assert BCVID.fromlogos("bible+leb2.19.3.title").ID == "19003000"
-    #     # USFM book ID that's not an integer like EpLao
-    #     assert BCVID.fromlogos("bible.60.1.1").ID == "C3001001"
-
     def test_invalid_length(self) -> None:
         """Test that length checks fail correction"""
         with pytest.raises(AssertionError):
@@ -283,78 +306,6 @@ class TestBCVID:
         assert mrk481.to_usfm() == "MRK 4:8"
 
 
-class TestBCID:
-    """Test basic functionality of BCID dataclass."""
-
-    NA1904_ID = "43001"
-    testid = BCID(NA1904_ID)
-
-    def test_init(self) -> None:
-        """Test initialization and attributes."""
-        assert self.testid.book_ID == "43"
-        assert self.testid.chapter_ID == "001"
-        assert repr(self.testid) == "BCID('43001')"
-
-    def test_hash(self) -> None:
-        """Ensure hashable.
-
-        Values are mysteriously different, but this test seems
-        ... ok.
-
-        """
-        assert isinstance(self.testid, typing.Hashable)
-
-    def test_includes(self) -> None:
-        """Test includes operator."""
-        mark4 = BCID("41004")
-        assert mark4.includes(mark4)
-        assert mark4.includes(BCVID("41004008"))
-        assert mark4.includes(BCVWPID("410040080011"))
-        assert not mark4.includes(BCID("40001"))
-        assert not mark4.includes(BCVID("40001001"))
-        assert not mark4.includes(BCVWPID("400010010011"))
-
-    # def test_fromusfm(self) -> None:
-    #     """Test conversion from USFM-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCID.fromusfm("Gen 3").ID == "01003"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCID.fromusfm("Genesis 3")
-    #     assert BCID.fromusfm("MRK 4").ID == "41004"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCID.fromusfm("Mark 3")
-    # add tests to fail if verse supplied
-
-    # def test_fromlogos(self) -> None:
-    #     """Test conversion from Logos-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCID.fromlogos("bible.1.2").ID == "01002"
-    #     assert BCID.fromlogos("bible.62.4").ID == "41004"
-    #     # USFM book ID that's not an integer like EpLao
-    #     assert BCID.fromlogos("bible.60.1").ID == "C3001"
-    # add tests to fail if verse supplied
-
-    def test_invalid_length(self) -> None:
-        """Test that length checks fail correction"""
-        with pytest.raises(AssertionError):
-            # too long
-            _ = BCID("43001001")
-        with pytest.raises(AssertionError):
-            # too short
-            _ = BCID("4301")
-
-    def test_order(self) -> None:
-        """Test that order comparisons are correct."""
-        assert self.testid == self.testid
-        lessid = BCID("42004")
-        greaterid = BCID("43004")
-        assert lessid < self.testid
-        assert lessid <= self.testid
-        assert greaterid > self.testid
-        assert greaterid >= self.testid
-        assert greaterid != self.testid
-
-
 class TestBCVWPID:
     """Test basic functionality of BCVWPID dataclass."""
 
@@ -363,22 +314,35 @@ class TestBCVWPID:
 
     def test_init(self) -> None:
         """Test initialization and attributes."""
+        assert self.testid.canon_prefix == "n"
         assert self.testid.book_ID == "43"
         assert self.testid.chapter_ID == "001"
         assert self.testid.verse_ID == "001"
         assert self.testid.word_ID == "005"
-        assert self.testid.part_ID == ""
-        assert repr(self.testid) == "BCVWPID('43001001005')"
+        assert self.testid.part_ID == "1"
+        assert self.testid.get_id() == "n43001001005"
+        assert repr(self.testid) == "BCVWPID('n430010010051')"
 
     def test_init_with_part(self) -> None:
         """Test initialization and attributes for an ID with a part."""
-        testid = BCVWPID("010020030011")
+        genid = BCVWPID("010020030011")
+        assert genid.canon_prefix == "o"
+        assert genid.book_ID == "01"
+        assert genid.chapter_ID == "002"
+        assert genid.verse_ID == "003"
+        assert genid.word_ID == "001"
+        assert genid.part_ID == "1"
+        assert repr(genid) == "BCVWPID('o010020030011')"
+
+    def test_init_with_prefix(self) -> None:
+        """Test initialization and attributes for an ID with a prefix."""
+        testid = BCVWPID("o010020030011")
+        assert testid.canon_prefix == "o"
         assert testid.book_ID == "01"
         assert testid.chapter_ID == "002"
         assert testid.verse_ID == "003"
         assert testid.word_ID == "001"
         assert testid.part_ID == "1"
-        assert repr(testid) == "BCVWPID('010020030011')"
 
     def test_hash(self) -> None:
         """Ensure hashable.
@@ -396,6 +360,8 @@ class TestBCVWPID:
         assert gen.get_id(prefix=False) == "010010010051"
         assert self.testid.get_id() == "n43001001005"
         assert self.testid.get_id(prefix=False) == "43001001005"
+        assert self.testid.get_id(nt_part=True) == "n430010010051"
+        assert self.testid.get_id(prefix=False, nt_part=True) == "430010010051"
         # should also test "x" canon prefix
 
     def test_includes(self) -> None:
@@ -403,26 +369,6 @@ class TestBCVWPID:
         testid = BCVWPID("010020030011")
         assert testid.includes(testid)
         assert not testid.includes(BCVWPID("400010010011"))
-
-    # def test_fromusfm(self) -> None:
-    #     """Test conversion from USFM-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCVWPID.fromusfm("Gen 3:16").ID == "01003016000"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCVWPID.fromusfm("Genesis 3:16")
-    #     assert BCVWPID.fromusfm("MRK 4:8").ID == "41004008000"
-    #     with pytest.raises(AssertionError):
-    #         _ = BCVWPID.fromusfm("Mark 3:16")
-
-    # def test_fromlogos(self) -> None:
-    #     """Test conversion from Logos-style reference."""
-    #     # early OT books should be zero-padded
-    #     assert BCVWPID.fromlogos("bible.1.2.3").ID == "01002003000"
-    #     assert BCVWPID.fromlogos("bible.62.4.8").ID == "41004008000"
-    #     # 'title' as verse -> '000', additional bible specification
-    #     assert BCVWPID.fromlogos("bible+leb2.19.3.title").ID == "19003000000"
-    #     # USFM book ID that's not an integer like EpLao
-    #     assert BCVWPID.fromlogos("bible.60.1.1").ID == "C3001001000"
 
     def test_invalid_length(self) -> None:
         """Test that length checks fail correction"""
@@ -433,6 +379,12 @@ class TestBCVWPID:
             # 13 chars
             _ = BCVWPID("4300100100500")
 
+    def test_id(self) -> None:
+        """Test various id properties."""
+        assert self.testid.to_bid == "43"
+        assert self.testid.to_bcid == "43001"
+        assert self.testid.to_bcvid == "43001001"
+
     # should also test a real part_ID value
 
 
@@ -441,7 +393,18 @@ class TestSimplify:
 
     mrk4811 = BCVWPID("410040080011")
 
-    def test_simplify(self) -> None:
+    def test_simplify_BCID(self) -> None:
+        """Test simplify()."""
+        mrk4 = BCID("41004")
+        assert simplify(mrk4, BID).ID == "41"
+
+    def test_simplify_BCVID(self) -> None:
+        """Test simplify()."""
+        mrk48 = BCVID("41004008")
+        assert simplify(mrk48, BID).ID == "41"
+        assert simplify(mrk48, BCID).ID == "41004"
+
+    def test_simplify_BCVWPID(self) -> None:
         """Test simplify()."""
         assert simplify(self.mrk4811, BID).ID == "41"
         assert simplify(self.mrk4811, BCID).ID == "41004"

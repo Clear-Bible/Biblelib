@@ -54,6 +54,7 @@ ToDo:
 
 
 from dataclasses import dataclass, field
+import re
 from typing import Any, Union, get_args
 
 from biblelib.book import Books
@@ -122,7 +123,10 @@ class BID(_Base):
             # or isinstance(other, BCVWID)
             or isinstance(other, BCVWPID)
         ), f"Invalid type with includes(): {other}"
-        return other.ID[: self._idlen].startswith(self.ID)
+        if isinstance(other, BCVWPID):
+            return other.to_bid == self.ID
+        else:
+            return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -172,7 +176,10 @@ class BCID(BID):
         assert (
             isinstance(other, BCID) or isinstance(other, BCVID) or isinstance(other, BCVWPID)
         ), f"Invalid type with includes(): {other}"
-        return other.ID[: self._idlen].startswith(self.ID)
+        if isinstance(other, BCVWPID):
+            return other.to_bcid == self.ID
+        else:
+            return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -225,7 +232,10 @@ class BCVID(BCID):
             # or isinstance(other, BCVWID)
             or isinstance(other, BCVWPID)
         ), f"Invalid type with includes(): {other}"
-        return other.ID[: self._idlen].startswith(self.ID)
+        if isinstance(other, BCVWPID):
+            return other.to_bcvid == self.ID
+        else:
+            return other.ID[: self._idlen].startswith(self.ID)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -237,25 +247,35 @@ class BCVID(BCID):
 class BCVWPID(BCVID):
     """Identifies words from Bible texts by book, chapter, verse, word, and word part.
 
-    This supports two formats: BBCCCVVVWWW and BBCCCVVVWWWP, where BB
-        identifies a book, CCC identifies a chapter number, VVV
-        identifies a verse number, and WWW identifies a word number
-        within that verse. If P is present it identifies a word part:
-        this is only used for Hebrew.
+    The core schema is BBCCCVVVWWWP, where
+    - BB identifies a book
+    - CCC identifies a chapter number
+    - VVV identifies a verse number
+    - WWW identifies a word number
+    - P optionally identifies a word part: this is optional for NT
+      books, where it defaults to 1 if output.
+
+    Identifiers may have an optional corpus prefix.
 
     This dataclass does not validate whether any identifiers are in
-    the correct range: it only records the data. Use TBD for
-    validation. All sequence indices are one-based, not zero-based.
+    the correct range: it only records the data. Validation is planned
+    for a future version.
+
+    All sequence indices are one-based, not zero-based, and derived
+    from the tokenization of the input text (which should be specified
+    in its metadata).
 
     Attributes:
-        book_ID: 2-character string identifying the Bible book using
-            USFM numbers (like '40' for Matthew, 'B7' for Enoch)
-        chapter_ID: 3-character string identifying a chapter number
-            within the book
-        verse_ID: 3-character string identifying the verse number
-        word_ID: 3-character string identifying the word number
-        part_ID: single character identifying the word part if
-            present: only used for Hebrew
+    - canon_prefix: 1-character string identifying the canon, , 'o'
+      for OT and 'n' for NT
+    - book_ID: 2-character string identifying the Bible book using
+      USFM numbers (like '40' for Matthew, 'B7' for Enoch)
+    - chapter_ID: 3-character string identifying a chapter number
+      within the book
+    - verse_ID: 3-character string identifying the verse number
+    - word_ID: 3-character string identifying the word number
+    - part_ID: single character identifying the word part if present:
+      only used for Hebrew
 
     See `books.Books.fromusfmnumber()` for how to convert this number
     to other Book identifiers.
@@ -270,36 +290,68 @@ class BCVWPID(BCVID):
     _idlen = 11
 
     def __post_init__(self) -> None:
-        """Compute other values on initialization."""
+        """Compute other values on initialization.
+
+        This ensures the ID attribute reflects the standardized
+        identifier, even if abbreviated forms are initially provided,
+        so ID comparison is well-defined.
+
+        """
+
+        def _get_canon_prefix(book_ID: str) -> str:
+            """Return a single character prefix for canon."""
+            if book_ID < "40":
+                return "o"
+            elif book_ID < "67":
+                return "n"
+            else:
+                # not sure what's required here
+                return "x"
+
         # cannot call super because allows either 11 or 12 length
         # super()__post_init__()
-        assert 12 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
-        self.book_ID = self.ID[0:2]
-        self.chapter_ID = self.ID[2:5]
-        self.verse_ID = self.ID[5:8]
-        self.word_ID = self.ID[8:11]
-        if len(self.ID) == 12:
-            self.part_ID = self.ID[11]
-            # TODO: add tests, presumably a closed set of values
-        if self.book_ID < "40":
-            self.canon_prefix = "o"
-        elif self.book_ID < "67":
-            self.canon_prefix = "n"
+        idpat = re.compile(r"^[no]?\d{11,12}$")
+        assert idpat.match(self.ID), f"Invalid identifier: {self.ID}"
+        # assert 13 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
+        if self.ID.startswith("o") or self.ID.startswith("n"):
+            self.canon_prefix = self.ID[0]
+            restid = self.ID[1:]
         else:
-            # not sure what's required here
-            self.canon_prefix = "x"
+            restid = self.ID
+            # set canon_prefix and prepend to ID
+            self.canon_prefix = _get_canon_prefix(restid[0:2])
+            self.ID = self.canon_prefix + self.ID
+        self.book_ID = restid[0:2]
+        # TODO: add tests, presumably a closed set of values
+        assert self.canon_prefix == _get_canon_prefix(self.book_ID), f"Canon prefix must match book ID: {self.ID}"
+        self.chapter_ID = restid[2:5]
+        self.verse_ID = restid[5:8]
+        self.word_ID = restid[8:11]
+        if len(restid) == 12:
+            self.part_ID = restid[11]
+        else:
+            self.part_ID = "1"
+            self.ID += self.part_ID
 
-    def get_id(self, prefix: bool = True) -> str:
+    def get_id(self, prefix: bool = True, nt_part: bool = False) -> str:
         """Return a string identifier for the instance.
 
         With prefix (default=True), prefix OT references with 'o' and
         NT references with 'n'.
 
+        With nt_part=True (default=False), if an NT token, include a
+        part ID'. This makes the identifier 12 characters, same as for
+        Hebrew.
+
         """
-        if prefix:
-            return f"{self.canon_prefix}{self.ID}"
-        else:
-            return self.ID
+        strid = self.ID
+        if not prefix:
+            # drop the prefix
+            strid = self.ID[1:]
+        if self.canon_prefix == "n" and not nt_part:
+            # drop the part
+            strid = strid[:-1]
+        return strid
 
     def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
@@ -317,6 +369,21 @@ class BCVWPID(BCVID):
         """Return a USFM representation."""
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
+    @property
+    def to_bid(self) -> str:
+        """Return the book ID."""
+        return self.book_ID
+
+    @property
+    def to_bcid(self) -> str:
+        """Return string for the book and chapter ID."""
+        return self.book_ID + self.chapter_ID
+
+    @property
+    def to_bcvid(self) -> str:
+        """Return string for the book, chapter, and verse ID."""
+        return self.book_ID + self.chapter_ID + self.verse_ID
 
 
 # @dataclass
@@ -362,7 +429,16 @@ def simplify(refinst: reftypes, newclass: reftypes) -> reftypes:
         "BCVWPID": ["BID", "BCID", "BCVID"],
     }
     assert refinst.__class__.__name__ in validtypes, f"{newclass} is not a valid simpler type."
-    if newclass == BID:
+    if isinstance(refinst, BCVWPID):
+        if newclass == BID:
+            return BID(refinst.to_bid)
+        elif newclass == BCID:
+            return BCID(refinst.to_bcid)
+        elif newclass == BCVID:
+            return BCVID(refinst.to_bcvid)
+        else:
+            raise ValueError(f"Cannot simplify {refinst} to BCVWPID")
+    elif newclass == BID:
         return BID(refinst.ID[:2])
     elif newclass == BCID:
         return BCID(refinst.ID[:5])
