@@ -1,5 +1,13 @@
 # Release Notes
 
+## 0.2.23
+
+- realized it was dumb to name a module `range`: now `unitrange`.
+- Fixed issues with imports in `biblelib.unit`; added `unitrange` to
+  exported variables
+- Other fixes to avoid circular imports
+
+
 ## 0.2.22
 
 - Breaking changes for `bcvwpid.BCVWPID` output: now use `get_id()` to
