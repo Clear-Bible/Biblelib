@@ -580,7 +580,7 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
 
 
 def fromubs(ref: str) -> BCVWPID:
-    """Return a BCVWP instance for a UBS reference.
+    """Return a BCVWP instance for a single UBS reference.
 
     UBS references are 14 characters with an extra leading digit, a
     segment code that is empty except for DC and LXX books, and the

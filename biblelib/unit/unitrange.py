@@ -1,9 +1,10 @@
 """Manage verse range references.
 
+>>> from biblelib.unit import ChapterRange, VerseRange
 >>> mrk_2_5 = ChapterRange(start=BCID("41002"), end=BCID("41005"))
 >>> mrk_2_5.enumerate()
 [BCID('41002'), BCID('41003'), BCID('41004'), BCID('41005')]
->>> onechap = range.VerseRange(start=BCVID("41001040"), end=BCVID("41002002"))
+>>> onechap = VerseRange(start=BCVID("41001040"), end=BCVID("41002002"))
 >>> onechap.enumerate()
 [Verse(identifier='BCVID('41001040')'), Verse(identifier='BCVID('41001041')'), ... Verse(identifier='BCVID('41002002')')]
 
@@ -14,7 +15,9 @@
 from dataclasses import dataclass
 
 from biblelib.word import BID, BCID, BCVID, simplify
-from biblelib.unit import Chapter, Verse, pad
+from .chapter import Chapter
+from .verse import Verse
+from .unit import pad
 
 # should this test for out-of-range chapters??
 

@@ -2,7 +2,7 @@
 # import pytest
 
 
-from biblelib import unit
+from biblelib.unit import unit
 
 
 class TestUnit(object):

@@ -1,4 +1,14 @@
-"""Define Verse class."""
+"""Define Verse class.
+
+This code is under-developed, but is intended for identifying verses
+as units. For managing BCV references, see biblelib.word.bcvwpid
+instead.
+
+>>> from biblelib.unit import verse
+>>> verse.Verse(verse.BCVID("41004003"))
+Verse(identifier='BCVID('41004003')')
+
+"""
 
 from typing import Any, Optional
 

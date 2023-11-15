@@ -31,7 +31,8 @@ from pathlib import Path
 
 from biblelib.word import BID, BCID
 from biblelib import book
-from biblelib.unit import Unit, Versification, pad, Chapter, Chapters
+from .unit import Unit, Versification, pad
+from .chapter import Chapter, Chapters
 
 UNITPATH = Path(__file__).parent
 
