@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.2.24
+
+- Fixes to unitrange.py. I had the logic wrong: now both *Range
+  classes return a list of Units from their enumerate() methods
+  (ChapterRange -> list[Chapter], same for VerseRange).
+- Changed start/end to startid/endid for clarify.
+- Updated tests to correspond. Added test_invalid_comparison to
+  test_unit.py.
+
 ## 0.2.23
 
 - realized it was dumb to name a module `range`: now `unitrange`.
