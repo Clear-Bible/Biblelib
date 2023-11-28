@@ -16,7 +16,7 @@ classifiers=[
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.8,<4"
 pydantic = "^2.3.0"
 
 [tool.poetry.dev-dependencies]

@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.25
+
+- Updated upper end of Python requirement to `<4` and updated
+  packages.
+
 ## 0.2.24
 
 - Fixes to unitrange.py. I had the logic wrong: now both *Range
