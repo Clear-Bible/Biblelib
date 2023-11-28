@@ -187,6 +187,13 @@ class BCID(BID):
         return f"{usfmbook} {int(self.chapter_ID)}"
 
 
+# ToDo/Idea: should BCVID("41004003001") drop the end of the ID
+# string? Same question for BID and BCID, though it seems less common
+# that you'd want to upscale those this way.
+# Currently it complains the ID arg is too longer: correct, though
+# persnickity.
+
+
 @dataclass(repr=False, unsafe_hash=True)
 class BCVID(BCID):
     """Identifies book, chapter, verse from Bible texts.
@@ -605,4 +612,5 @@ def fromubs(ref: str) -> BCVWPID:
     # MARBLE data only uses even numbers for word positions, so divide by 2
     word = ref[11:14]
     assert evenp(word), f"Word code should be an even number: {ref}"
+    # this adds a Part identifier: that does not seem correct
     return BCVWPID(ID=f"{book}{chapter}{verse}{pad3(str(int(int(word) / 2)))}")

@@ -11,7 +11,6 @@
 
 """
 
-
 from dataclasses import dataclass
 
 from biblelib.word import BID, BCID, BCVID, simplify
@@ -26,85 +25,87 @@ from .unit import pad
 class ChapterRange:
     """Manage a range of chapters."""
 
-    start: BCID
-    end: BCID
+    startid: BCID
+    endid: BCID
 
     def __post_init__(self) -> None:
         """Check initialization values."""
-        assert simplify(self.start, BID) == simplify(
-            self.end, BID
-        ), f"Start {self.start} and end (self.end) must be in the same book."
-        assert self.start <= self.end, f"Start {self.start} must precede end {self.end}."
+        assert simplify(self.startid, BID) == simplify(
+            self.endid, BID
+        ), f"startid {self.startid} and endid (self.endid) must be in the same book."
+        assert self.startid <= self.endid, f"Startid {self.startid} must equal or precede endid {self.endid}."
 
-    def enumerate(self) -> list[BCID]:
-        """Return a list of BCID instances enumerating the chapters in the range.
+    def enumerate(self) -> list[Chapter]:
+        """Return a list of Chapter instances enumerating the chapters in the range.
 
-        Enumerations include the end value (unlike range).
+        Enumerations include the ending Chapter (unlike range).
         """
-        if self.start == self.end:
+        if self.startid == self.endid:
             # vacuous range
-            return [self.start]
+            return [Chapter(self.startid)]
         else:
-            bookid = self.start.book_ID
+            bookid = self.startid.book_ID
             # this assumes chapters are numbered sequentially
             # this may be violated outside the Protestant canon
-            start_chap = int(self.start.chapter_ID)
-            end_chap = int(self.end.chapter_ID)
-            chapters = list(range(start_chap, end_chap + 1))
-            return [BCID(bookid + pad(i, 3)) for i in chapters]
+            startid_chap = int(self.startid.chapter_ID)
+            endid_chap = int(self.endid.chapter_ID)
+            chapters = list(range(startid_chap, endid_chap + 1))
+            return [Chapter(BCID(bookid + pad(i, 3))) for i in chapters]
 
 
 @dataclass
 class VerseRange:
     """Manage a range of verses."""
 
-    start: BCVID
-    end: BCVID
+    startid: BCVID
+    endid: BCVID
 
     def __post_init__(self) -> None:
         """Check initialization values."""
-        assert simplify(self.start, BID) == simplify(
-            self.end, BID
-        ), f"Start {self.start} and end (self.end) must be in the same book."
-        assert self.start <= self.end, f"Start {self.start} must precede end {self.end}."
+        assert simplify(self.startid, BID) == simplify(
+            self.endid, BID
+        ), f"Startid {self.startid} and endid (self.endid) must be in the same book."
+        assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
 
-    def enumerate(self) -> list[BCVID]:
-        """Return a list of BCVID instances enumerating the verses in the range.
+    def enumerate(self) -> list[Verse]:
+        """Return a list of Verse instances enumerating the verses in the range.
 
-        Enumerations include the end value (unlike range).
+        Enumerations include the ending Verse value (unlike range).
         """
 
         def get_verses(bcid: BCID, startindex: int, endindex: int) -> list[Verse]:
             """Return a list of verses."""
             return Chapter(inst=bcid).enumerate(startindex, endindex)
 
-        if self.start == self.end:
+        if self.startid == self.endid:
             # vacuous range
-            return [self.start]
+            return [Verse(self.startid)]
         else:
             # this assumes chapters are numbered sequentially
             # this may be violated outside the Protestant canon
-            start_chap_index = int(self.start.chapter_ID)
-            start_verse_index = int(self.start.verse_ID)
-            end_chap_index = int(self.end.chapter_ID)
-            end_verse_index = int(self.end.verse_ID)
-            if start_chap_index == end_chap_index:
-                chap = Chapter(inst=simplify(self.start, BCID))
-                return chap.enumerate(start_verse_index, end_verse_index)
+            startid_chap_index = int(self.startid.chapter_ID)
+            startid_verse_index = int(self.startid.verse_ID)
+            endid_chap_index = int(self.endid.chapter_ID)
+            endid_verse_index = int(self.endid.verse_ID)
+            if startid_chap_index == endid_chap_index:
+                chap = Chapter(inst=simplify(self.startid, BCID))
+                return chap.enumerate(startid_verse_index, endid_verse_index)
             else:
-                # bookid = self.start.book_ID
-                chaprange = ChapterRange(start=simplify(self.start, BCID), end=simplify(self.end, BCID))
+                # bookid = self.startid.book_ID
+                chaprange = ChapterRange(startid=simplify(self.startid, BCID), endid=simplify(self.endid, BCID))
                 chapenum = chaprange.enumerate()
-                firstbcid = chapenum[0]
+                firstbcid = chapenum[0].identifier
                 firstchap = Chapter(inst=firstbcid)
-                firstverses = get_verses(firstbcid, start_verse_index, firstchap.lastverse)
+                firstverses = get_verses(firstbcid, startid_verse_index, firstchap.lastverse)
                 # may be empty
-                midbcids = chapenum[1:-1]
+                midbcids: list[Chapter] = chapenum[1:-1]
                 # get all verses for any middle chapters
-                midverses = [
-                    v for bcid in midbcids if (chap := Chapter(inst=bcid)) for v in get_verses(bcid, 1, chap.lastverse)
-                ]
-                lastbcid = chapenum[-1]
+                # WRONG use of get_verses here now that this is a list of Chapters
+                midverses = [v for chap in midbcids for v in chap.enumerate(1, chap.lastverse)]
+                lastbcid = chapenum[-1].identifier
                 lastchap = Chapter(inst=lastbcid)
-                lastverses = get_verses(lastbcid, 1, end_verse_index)
-                return firstverses + midverses + lastverses
+                lastverses = get_verses(lastbcid, 1, endid_verse_index)
+                return [v for v in (firstverses + midverses + lastverses)]
+
+
+# I also need WordRange for a sequence of word IDs
