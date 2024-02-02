@@ -1,4 +1,5 @@
 """Pytest tests for biblelib.unit.chapter."""
+
 # import pytest
 
 from biblelib.word import BCID
@@ -8,8 +9,8 @@ from biblelib.unit import chapter
 class TestChapter(object):
     """Test basic functionality for chapters."""
 
-    testid = "41004"
-    mark_4 = chapter.Chapter(inst=BCID(testid))
+    testid: str = "41004"
+    mark_4: chapter.Chapter = chapter.Chapter(inst=BCID(testid))
 
     def test_chapter(self) -> None:
         """Test for chapter."""
@@ -17,6 +18,7 @@ class TestChapter(object):
         assert len(self.mark_4) == 41
         assert self.mark_4.versification.name == "ENG"
         assert self.mark_4.book_ID == "41"
+        assert self.mark_4.parentbook.name == "Mark"
         assert self.mark_4.parent["Book"].name == "Mark"
         assert self.mark_4.lastverse == 41
 
