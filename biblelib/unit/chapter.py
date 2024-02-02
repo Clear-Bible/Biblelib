@@ -129,7 +129,7 @@ class Chapter(Unit):
     _chapters = Chapters()
     # if defined, the parent instance: e.g. parent_chapter of Mark 4:3 is Mark 4
     # could also be parent sentence, paragraph, pericope ... so dict for extensibility
-    parent: dict[str, Any] = {"Book": None}
+    # parent: dict[str, Any] = {}  # {"Book": None}
 
     def __init__(
         self,
