@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.2.27
+
+- Fixed bugs in word.fromubs() to strip off note links (e.g.,
+  "04400705400018{N:001}") and treat odd-numbered word indices.
+
 ## 0.2.26
 
 - Fixed a subtle bug with unit.parent: was a class variable instead of
