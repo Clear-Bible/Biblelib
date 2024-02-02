@@ -104,7 +104,7 @@ class AllBookChapters(UserDict):
         """Initialize an instance."""
         super().__init__()
         lastbookid = "00"
-        chaps = []
+        chaps: list[Chapter] = []
         for chapter_ID, chapverses in self.chapters.items():
             if chapverses.book_ID != lastbookid:
                 # a new book: finish the previous one
