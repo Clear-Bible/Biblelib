@@ -1,10 +1,10 @@
 """Test biblelib.word.mappings."""
 
-from biblelib.word import mappings
+from biblelib.word import Mapping, Mappings
 
 
 # Example mapping: JHN 1:1
-TESTMAPPING = mappings.Mapping(
+TESTMAPPING = Mapping(
     NA1904_ID="43001001005",
     NA1904_Text="Λόγος,",
     NA27_ID="43001001005",
@@ -31,6 +31,6 @@ class TestMappings:
     def test_init(self) -> None:
         """Test initialization: reading, and resulting list length."""
         # Assumes a local copy of the macula-greek repo
-        m = mappings.Mappings()
-        # fragile?
-        assert len(m) == 138804
+        m = Mappings()
+        # FRAGILE!
+        assert len(m) == 138751

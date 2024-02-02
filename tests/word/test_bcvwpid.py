@@ -15,6 +15,7 @@ class TestPad3:
     def test_return(self) -> None:
         """Test returned values"""
         assert pad3("title") == "000"
+        assert pad3("0") == "000"
         assert pad3("1") == "001"
         assert pad3("23") == "023"
         with pytest.raises(ValueError):
