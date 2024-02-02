@@ -1,6 +1,5 @@
 """Define Unit class."""
 
-
 from collections import UserList
 from enum import Enum
 from typing import Any, Optional
@@ -14,13 +13,13 @@ class Unit(UserList):
 
     """
 
-    # if defined, the parent instance: e.g. parent_chapter of Mark 4:3 is Mark 4
-    # each unit should define its own parent types (if any)
-    parent: dict[str, Any] = {}
-
     def __init__(self, initlist: Optional[list] = None, identifier: Any = "(MISSING)") -> None:
         """Instantiate a Unit."""
         super().__init__(initlist)
+        # if defined, the parent instance: e.g. parent_chapter of Mark 4:3 is Mark 4
+        # each unit should define its own parent types (if any)
+        # local, not a class variable, so inheritance works correctly
+        self.parent: dict[str, Any] = {}
         # Unique identifier for this unit. All conventional units
         # should have some kind of identifier that supports comparison
         # operators.
