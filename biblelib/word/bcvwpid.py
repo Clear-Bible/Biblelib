@@ -52,7 +52,6 @@ ToDo:
 
 """
 
-
 from dataclasses import dataclass, field
 import re
 from typing import Any, Union, get_args
@@ -243,6 +242,17 @@ class BCVID(BCID):
             return other.to_bcvid == self.ID
         else:
             return other.ID[: self._idlen].startswith(self.ID)
+
+    # TODO: add a method to 'upgrade' to BCVWPID given a word_index
+    # def _to_bcvwpid(self, word_index: int, part_index: str = "1") -> bcvwpid.BCVWPID:
+    #     """Given a BCVID instance and a word index, return a BCVWPID.
+
+    #     Word index should be zero-based.
+
+    #     """
+    #     word_ID = pad3(str(word_index + 1))
+    #     newidstr = self.ID + word_ID + part_index
+    #     return BCVWPID(newidstr)
 
     def to_usfm(self) -> str:
         """Return a USFM representation."""
@@ -466,17 +476,20 @@ def pad3(arg: str) -> str:
         return "000"
     else:
         assert len(arg) <= 3, f"Arg must be 3 chars or less: {arg}"
-        assert int(arg), f"Arg must convert to an int: {arg}"
+        # handle arg=0
+        try:
+            int(arg)
+        except Exception as e:
+            raise ValueError(f"Arg must convert to an int: {arg}")
         return f"{arg:0>3}"
-
-
-#        return "{:03}".format(int(arg))
 
 
 def fromlogos(ref: str) -> BID | BCID | BCVID:
     """Return a instance for a Logos-style single verse reference.
 
-    The number of characters determines what kind of instance is returned. At most verse granularity.
+    The number of characters determines what kind of instance is
+    returned. At most verse granularity.
+
     """
     if ref.startswith("bible."):
         bible, baseref = ref.split(".", 1)
