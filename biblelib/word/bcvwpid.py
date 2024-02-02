@@ -480,7 +480,7 @@ def pad3(arg: str) -> str:
         try:
             int(arg)
         except Exception as e:
-            raise ValueError(f"Arg must convert to an int: {arg}")
+            raise ValueError(f"Arg must convert to an int: {arg}\n{e}")
         return f"{arg:0>3}"
 
 
@@ -599,12 +599,16 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 
-def fromubs(ref: str) -> BCVWPID:
+def fromubs(ref: str, strict: bool = False) -> BCVWPID:
     """Return a BCVWP instance for a single UBS reference.
 
     UBS references are 14 characters with an extra leading digit, a
     segment code that is empty except for DC and LXX books, and the
     word numbers are doubled.
+
+    Odd word numbers are rounded down, assuming they represent (wn *
+    2) + 1 for a variant. With strict=True (default is False), odd
+    word numbers raise an error.
 
     """
 
@@ -612,6 +616,9 @@ def fromubs(ref: str) -> BCVWPID:
         """Return True if digits is an even-numbered integer, else False."""
         return (int(digits) % 2) == 0
 
+    # some UBS DGNT references have this as a suffix: fragile
+    if re.search(r"{N:00\d}$", ref):
+        ref = ref[:14]
     assert len(ref) == 14, f"Not a UBS reference: {ref}"
     # drop leading digit
     assert ref[0] == "0", f"Leading digit should be 0: {ref}"
@@ -624,6 +631,9 @@ def fromubs(ref: str) -> BCVWPID:
     assert ref[9:11] == "00", f"Segment code should be 00: {ref}"
     # MARBLE data only uses even numbers for word positions, so divide by 2
     word = ref[11:14]
-    assert evenp(word), f"Word code should be an even number: {ref}"
+    if not evenp(word) and strict:
+        raise ValueError(f"Word code should be an even number: {ref}")
+    # this drops any fractional part after dividing by 2
+    wnstr = pad3(str(int(int(word) / 2)))
     # this adds a Part identifier: that does not seem correct
-    return BCVWPID(ID=f"{book}{chapter}{verse}{pad3(str(int(int(word) / 2)))}")
+    return BCVWPID(ID=f"{book}{chapter}{verse}{wnstr}")

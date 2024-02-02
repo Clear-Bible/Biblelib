@@ -161,6 +161,11 @@ class TestFromUBS:
         """Test returned values"""
         # probably need more
         assert fromubs("02306000600008") == BCVWPID("23060006004")
+        assert fromubs("02306000600008{N:001}") == BCVWPID("23060006004")
+        # rounding-down for non-even number
+        assert fromubs("02306000600009") == BCVWPID("23060006004")
+        with pytest.raises(ValueError):
+            assert fromubs("02306000600009", strict=True) == BCVWPID("23060006004")
 
 
 class TestBID:
