@@ -7,7 +7,7 @@ books, chapters, and verses, their references, and components.
 
 # this can cause circular imports if files _in this module_ import
 # from biblelib.unit directly. Instead do e.g.
-# `from biblelib.unit.verse import Verset`
+# `from biblelib.unit.verse import Verse`
 # (*not* `from biblelib.unit import Verse`)
 from .book import BookChapters
 from .chapter import Chapters, Chapter
