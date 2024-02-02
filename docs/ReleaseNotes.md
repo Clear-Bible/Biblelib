@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.2.26
+
+- Fixed a subtle bug with unit.parent: was a class variable instead of
+  local.
+- bug fix for word.pad3 to correctly handle "0" as input
+
 ## 0.2.25
 
 - Updated upper end of Python requirement to `<4` and updated
