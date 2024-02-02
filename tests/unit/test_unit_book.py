@@ -2,16 +2,17 @@
 
 Not to be confused with book.book.
 """
+
 # import pytest
 
 from biblelib.word import BID
-from biblelib.unit import book
+from biblelib.unit.book import Book, AllBookChapters
 
 
 class TestAllBookChapters:
     """Text AllBookChapters()."""
 
-    abc = book.AllBookChapters()
+    abc = AllBookChapters()
 
     def test_init(self) -> None:
         """Test for instance."""
@@ -25,7 +26,7 @@ class TestBook(object):
     """Test basic functionality for books."""
 
     testid = "41"
-    mark = book.Book(inst=BID(testid))
+    mark = Book(inst=BID(testid))
 
     def test_book(self) -> None:
         """Test for book."""
