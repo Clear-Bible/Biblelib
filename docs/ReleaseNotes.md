@@ -5,6 +5,7 @@
 - Fixed a subtle bug with unit.parent: was a class variable instead of
   local.
 - bug fix for word.pad3 to correctly handle "0" as input
+- refactored tests to reflect source code hierarchy
 
 ## 0.2.25
 
