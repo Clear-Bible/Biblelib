@@ -617,7 +617,7 @@ def fromubs(ref: str, strict: bool = False) -> BCVWPID:
         return (int(digits) % 2) == 0
 
     # some UBS DGNT references have this as a suffix: fragile
-    if re.search(r"{N:00\d}$", ref):
+    if re.search(r"\({N:00\d}\)$", ref) or re.search(r"{N:00\d}$", ref):
         ref = ref[:14]
     assert len(ref) == 14, f"Not a UBS reference: {ref}"
     # drop leading digit
