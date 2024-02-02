@@ -1,4 +1,5 @@
 """Pytest tests for biblelib.unit."""
+
 import pytest
 
 
@@ -17,6 +18,7 @@ class TestUnit(object):
         assert len(empty) == 0
         shortie = unit.Unit([1, 2, 3, 4], identifier=testid)
         assert len(shortie) == 4
+        assert empty.parent == {}
 
     def test_comparison(self) -> None:
         """Test comparison operators"""
