@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.2.28
+
+- Another bug fix for word.fromubs() and note links:
+  "04400705400018({N:001})".
+- use zfill.
+
 ## 0.2.27
 
 - Fixed bugs in word.fromubs() to strip off note links (e.g.,
