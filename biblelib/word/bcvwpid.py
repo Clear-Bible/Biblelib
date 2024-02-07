@@ -481,7 +481,8 @@ def pad3(arg: str) -> str:
             int(arg)
         except Exception as e:
             raise ValueError(f"Arg must convert to an int: {arg}\n{e}")
-        return f"{arg:0>3}"
+        # return f"{arg:0>3}"
+        return arg.zfill(3)
 
 
 def fromlogos(ref: str) -> BID | BCID | BCVID:
