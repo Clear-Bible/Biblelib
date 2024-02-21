@@ -87,9 +87,10 @@ class Enumerator:
         if not outpath:
             thisdir = Path(__file__).parent
             if self.scope:
-                outpath = thisdir / f"{self.scheme}-{self.scope}.txt"
+                fileid = f"{self.scheme}-{self.scope}"
             else:
-                outpath = thisdir / f"{self.scheme}.txt"
+                fileid = f"{self.scheme}"
+            outpath = thisdir / f"{fileid}-vref.txt"
         with outpath.open("w") as f:
             for book in booknames:
                 # assumes chapters start at 1: not LetJer
