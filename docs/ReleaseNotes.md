@@ -1,5 +1,23 @@
 # Release Notes
 
+## 0.3.0
+
+Added "vref" versification data:
+`[eng|org|rso]-[nt|ot|protestant]-vref.txt` files enumerate the verses
+(with USFM references) for `eng` and `org` versification schemes,
+respectively, with subsets for NT, OT, and Protestant canon (excluding
+Deuterocanon).
+
+Also added support for generating these files from [The Copenhagen
+Alliance for Open Biblical
+Resources](http://copenhagen-alliance.org/), with data from
+https://github.com/Copenhagen-Alliance/versification-specification. While
+a complete set of vref files isn't yet included,
+`versification.Enumerator` can be used to generate them.
+
+More details are in `versification/ReadMe.md`.
+
+
 ## 0.2.28
 
 - Another bug fix for word.fromubs() and note links:
