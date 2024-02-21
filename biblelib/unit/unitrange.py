@@ -12,11 +12,16 @@
 """
 
 from dataclasses import dataclass
+import re
 
+from biblelib.book import Books
 from biblelib.word import BID, BCID, BCVID, simplify
 from .chapter import Chapter
 from .verse import Verse
 from .unit import pad
+
+BOOKS = Books()
+
 
 # should this test for out-of-range chapters??
 
@@ -109,3 +114,20 @@ class VerseRange:
 
 
 # I also need WordRange for a sequence of word IDs
+def detect_name_range(ref: str):
+    """Return a range instance for a reference.
+
+    Assumes it's called on a reference with a hyphen. Heuristic.
+
+    """
+    ref1, ref2 = ref.split("-")
+    assert not ("," in ref1 or "," in ref2), f"Can't handle complex range: {ref}"
+    namematch = BOOKS.nameregexp.match(ref1)
+    assert namematch, f"Invalid name reference: {ref1}"
+    bookname, rest = ref1[: namematch.end()], ref1[(namematch.end() + 1) :]
+    usfmbook = BOOKS.fromname(bookname).usfmnumber
+    if ":" in ref1:
+        return f"{usfmbook}, verserange"
+    else:
+        # match digits
+        return f"{usfmbook}, chapterrange"
