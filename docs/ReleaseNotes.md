@@ -1,6 +1,10 @@
 # Release Notes
 
-## 0.3.0
+## 0.3.1
+
+- Handling of OSIS references was all wrong: now fixed.
+
+## Minor version update: 0.3.0
 
 Added "vref" versification data:
 `[eng|org|rso]-[nt|ot|protestant]-vref.txt` files enumerate the verses
@@ -16,7 +20,6 @@ a complete set of vref files isn't yet included,
 `versification.Enumerator` can be used to generate them.
 
 More details are in `versification/ReadMe.md`.
-
 
 ## 0.2.28
 
