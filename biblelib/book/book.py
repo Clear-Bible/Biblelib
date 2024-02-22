@@ -284,6 +284,7 @@ class Books(UserDict):
         if not self.osismap:
             # initialize on demand
             self.osismap = {b.osisID: b for _, b in self.data.items()}
+        return self.osismap
 
     def fromosis(self, osisID: str) -> Book:
         """Return the book instance for an OSIS identifier.
