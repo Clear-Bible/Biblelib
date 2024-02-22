@@ -518,25 +518,26 @@ def fromlogos(ref: str) -> BID | BCID | BCVID:
 def fromosis(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a OSIS-based name reference.
 
-    Only handles book, book + chapter, and book chapter verse
-    references like MRK 4:8. Does not handle ranges or non-numeric
-    verses like 'title'. Does not check the validity of chapter and
-    verse numbers for the book. Book name must be correctly cased.
+    OSIS references use periods for delimiters, like 'Gen.1.1'. Only
+    handles book, book + chapter, and book chapter verse references
+    like Mark.4.8. Does not handle ranges or non-numeric verses like
+    'title'. Does not check the validity of chapter and verse numbers
+    for the book. Book name must be correctly cased.
 
     """
-    if " " not in ref:
+    if "." not in ref:
         # book only
         usfmbook = BOOKS.fromosis(ref).usfmnumber
         return BID((usfmbook))
     else:
-        bookabbrev, rest = ref.split(" ", 1)
+        bookabbrev, rest = ref.split(".", 1)
         usfmbook = BOOKS.fromosis(bookabbrev).usfmnumber
-        if ":" not in rest:
+        if "." not in rest:
             # book and chapter
             return BCID(f"{usfmbook}{pad3(rest)}")
         else:
             # book, chapter, verse
-            chapter, verse = rest.split(":", 1)
+            chapter, verse = rest.split(".", 1)
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 

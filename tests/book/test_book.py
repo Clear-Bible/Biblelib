@@ -31,6 +31,7 @@ class TestMark(object):
         mark = self.allbooks["MRK"]
         assert str(mark) == "<Book: MRK>"
         assert mark.usfmnumber == "41"
+        assert self.allbooks.fromosis("Mark").name == "Mark"
         assert mark.osisID == "Mark"
         assert mark.altname == "The Gospel according to Mark"
         assert mark.render() == "Mark"
