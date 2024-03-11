@@ -1,9 +1,14 @@
 """Enumerate the verses for a given versification scheme.
 
-The valid schemes are defined by SCHEME_URLS. This draws on the notebook examples at
+This is utility code for generating VREF files: those who only want to
+read those files can ignore this.
+
+The valid schemes are defined by SCHEME_URLS. This draws on the
+notebook examples at
 https://github.com/Copenhagen-Alliance/versification-specification/versification-mappings/VersificationMappings.ipynb.
 
 No mapping support here yet.
+
 """
 
 import operator
