@@ -1,63 +1,29 @@
+"""Test code in versification."""
+
 import pytest
-from biblelib.versification.Enumerator import Enumerator
+
+from biblelib.versification import VrefReader
 
 
-class TestEnumerator:
-    enumerator = Enumerator("org")
+class TestVrefReader:
+    eng_nt = VrefReader("eng", "nt")
+    org_nt = VrefReader("org", "nt")
 
     def test_init(self) -> None:
         """Test the __init__ method."""
-        assert self.enumerator.scheme == "org"
-        assert (
-            self.enumerator.mappingfile
-            == "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/org.json"
-        )
-        assert self.enumerator.versedict["excludedVerses"] == []
-        assert self.enumerator.versedict["partialVerses"] == {}
+        assert self.eng_nt.scheme == "eng"
+        assert self.eng_nt.canon == "nt"
+        assert len(self.eng_nt) == 7959
+        assert len(self.org_nt) == 7957
+        assert self.eng_nt[1187] == "41004009"
 
-    def test_books(self) -> None:
-        """Test the books method."""
-        books = self.enumerator.books()
-        assert len(books) == 95
-        assert books[0] == "GEN"
-        assert books[65] == "REV"
+    def test_nt_verses(self) -> None:
+        """Test versification integrity."""
+        assert "44019041" in self.eng_nt
+        assert "44019041" not in self.org_nt
 
-    def test_nt_books(self) -> None:
-        """Test books(nt_only=True)"""
-        nt_books = self.enumerator.books(nt_only=True)
-        assert len(nt_books) == 27
-        assert nt_books[0] == "MAT"
-        assert nt_books[-1] == "REV"
-
-    def test_ot_books(self) -> None:
-        """Test books(ot_only=True)"""
-        ot_books = self.enumerator.books(ot_only=True)
-        assert len(ot_books) == 39
-        assert ot_books[0] == "GEN"
-        assert ot_books[-1] == "MAL"
-
-    def test_protestant_books(self) -> None:
-        """Test the books method."""
-        books = self.enumerator.books(with_deuterocanon=False)
-        assert len(books) == 66
-        assert books[0] == "GEN"
-        assert books[-1] == "REV"
-
-    def test_chapters(self) -> None:
-        """Test chapter length."""
-        chapters = self.enumerator.versedict["maxVerses"]["MRK"]
-        assert len(chapters) == 16
-
-    def test_chapter_verses(self) -> None:
-        """Test chapter verses."""
-        n_verses = self.enumerator.chapter_verses("MRK", 1)
-        assert n_verses == 45
-
-    def test_enumerate_verses(self) -> None:
-        """Test enumerate_verses."""
-        verses = self.enumerator.enumerate_verses("MRK", 1)
-        assert len(verses) == 45
-        assert verses[0] == "MRK 1:1"
-
-
-# should add tests for other versification schemes
+    def test_not_asbcv(self) -> None:
+        """Test asbcv=False."""
+        eng_nt = VrefReader("eng", "nt", asbcv=False)
+        assert "ACT 19:41" in eng_nt
+        assert "44019041" not in eng_nt
