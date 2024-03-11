@@ -6,10 +6,13 @@ for more details.
 
 """
 
-from .versification import VrefReader
+from .Mapper import Mapper
+from .VrefReader import VrefReader
 
 
 __all__ = [
-    # versification
+    # Mapper
+    "Mapper",
+    # VrefReader
     "VrefReader",
 ]
