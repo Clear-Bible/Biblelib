@@ -1,5 +1,13 @@
 # Release Notes
 
+## 0.3.2
+
+- Added constants for source languages and versions, and support for
+  Bible editions.
+- Added to_bcv to bcvwpid for the frequent use case of converting to a
+  simple book-chapter-verse reference.
+- Initial support for versification: work is ongoing.
+
 ## 0.3.1
 
 - Handling of OSIS references was all wrong: now fixed.
