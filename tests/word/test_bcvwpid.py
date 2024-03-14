@@ -4,7 +4,7 @@ import typing
 
 import pytest
 
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, BID, BCID, BCVID, BCVWPID, simplify
+from biblelib.word import BID, BCID, BCVID, BCVWPID, fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv
 
 from biblelib.word.bcvwpid import pad3
 
@@ -416,3 +416,25 @@ class TestSimplify:
         assert simplify(self.mrk4811, BID).ID == "41"
         assert simplify(self.mrk4811, BCID).ID == "41004"
         assert simplify(self.mrk4811, BCVID).ID == "41004008"
+
+
+class TestTo_bcv:
+    """Test to_bcv()."""
+
+    def test_to_bcv_bcvinst(self) -> None:
+        """Test to_bcv()."""
+        assert to_bcv(BCVID("41004003")) == "41004003"
+
+    def test_to_bcv_bcvwpinst(self) -> None:
+        """Test to_bcv()."""
+        assert to_bcv(BCVWPID("n41004003001")) == "41004003"
+        assert to_bcv(BCVWPID("n410040030011")) == "41004003"
+        assert to_bcv(BCVWPID("41004003001")) == "41004003"
+        with pytest.raises(AssertionError):
+            # missing word index
+            assert to_bcv(BCVWPID("n41004003")) == "41004003"
+
+    def test_to_bcv_str(self) -> None:
+        """Test to_bcv()."""
+        # macula canon prefixes are not supported here
+        assert to_bcv("n41004003001") == "41004003"

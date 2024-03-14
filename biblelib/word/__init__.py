@@ -2,23 +2,38 @@
 
 The Hebrew and Greek source files are available from
 
-*
-  [Clear-Bible/macula-hebrew](https://github.com/Clear-Bible/macula-hebrew):
+* [Clear-Bible/macula-hebrew](https://github.com/Clear-Bible/macula-hebrew):
   Syntax trees, morphology, and linguistic annotations for the Hebrew
   Bible
 
-*
-  [Clear-Bible/macula-greek](https://github.com/Clear-Bible/macula-greek):
+* [Clear-Bible/macula-greek](https://github.com/Clear-Bible/macula-greek):
   Syntax trees, morphology, and linguistic annotations for the Greek
   New Testament
 
 """
 
 from .mappings import Mapping, Mappings
-from .bcvwpid import fromlogos, fromname, fromosis, fromusfm, fromubs, reftypes, simplify, BID, BCID, BCVID, BCVWPID
+from .bcvwpid import (
+    BID,
+    BCID,
+    BCVID,
+    BCVWPID,
+    fromlogos,
+    fromname,
+    fromosis,
+    fromusfm,
+    fromubs,
+    reftypes,
+    simplify,
+    to_bcv,
+)
 
 __all__ = [
     # bcvwpid
+    "BID",
+    "BCID",
+    "BCVID",
+    "BCVWPID",
     "fromlogos",
     "fromname",
     "fromosis",
@@ -26,10 +41,7 @@ __all__ = [
     "fromubs",
     "reftypes",
     "simplify",
-    "BID",
-    "BCID",
-    "BCVID",
-    "BCVWPID",
+    "to_bcv",
     # words
     "Mapping",
     "Mappings",

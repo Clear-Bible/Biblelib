@@ -639,3 +639,19 @@ def fromubs(ref: str, strict: bool = False) -> BCVWPID:
     wnstr = pad3(str(int(int(word) / 2)))
     # this adds a Part identifier: that does not seem correct
     return BCVWPID(ID=f"{book}{chapter}{verse}{wnstr}")
+
+
+def to_bcv(token: str | BCVWPID | BCVID) -> str:
+    """Return the BCV string for a reference instance or identifier.
+
+    This handles several input types for generality.
+    """
+    if isinstance(token, BCVWPID):
+        return token.to_bcvid
+    elif isinstance(token, BCVID):
+        return token.ID
+    elif isinstance(token, str):
+        # convert to a BCVWPID to ensure it's valid (11-12 chars)
+        return BCVWPID(token).to_bcvid
+    else:
+        raise ValueError(f"Invalid token type: {token}")
