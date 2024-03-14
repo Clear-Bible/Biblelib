@@ -3,6 +3,12 @@
 
 >>> from biblelib.versification import Mapper
 
+Note some quirks of the versification approach:
+
+- Some Psalms (like PS 23) combine the superscription text (`eng`
+verse 0) with verse 1, so `org` verse 1 has more word content than
+`eng` does.
+
 """
 
 import requests
@@ -28,6 +34,7 @@ class Mapper:
         """Create mappings from one versification scheme to another."""
         self.fromscheme = fromscheme
         self.toscheme = toscheme
+        self.fromjson = self._load_scheme(self.fromscheme)
 
     def _load_scheme(self, scheme: str) -> dict[str, Any]:
         """Load json data for scheme."""
