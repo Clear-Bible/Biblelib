@@ -19,10 +19,14 @@ class TestMark(object):
         assert str(gen) == "<Book: GEN>"
         assert gen.usfmnumber == "01"
         assert gen.osisID == "Gen"
+        assert gen.biblia == "Ge"
         assert gen.altname == ""
         assert gen.render() == "Gen"
         assert gen.render("usfmname") == "GEN"
         assert gen.render("logosID") == "bible.1"
+        assert gen.logosURI == "https://ref.ly/logosref/bible.1"
+        # need to drop nrsv
+        assert gen.bibliaURI == "https://biblia.com/books/nrsv/Ge"
 
     def test_attrs_mark(self) -> None:
         """Test attribute values."""
@@ -33,10 +37,14 @@ class TestMark(object):
         assert mark.usfmnumber == "41"
         assert self.allbooks.fromosis("Mark").name == "Mark"
         assert mark.osisID == "Mark"
+        assert mark.biblia == "Mk"
         assert mark.altname == "The Gospel according to Mark"
         assert mark.render() == "Mark"
         assert mark.render("usfmname") == "MRK"
         assert mark.render("logosID") == "bible.62"
+        assert mark.logosURI == "https://ref.ly/logosref/bible.62"
+        # need to drop nrsv
+        assert mark.bibliaURI == "https://biblia.com/books/nrsv/Mk"
 
     def test_usfmalt(self) -> None:
         """Test the legacy USFM numbers for NT books."""
@@ -66,6 +74,8 @@ class TestMark(object):
 
     def test_lookup(self) -> None:
         """Test lookup by attributes."""
+        bibliamark = self.allbooks.frombiblia("Mk")
+        assert bibliamark.usfmname == "MRK"
         osismark = self.allbooks.fromosis("Mark")
         assert osismark.usfmname == "MRK"
         logosIDmark = self.allbooks.fromlogos("bible.62")

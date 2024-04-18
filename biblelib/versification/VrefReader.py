@@ -42,6 +42,8 @@ class VrefReader(UserList):
         to BCV: otherwise they remain as USFM.
 
         """
+        assert scheme in self.schemes, f"Unsupported scheme: {scheme}"
+        assert canon in self.canons, f"Unsupported canon: {canon}"
         self.scheme = scheme
         self.canon = canon
         self.vref_file: str = self.get_vref_file(scheme, canon)

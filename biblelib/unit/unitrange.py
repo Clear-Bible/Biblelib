@@ -11,7 +11,7 @@
 
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import re
 
 from biblelib.book import Books
@@ -64,12 +64,19 @@ class VerseRange:
 
     startid: BCVID
     endid: BCVID
+    # these are computed from startid and endid
+    ID: str = field(init=False)
+    book_ID: str = field(init=False)
 
     def __post_init__(self) -> None:
         """Check initialization values."""
-        assert simplify(self.startid, BID) == simplify(
+        book: BID = self.startid.to_bid
+        self.book_ID = book.ID
+        assert self.book_ID == simplify(
             self.endid, BID
         ), f"Startid {self.startid} and endid (self.endid) must be in the same book."
+        # note this allows a vacuous range with the same start and
+        # end: does that make sense?
         assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
 
     def enumerate(self) -> list[Verse]:

@@ -86,6 +86,11 @@ class _Base:
         """Return a hash value."""
         return hash(self.ID)
 
+    @property
+    def to_bid(self) -> str:
+        """Return the book ID."""
+        return self.book_ID
+
 
 @dataclass(repr=False, unsafe_hash=True)
 class BID(_Base):
@@ -165,6 +170,11 @@ class BCID(BID):
         self.chapter_ID = self.ID[2:5]
         # also test that they're all digits, in the right range, etc.
 
+    @property
+    def to_bcid(self) -> str:
+        """Return string for the book and chapter ID."""
+        return self.book_ID + self.chapter_ID
+
     def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
@@ -225,6 +235,11 @@ class BCVID(BCID):
         super().__post_init__()
         self.verse_ID = self.ID[5:8]
         # also test that they're all digits, in the right range, etc.
+
+    @property
+    def to_bcvid(self) -> str:
+        """Return string for the book, chapter, and verse ID."""
+        return self.book_ID + self.chapter_ID + self.verse_ID
 
     def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
@@ -386,21 +401,6 @@ class BCVWPID(BCVID):
         """Return a USFM representation."""
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
-
-    @property
-    def to_bid(self) -> str:
-        """Return the book ID."""
-        return self.book_ID
-
-    @property
-    def to_bcid(self) -> str:
-        """Return string for the book and chapter ID."""
-        return self.book_ID + self.chapter_ID
-
-    @property
-    def to_bcvid(self) -> str:
-        """Return string for the book, chapter, and verse ID."""
-        return self.book_ID + self.chapter_ID + self.verse_ID
 
 
 # @dataclass

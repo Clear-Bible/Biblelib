@@ -14,6 +14,8 @@ verse 0) with verse 1, so `org` verse 1 has more word content than
 import requests
 from typing import Any
 
+from biblelib.word import fromusfm
+
 
 class Mapper:
     """Create mappings from one versification scheme to another.
@@ -34,7 +36,7 @@ class Mapper:
         """Create mappings from one versification scheme to another."""
         self.fromscheme = fromscheme
         self.toscheme = toscheme
-        self.fromjson = self._load_scheme(self.fromscheme)
+        self.fromjson: dict[str, dict[str, str]] = self._load_scheme(self.fromscheme)
 
     def _load_scheme(self, scheme: str) -> dict[str, Any]:
         """Load json data for scheme."""
@@ -43,3 +45,18 @@ class Mapper:
         assert r.status_code == 200, f"Failed to get content from {mappingfile}"
         schemejson: dict[str, Any] = r.json()
         return schemejson
+
+    # # WORKING HERE
+    # def enumerate_mapping(self, fromjson: dict[str, dict[str, str]]) -> list[tuple[str, str]]:
+    #     """Return the corresponding reference in the target scheme."""
+    #     mappings: list[tuple[str, str]] = []
+    #     for fromref, toref in fromjson["mappedVerses"]:
+    #         if "-" in fromref:
+    #             pass
+    #         else:
+    #             mappings.append(
+    #                 fromusfm(fromref),
+    #                 fromusfm(toref),
+    #             )
+    #         mappings.append((ref, fromjson["mappedVerses"][ref]))
+    #     return mappings

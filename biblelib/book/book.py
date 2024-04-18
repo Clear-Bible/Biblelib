@@ -42,7 +42,7 @@ from csv import DictReader
 from dataclasses import dataclass, field
 from pathlib import Path
 import re
-from typing import Union
+from typing import Any, Union
 
 
 # This directory: where books.tsv is also located.
@@ -64,6 +64,7 @@ class Book:
             characters: single-digit strings are not zero-padded.
         usfmname (str): the three-character USFM name for this book
         osisID (str): the OSIS identifier for this book
+        biblia (str): biblia.com abbreviaton for this book
         name (str): the common English name for this book
         altname (str): a longer or alternate English name, or empty string
 
@@ -80,6 +81,7 @@ class Book:
     # three characters
     usfmname: str
     osisID: str
+    biblia: str
     name: str
     altname: str = ""
     _canon_traditions: tuple = ("Catholic", "Jewish", "Protestant")
@@ -102,25 +104,25 @@ class Book:
         """
         return hash(self.osisID)
 
-    def __eq__(self, o) -> bool:
+    def __eq__(self, o: Any) -> bool:
         """Return True if self is == to other, else False, based on ordinals."""
-        return self.ordinal == o.ordinal
+        return bool(self.ordinal == o.ordinal)
 
-    def __ge__(self, o) -> bool:
+    def __ge__(self, o: Any) -> bool:
         """Return True if self is >= other, else False, based on ordinals."""
-        return self.ordinal >= o.ordinal
+        return bool(self.ordinal >= o.ordinal)
 
-    def __gt__(self, o) -> bool:
+    def __gt__(self, o: Any) -> bool:
         """Return True if self is > other, else False, based on ordinals."""
-        return self.ordinal > o.ordinal
+        return bool(self.ordinal > o.ordinal)
 
-    def __le__(self, o) -> bool:
+    def __le__(self, o: Any) -> bool:
         """Return True if self is <= other, else False, based on ordinals."""
-        return self.ordinal <= o.ordinal
+        return bool(self.ordinal <= o.ordinal)
 
-    def __lt__(self, o) -> bool:
+    def __lt__(self, o: Any) -> bool:
         """Return True if self is < other, else False, based on ordinals."""
-        return self.ordinal < o.ordinal
+        return bool(self.ordinal < o.ordinal)
 
     @property
     def usfmnumberalt(self) -> str:
@@ -170,6 +172,16 @@ class Book:
         """
         return f"https://ref.ly/logosref/{self.render('logosID')}"
 
+    @property
+    def bibliaURI(self) -> str:
+        """Return a URI to open this book at biblia.com.
+
+        Example:
+            >>> Books()["MRK"].logosURI
+            'https://biblia.com/books/nrsv/Mk'
+        """
+        return f"https://biblia.com/books/nrsv/{self.render('biblia')}"
+
     # other URIs to consider
     # YouVersion
     # Bible Gateway
@@ -190,6 +202,7 @@ class Books(UserDict):
     namemap: dict = {}
     nameregexp: re.Pattern = re.compile("")
     osismap: dict = {}
+    bibliamap: dict = {}
     usfmnumbermap: dict = {}
     # some minor standardization: this is not an extensible approach,
     # and long form names should use a different approach
@@ -264,7 +277,8 @@ class Books(UserDict):
             # initialize on demand
             self.logosmap = {b.logosID: b for _, b in self.data.items()}
         assert logosID in self.logosmap, f"Invalid logosID {logosID}"
-        return self.logosmap[logosID]
+        bookinst: Book = self.logosmap[logosID]
+        return bookinst
 
     def fromname(self, bookname: str) -> Book:
         """Return the book instance for a book name.
@@ -277,7 +291,8 @@ class Books(UserDict):
         # approach, and long form names should use a different
         # approach
         bookname = self.quickfixes.get(bookname, bookname)
-        return self.namemap[bookname]
+        bookinst: Book = self.namemap[bookname]
+        return bookinst
 
     def _ensure_osismap(self) -> dict[str, str]:
         """Generate the OSIS map if needed."""
@@ -294,7 +309,26 @@ class Books(UserDict):
                 like "Matt".
         """
         self._ensure_osismap()
-        return self.osismap[osisID]
+        bookinst: Book = self.osismap[osisID]
+        return bookinst
+
+    def _ensure_bibliamap(self) -> dict[str, str]:
+        """Generate the Biblia map if needed."""
+        if not self.bibliamap:
+            # initialize on demand
+            self.bibliamap = {b.biblia: b for _, b in self.data.items()}
+        return self.bibliamap
+
+    def frombiblia(self, biblia: str) -> Book:
+        """Return the book instance for a Biblia identifier.
+
+        Args:
+            biblia: the Biblia identifier to use in looking up the Book,
+                like "Matt".
+        """
+        self._ensure_bibliamap()
+        bookinst: Book = self.bibliamap[biblia]
+        return bookinst
 
     def fromusfmnumber(self, usfmnumber: str, legacynumbering: bool = False) -> Book:
         """Return the book instance for a USFM number.

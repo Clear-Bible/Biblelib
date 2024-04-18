@@ -179,6 +179,8 @@ class TestBID:
         """Test initialization and attributes."""
         assert BID(self.genid).book_ID == self.genid
         assert BID(self.markid).book_ID == self.markid
+        # defined on the superclass
+        assert BID(self.markid).to_bid == self.markid
 
     def test_hash(self) -> None:
         """Ensure hashable.
@@ -213,6 +215,8 @@ class TestBCID:
         assert self.testid.book_ID == "43"
         assert self.testid.chapter_ID == "001"
         assert repr(self.testid) == "BCID('43001')"
+        assert self.testid.to_bid == "43"
+        assert self.testid.to_bcid == self.NA1904_ID
 
     def test_hash(self) -> None:
         """Ensure hashable.
@@ -266,6 +270,9 @@ class TestBCVID:
         assert self.testid.chapter_ID == "001"
         assert self.testid.verse_ID == "001"
         assert repr(self.testid) == "BCVID('43001001')"
+        assert self.testid.to_bid == "43"
+        assert self.testid.to_bcid == "43001"
+        assert self.testid.to_bcvid == self.NA1904_ID
 
     def test_hash(self) -> None:
         """Ensure hashable.
