@@ -66,15 +66,23 @@ class VerseRange:
     endid: BCVID
     # these are computed from startid and endid
     ID: str = field(init=False)
-    book_ID: str = field(init=False)
+    book: BID = field(init=False)
+    chapter: BCID = field(init=False)
 
     def __post_init__(self) -> None:
         """Check initialization values."""
-        book: BID = self.startid.to_bid
-        self.book_ID = book.ID
-        assert self.book_ID == simplify(
-            self.endid, BID
-        ), f"Startid {self.startid} and endid (self.endid) must be in the same book."
+        # enforce typs: a little hacky to change init values like this.
+        # It would be less hacky to have a factory method that does this.
+        if self.startid.__class__.__name__ != "BCVID":
+            self.startid = BCVID(self.startid.to_bcvid)
+        if self.endid.__class__.__name__ != "BCVID":
+            self.endid = BCVID(self.endid.to_bcvid)
+        self.ID = self.startid.ID + "-" + self.endid.ID
+        self.book: BID = BID(self.startid.to_bid)
+        self.chapter: BCID = BCID(self.startid.to_bcid)
+        assert self.book == BID(
+            self.endid.to_bid
+        ), f"Startid {self.startid} and endid {self.endid} must be in the same book."
         # note this allows a vacuous range with the same start and
         # end: does that make sense?
         assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."

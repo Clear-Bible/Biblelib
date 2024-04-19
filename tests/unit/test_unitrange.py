@@ -2,7 +2,7 @@
 
 import pytest
 
-from biblelib.word import BCID, BCVID
+from biblelib.word import BID, BCID, BCVID
 from biblelib.unit import Chapter, Verse, unitrange
 
 
@@ -45,12 +45,19 @@ class TestVerseRange(object):
 
     def test_init(self) -> None:
         """Test initialization."""
+        vr = unitrange.VerseRange(startid=BCVID("40001001"), endid=BCVID("40001012"))
+        assert vr.ID == "40001001-40001012"
+        assert vr.book == BID("40")
+        assert vr.chapter == BCID("40001")
         # must be in same book
         with pytest.raises(Exception):
             unitrange.VerseRange(startid=BCVID("40001001"), endid=BCVID("41001001"))
         # startid must < endid
         with pytest.raises(Exception):
-            unitrange.ChapterRange(startid=BCVID("41002001"), endid=BCVID("41001001"))
+            unitrange.VerseRange(startid=BCVID("41002001"), endid=BCVID("41001001"))
+        # can't initialize with a BCID
+        with pytest.raises(Exception):
+            unitrange.VerseRange(startid=BCID("41002"), endid=BCVID("41001001"))
 
     def test_enumerate_vacuous(self) -> None:
         """Test for vacuous enumeration."""
