@@ -1,5 +1,15 @@
 # Release Notes
 
+## 0.3.3
+
+- Added book.frombiblia() and tests. Added biblia identifiers to books.tsv.
+- Moved to_bid/bcid/bcvid upward in the class hierarchy in bcvwpid,
+  with updated tests.
+- added `ID`, `book` and `chapter` attributes to `VerseRange`.
+- Fixed some type hints in book/book.py. Added bibliaURI for
+  generating links to online text.
+- VrefReader now checks `scheme` and `canon` validity.
+
 ## 0.3.2
 
 - Added constants for source languages and versions, and support for
