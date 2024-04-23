@@ -6,7 +6,27 @@ Not to be confused with book.book.
 # import pytest
 
 from biblelib.word import BID
-from biblelib.unit.book import Book, AllBookChapters
+from biblelib.unit.book import BookChapters, Book, AllBookChapters
+
+
+class TestBookChapters:
+    """Test BookChapters().
+
+    This is initialized by AllBookChapters(), but testing never hurts.
+    """
+
+    mrk = BookChapters("41", "41016", start_ID="41001")
+
+    def test_init(self) -> None:
+        """Test for instance."""
+        assert self.mrk.book_ID == "41"
+        assert self.mrk.end_ID == "41016"
+        assert self.mrk.start_ID == "41001"
+
+    def test_from_book_tuple(self) -> None:
+        """Test for from_book_tuple."""
+        assert BookChapters.from_book_tuple((82, {1: 21, 2: 22, 3: 18})) == \
+            BookChapters(book_ID='61', end_ID='61003', start_ID='61001', name='2PE')
 
 
 class TestAllBookChapters:
