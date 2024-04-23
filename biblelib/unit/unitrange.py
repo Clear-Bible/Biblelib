@@ -12,7 +12,7 @@
 """
 
 from dataclasses import dataclass, field
-import re
+from typing import Optional
 
 from biblelib.book import Books
 from biblelib.word import BID, BCID, BCVID, simplify
@@ -67,6 +67,8 @@ class VerseRange:
     # these are computed from startid and endid
     ID: str = field(init=False)
     book: BID = field(init=False)
+    # initialized from startid, so could be misleading for
+    # cross-chapter ranges
     chapter: BCID = field(init=False)
 
     def __post_init__(self) -> None:
@@ -86,6 +88,10 @@ class VerseRange:
         # note this allows a vacuous range with the same start and
         # end: does that make sense?
         assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
+
+    def __repr__(self) -> str:
+        """Return a printed representation."""
+        return "<VerseRange: {self.ID}>"
 
     def enumerate(self) -> list[Verse]:
         """Return a list of Verse instances enumerating the verses in the range.
@@ -123,13 +129,17 @@ class VerseRange:
                 # WRONG use of get_verses here now that this is a list of Chapters
                 midverses = [v for chap in midbcids for v in chap.enumerate(1, chap.lastverse)]
                 lastbcid = chapenum[-1].identifier
-                lastchap = Chapter(inst=lastbcid)
+                # lastchap = Chapter(inst=lastbcid)
                 lastverses = get_verses(lastbcid, 1, endid_verse_index)
                 return [v for v in (firstverses + midverses + lastverses)]
 
+    def enumerate_ids(self) -> list[BCVID | None]:
+        """Return a list of BCVID instances for the range."""
+        return [v.inst for v in self.enumerate()]
+
 
 # I also need WordRange for a sequence of word IDs
-def detect_name_range(ref: str):
+def detect_name_range(ref: str) -> str:
     """Return a range instance for a reference.
 
     Assumes it's called on a reference with a hyphen. Heuristic.
@@ -139,7 +149,7 @@ def detect_name_range(ref: str):
     assert not ("," in ref1 or "," in ref2), f"Can't handle complex range: {ref}"
     namematch = BOOKS.nameregexp.match(ref1)
     assert namematch, f"Invalid name reference: {ref1}"
-    bookname, rest = ref1[: namematch.end()], ref1[(namematch.end() + 1) :]
+    bookname, _ = ref1[: namematch.end()], ref1[(namematch.end() + 1) :]
     usfmbook = BOOKS.fromname(bookname).usfmnumber
     if ":" in ref1:
         return f"{usfmbook}, verserange"
