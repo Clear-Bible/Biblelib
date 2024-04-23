@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.3.4
+
+- Added word.bcvwpid.BCVIDRange to handle within-chapter ranges, just
+  as references. Note this does not yet handle cross-chapter ranges:
+  that requires knowledge of the Verse contents, which bcvwpid doesn't
+  have. Future work.
+- Added enumerate_ids() to unit.unitrange.VerseRange()
+- Additional tests
+
 ## 0.3.3
 
 - Added book.frombiblia() and tests. Added biblia identifiers to books.tsv.
