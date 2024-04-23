@@ -169,4 +169,4 @@ class Chapter(Unit):
         else:
             assert arg0 > 0, "0 is not a valid value for arg0"
             verserange = range(arg0 - 1, arg1)
-        return [Verse(inst=(BCVID(self.inst.ID + pad(index + 1, count=3)))) for index in verserange]
+        return [Verse(inst=(BCVID(self.inst.ID + str(index + 1).zfill(3)))) for index in verserange]
