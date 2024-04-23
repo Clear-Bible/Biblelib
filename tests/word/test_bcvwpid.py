@@ -4,7 +4,8 @@ import typing
 
 import pytest
 
-from biblelib.word import BID, BCID, BCVID, BCVWPID, fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv
+from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv
 
 from biblelib.word.bcvwpid import pad3
 
@@ -318,6 +319,41 @@ class TestBCVID:
         mrk481 = BCVWPID("410040080011")
         # this drops the word and part indices (by design)
         assert mrk481.to_usfm() == "MRK 4:8"
+
+
+class TestBCVIDRange:
+    """Test basic functionality of BCVWPRange dataclass."""
+
+    mark4_8 = BCVID("41004008")
+    mark4_13 = BCVID("41004013")
+    markrange = BCVIDRange(mark4_8, mark4_13)
+
+    def test_init(self) -> None:
+        """Test initialization and attributes."""
+        assert self.markrange.startid == self.mark4_8
+        assert self.markrange.endid == self.mark4_13
+        assert repr(self.markrange) == "BCVIDRange('41004008-41004013')"
+        assert self.markrange.ID == "41004008-41004013"
+        assert self.markrange.book == BID("41")
+        assert self.markrange.chapter == BCID("41004")
+        assert self.markrange.end_chapter == BCID("41004")
+
+    def test_enumerate(self) -> None:
+        """Test enumerate()."""
+        assert self.markrange.enumerate() == [
+            BCVID("41004008"),
+            BCVID("41004009"),
+            BCVID("41004010"),
+            BCVID("41004011"),
+            BCVID("41004012"),
+            BCVID("41004013"),
+        ]
+        # vacuous range
+        assert BCVIDRange(self.mark4_8, BCVID("41004008")).enumerate() == [BCVID("41004008")]
+        # no cross-chapter ranges yet
+        with pytest.raises(NotImplementedError):
+            # not implemented
+            _ = BCVIDRange(BCVID("41004008"), BCVID("41005001")).enumerate()
 
 
 class TestBCVWPID:
