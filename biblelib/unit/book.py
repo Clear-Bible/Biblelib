@@ -4,6 +4,11 @@ Some duplication here with book.book that should be resolved, probably
 by migrating that code here.
 
 >>> from biblelib.unit import book
+# normally initialized by AllBookChapters
+>>> mrk = book.BookChapters("41", "41016", start_ID="410001")
+>>> mrk.bookname
+'MRK'
+
 >>> b
 Book(identifier='BID('41')')
 >>> b.identifier.book_ID
@@ -26,8 +31,6 @@ from typing import Optional
 # from collections import UserDict
 # from csv import DictReader
 from pathlib import Path
-
-# from typing import Any
 
 from biblelib.word import BID, BCID
 from biblelib import book
