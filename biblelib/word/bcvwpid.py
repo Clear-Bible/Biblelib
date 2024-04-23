@@ -275,6 +275,79 @@ class BCVID(BCID):
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
 
+def from_bcid_verse(bcid: BCID, verse: int) -> BCVID:
+    """Return a BCVID instance from a BCID and verse number."""
+    return BCVID(f"{bcid.ID}{pad3(str(verse))}")
+
+
+@dataclass
+class BCVIDRange:
+    """Represents a range of BCVID instances.
+
+    This can represent a range across chapter boundaries,
+    though such ranges cannot yet be enumerated.
+
+    It is an error if the start and end books are not the same.
+    """
+
+    startid: BCVID
+    endid: BCVID
+    # these are computed from startid and endid
+    ID: str = field(init=False)
+    book: BID = field(init=False)
+    # initialized from startid, so could be misleading for
+    # cross-chapter ranges
+    chapter: BCID = field(init=False)
+    end_chapter: BCID = field(init=False)
+
+    def __post_init__(self) -> None:
+        """Check initialization values."""
+        # enforce typs: a little hacky to change init values like this.
+        # It would be less hacky to have a factory method that does this.
+        if self.startid.__class__.__name__ != "BCVID":
+            self.startid = BCVID(self.startid.to_bcvid)
+        if self.endid.__class__.__name__ != "BCVID":
+            self.endid = BCVID(self.endid.to_bcvid)
+        self.ID = self.startid.ID + "-" + self.endid.ID
+        self.book: BID = BID(self.startid.to_bid)
+        self.chapter: BCID = BCID(self.startid.to_bcid)
+        self.end_chapter: BCID = BCID(self.endid.to_bcid)
+        assert self.book == BID(
+            self.endid.to_bid
+        ), f"Startid {self.startid} and endid {self.endid} must be in the same book."
+        # note this allows a vacuous range with the same start and
+        # end: does that make sense?
+        assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
+
+    def __repr__(self) -> str:
+        """Return a printed representation."""
+        return f"{type(self).__name__}('{self.ID}')"
+
+    def enumerate(self) -> list[BCVID]:
+        """Return a list of BCVID instances enumerating the verses in the range.
+
+        Enumerations include the ending BCVID value (unlike range).
+
+        Only implemented for ranges within the same chapter.  This
+        also assumes verse numbers are sequential, without gaps: that
+        won't be true for some Bible editions.
+
+        """
+        if self.startid == self.endid:
+            # vacuous range
+            return [self.startid]
+        elif self.chapter != self.end_chapter:
+            # this needs knowledge about how many Verses in a Chapter,
+            # which lives in unit.unitrange. Not sure how to integrate these two:
+            # maybe a special enumerate method for cross-chapter ranges?
+            raise NotImplementedError("Enumerating over chapter boundaries is not yet implemented.")
+        else:
+            return [
+                from_bcid_verse(self.chapter, n)
+                for n in range(int(self.startid.verse_ID), int(self.endid.verse_ID) + 1)
+            ]
+
+
 @dataclass(repr=False, unsafe_hash=True)
 class BCVWPID(BCVID):
     """Identifies words from Bible texts by book, chapter, verse, word, and word part.
@@ -438,7 +511,7 @@ def simplify(refinst: reftypes, newclass: reftypes) -> reftypes:
     For BCVWID, BCID, BID, or BCVID.
     For BCVWPID, any of the other types.
     """
-    assert refinst.__class__ in get_args(reftypes), "Must be a reference instance"
+    assert refinst.__class__ in get_args(reftypes), f"{refinst} must be a reference instance"
     validtypes = {
         "BCID": ["BID"],
         "BCVID": ["BID", "BCID"],
