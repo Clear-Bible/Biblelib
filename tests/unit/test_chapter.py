@@ -6,6 +6,32 @@ from biblelib.word import BCID
 from biblelib.unit import chapter
 
 
+class TestChapterVerses:
+    """Test basic functionality for ChapterVerses."""
+
+    mark_4: chapter.ChapterVerses = chapter.ChapterVerses(chapter_ID="41004",
+                                                          end_ID="41004041")
+
+    def test_init(self) -> None:
+        """Test for __init__."""
+        assert self.mark_4.chapter_ID == "41004"
+        assert self.mark_4.end_ID == "41004041"
+        assert self.mark_4.book_ID == "41"
+        assert self.mark_4.lastverse == 41
+        assert repr(self.mark_4) == 'ChapterVerses(chapter_ID="41004", end_ID="41004041")'
+
+
+class TestChapters:
+    """Test basic functionality for Chapters."""
+    chpts: chapter.Chapters = chapter.Chapters()
+
+    def test_init(self) -> None:
+        """Test for __init__."""
+        assert len(self.chpts) == 1459
+        assert self.chpts["01001"].chapter_ID == "01001"
+        assert self.chpts["01001"].end_ID == "01001031"
+
+
 class TestChapter(object):
     """Test basic functionality for chapters."""
 
