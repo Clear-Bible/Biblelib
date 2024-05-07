@@ -12,7 +12,6 @@ The Hebrew and Greek source files are available from
 
 """
 
-from .mappings import Mapping, Mappings
 from .bcvwpid import (
     BID,
     BCID,
@@ -44,7 +43,4 @@ __all__ = [
     "reftypes",
     "simplify",
     "to_bcv",
-    # words
-    "Mapping",
-    "Mappings",
 ]

@@ -1,5 +1,13 @@
 # Release Notes
 
+## 0.3.5
+
+- Better handlings of UBS MARBLE references. Now using the Macula
+  mapping tables for Hebrew and Greek references at the word level,
+  and otherwise converting to a BCVID.
+    - This deprecates word/mappings in favor of a `word.mappings`
+      module.
+
 ## 0.3.4
 
 - Added word.bcvwpid.BCVIDRange to handle within-chapter ranges, just

@@ -57,6 +57,7 @@ import re
 from typing import Any, Union, get_args
 
 from biblelib.book import Books
+from .mappings import Mapper
 
 BOOKS = Books()
 
@@ -674,44 +675,31 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 
-def fromubs(ref: str, strict: bool = False) -> BCVWPID:
-    """Return a BCVWP instance for a single UBS reference.
+def fromubs(ref: str) -> list[BCVID | BCVWPID]:
+    """Return a list of BCV(WP) instances for a single UBS reference.
 
-    UBS references are 14 characters with an extra leading digit, a
-    segment code that is empty except for DC and LXX books, and the
-    word numbers are doubled.
+    Hebrew Bible references sometimes map to two Macula tokens because
+    of segmentation differences. Word/part-level references return
+    BCVWPID instances based on mapping files. Those without a non-zero
+    word index are calculated and return BCVIDs.
 
-    Odd word numbers are rounded down, assuming they represent (wn *
-    2) + 1 for a variant. With strict=True (default is False), odd
-    word numbers raise an error.
+    This does not yet handle range references.
 
     """
-
-    def evenp(digits: int | str) -> bool:
-        """Return True if digits is an even-numbered integer, else False."""
-        return (int(digits) % 2) == 0
-
-    # some UBS DGNT references have this as a suffix: fragile
-    if re.search(r"\({N:00\d}\)$", ref) or re.search(r"{N:00\d}$", ref):
-        ref = ref[:14]
-    assert len(ref) == 14, f"Not a UBS reference: {ref}"
-    # drop leading digit
-    assert ref[0] == "0", f"Leading digit should be 0: {ref}"
-    book = ref[1:3]
-    chapter = ref[3:6]
-    verse = ref[6:9]
-    # next two digits are the segment: per
-    # https://docs.google.com/document/d/1hAGSokibAXkxL28fKXQQzYV_BkMnzs7ILX7W07q3JN0/
-    # "relevant for DC books and LXX only, otherwise 00"
-    assert ref[9:11] == "00", f"Segment code should be 00: {ref}"
-    # MARBLE data only uses even numbers for word positions, so divide by 2
-    word = ref[11:14]
-    if not evenp(word) and strict:
-        raise ValueError(f"Word code should be an even number: {ref}")
-    # this drops any fractional part after dividing by 2
-    wnstr = pad3(str(int(int(word) / 2)))
-    # this adds a Part identifier: that does not seem correct
-    return BCVWPID(ID=f"{book}{chapter}{verse}{wnstr}")
+    mpr = Mapper()
+    macularefs = mpr.to_macula(ref)
+    reflist: list[BCVID | BCVWPID] = []
+    if macularefs:
+        reflist = [BCVWPID(r) for r in macularefs]
+    elif ref.endswith("0000"):
+        # verse-level reference
+        # drop leading digit
+        assert ref[0] == "0", f"Leading digit should be 0: {ref}"
+        book = ref[1:3]
+        chapter = ref[3:6]
+        verse = ref[6:9]
+        reflist = [BCVID(ID=f"{book}{chapter}{verse}")]
+    return reflist
 
 
 def to_bcv(token: str | BCVWPID | BCVID) -> str:
