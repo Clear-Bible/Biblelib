@@ -1,5 +1,15 @@
 # Release Notes
 
+## 0.3.6
+
+- Refactored BCVWPID.get_id() with better logic, but a breaking change:
+    - Default is now no canon prefix, the opposite of previous
+      version. Writing Macula-matching data should set prefix=True.
+    - Default is to output the part index (so Greek and targets should
+      set part_index=False)
+    - Canon prefix is no longer part of the `ID` value.
+    - Tests updated to match.
+
 ## 0.3.5
 
 - Better handlings of UBS MARBLE references. Now using the Macula
