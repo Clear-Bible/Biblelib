@@ -361,7 +361,8 @@ class BCVWPID(BCVID):
     - P optionally identifies a word part: this is optional for NT
       books, where it defaults to 1 if output.
 
-    Identifiers may have an optional corpus prefix.
+    Identifiers may have an optional corpus prefix. This is removed
+    from the ID but retained as self.corpus_prefix.
 
     This dataclass does not validate whether any identifiers are in
     the correct range: it only records the data. Validation is planned
@@ -391,6 +392,8 @@ class BCVWPID(BCVID):
     # book mapping data
     word_ID: str = field(init=False)
     part_ID: str = ""
+    # this is not part of the overall ID, and is computed based on
+    # book
     canon_prefix: str = ""
     # the longth of the bcvwp ID
     _idlen = 11
@@ -421,12 +424,14 @@ class BCVWPID(BCVID):
         # assert 13 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
         if self.ID.startswith("o") or self.ID.startswith("n"):
             self.canon_prefix = self.ID[0]
-            restid = self.ID[1:]
+            restid = self.ID = self.ID[1:]
         else:
             restid = self.ID
             # set canon_prefix and prepend to ID
             self.canon_prefix = _get_canon_prefix(restid[0:2])
-            self.ID = self.canon_prefix + self.ID
+            # don't include canon prefix in the ID: decide that at
+            # output time with get_id().
+            # self.ID = self.canon_prefix + self.ID
         self.book_ID = restid[0:2]
         # TODO: add tests, presumably a closed set of values
         assert self.canon_prefix == _get_canon_prefix(self.book_ID), f"Canon prefix must match book ID: {self.ID}"
@@ -439,23 +444,26 @@ class BCVWPID(BCVID):
             self.part_ID = "1"
             self.ID += self.part_ID
 
-    def get_id(self, prefix: bool = True, nt_part: bool = False) -> str:
+    def get_id(self, prefix: bool = False, part_index: bool = True) -> str:
         """Return a string identifier for the instance.
 
-        With prefix (default=True), prefix OT references with 'o' and
-        NT references with 'n'.
+        With prefix (default=False), prefix OT references with 'o' and
+        NT references with 'n'. This is only typcal for Macula source
+        references.
 
-        With nt_part=True (default=False), if an NT token, include a
-        part ID'. This makes the identifier 12 characters, same as for
-        Hebrew.
+        With part_index (default=True), include a part ID, making the
+        identifier 12 characters. This is typical for Hebrew, but not
+        for Greek or target tokens. Raise ValueError if this would
+        drop a non-default part ID.
 
         """
         strid = self.ID
-        if not prefix:
+        if prefix:
             # drop the prefix
-            strid = self.ID[1:]
-        if self.canon_prefix == "n" and not nt_part:
-            # drop the part
+            strid = f"{self.canon_prefix}{strid}"
+        if not part_index:
+            if self.part_ID not in {"", "1"}:
+                raise ValueError(f"Unsafe to drop non-default part index: {self}")
             strid = strid[:-1]
         return strid
 

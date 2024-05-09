@@ -379,8 +379,8 @@ class TestBCVWPID:
         assert self.testid.verse_ID == "001"
         assert self.testid.word_ID == "005"
         assert self.testid.part_ID == "1"
-        assert self.testid.get_id() == "n43001001005"
-        assert repr(self.testid) == "BCVWPID('n430010010051')"
+        assert self.testid.get_id(part_index=False) == "43001001005"
+        assert repr(self.testid) == "BCVWPID('430010010051')"
 
     def test_init_with_part(self) -> None:
         """Test initialization and attributes for an ID with a part."""
@@ -391,7 +391,7 @@ class TestBCVWPID:
         assert genid.verse_ID == "003"
         assert genid.word_ID == "001"
         assert genid.part_ID == "1"
-        assert repr(genid) == "BCVWPID('o010020030011')"
+        assert repr(genid) == "BCVWPID('010020030011')"
 
     def test_init_with_prefix(self) -> None:
         """Test initialization and attributes for an ID with a prefix."""
@@ -415,12 +415,14 @@ class TestBCVWPID:
     def test_get_id(self) -> None:
         """Test get_id()."""
         gen = BCVWPID("010010010051")
-        assert gen.get_id() == "o010010010051"
-        assert gen.get_id(prefix=False) == "010010010051"
-        assert self.testid.get_id() == "n43001001005"
-        assert self.testid.get_id(prefix=False) == "43001001005"
-        assert self.testid.get_id(nt_part=True) == "n430010010051"
-        assert self.testid.get_id(prefix=False, nt_part=True) == "430010010051"
+        assert gen.get_id() == "010010010051"
+        assert gen.get_id(prefix=True) == "o010010010051"
+        # this wouldn't make sense for Hebrew, but ...
+        assert gen.get_id(part_index=False) == "01001001005"
+        assert self.testid.get_id() == "430010010051"
+        assert self.testid.get_id(prefix=True) == "n430010010051"
+        assert self.testid.get_id(part_index=False) == "43001001005"
+        assert self.testid.get_id(prefix=True, part_index=False) == "n43001001005"
         # should also test "x" canon prefix
 
     def test_includes(self) -> None:
