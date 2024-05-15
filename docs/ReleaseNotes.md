@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.3.7
+
+- Added `get_id()` method to `word.bcvwpid.BCVID` for consistency with
+  `BCVWPID`. This allows calling the same method on a list of
+  references that mixes verse-level and word/part level.
+
 ## 0.3.6
 
 - Refactored BCVWPID.get_id() with better logic, but a breaking change:
