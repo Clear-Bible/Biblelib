@@ -5,7 +5,7 @@ import typing
 import pytest
 
 from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv, make_id
 
 from biblelib.word.bcvwpid import pad3
 
@@ -493,3 +493,16 @@ class TestTo_bcv:
         """Test to_bcv()."""
         # macula canon prefixes are not supported here
         assert to_bcv("n41004003001") == "41004003"
+
+
+class TestMake_id:
+    """Test make_id()."""
+
+    def test_make_id(self) -> None:
+        assert make_id("41") == BID("41")
+        assert make_id("41004") == BCID("41004")
+        assert make_id("41004003") == BCVID("41004003")
+        assert make_id("41004003001") == BCVWPID("41004003001")
+        assert make_id("n41004003001") == BCVWPID("41004003001")
+        assert make_id("410040030011") == BCVWPID("41004003001")
+        assert make_id("n410040030011") == BCVWPID("41004003001")

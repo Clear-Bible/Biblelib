@@ -728,3 +728,26 @@ def to_bcv(token: str | BCVWPID | BCVID) -> str:
         return BCVWPID(token).to_bcvid
     else:
         raise ValueError(f"Invalid token type: {token}")
+
+
+def make_id(refstr: str) -> BID | BCID | BCVID | BCVWPID:
+    """Return an instance of the appropriate class from a ID string.
+
+    Class is chosen based on the length of refstr. Raises a ValueError
+    if the length doesn't match expectations.
+
+    """
+    idlengths = {
+        2: BID,
+        5: BCID,
+        8: BCVID,
+        11: BCVWPID,
+        12: BCVWPID,
+        13: BCVWPID,
+    }
+    refclass = idlengths.get(len(refstr))
+    if not refclass:
+        raise ValueError(f"Can't select appropriate class for {len(refstr)}-character reference {refstr}")
+    else:
+        instance: BID | BCID | BCVID | BCVWPID = refclass(refstr)
+        return instance

@@ -26,6 +26,7 @@ from .bcvwpid import (
     reftypes,
     simplify,
     to_bcv,
+    make_id,
 )
 
 __all__ = [
@@ -43,4 +44,5 @@ __all__ = [
     "reftypes",
     "simplify",
     "to_bcv",
+    "make_id",
 ]

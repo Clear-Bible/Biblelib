@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.3.8
+
+- Added `make_id()` method to `word.bcvwpid` to return an instance of
+  whatever class matches the length of the reference string (BID,
+  BCID, BCVID, BCVWPIP).
+
+
 ## 0.3.7
 
 - Added `get_id()` method to `word.bcvwpid.BCVID` for consistency with
