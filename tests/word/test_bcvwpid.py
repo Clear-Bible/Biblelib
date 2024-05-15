@@ -283,6 +283,7 @@ class TestBCVID:
         assert self.testid.to_bid == "43"
         assert self.testid.to_bcid == "43001"
         assert self.testid.to_bcvid == self.NA1904_ID
+        assert self.testid.get_id() == self.NA1904_ID
 
     def test_hash(self) -> None:
         """Ensure hashable.

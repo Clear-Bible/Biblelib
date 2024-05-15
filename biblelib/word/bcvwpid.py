@@ -242,6 +242,10 @@ class BCVID(BCID):
         """Return string for the book, chapter, and verse ID."""
         return self.book_ID + self.chapter_ID + self.verse_ID
 
+    def get_id(self) -> str:
+        """Return BCVID string. For compatibility with BCVWPID."""
+        return self.to_bcvid
+
     def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.
 
@@ -361,8 +365,8 @@ class BCVWPID(BCVID):
     - P optionally identifies a word part: this is optional for NT
       books, where it defaults to 1 if output.
 
-    Identifiers may have an optional corpus prefix. This is removed
-    from the ID but retained as self.corpus_prefix.
+    Identifiers may have an optional canon prefix ("o" or "n"). This
+    is removed from the ID but retained as self.canon_prefix.
 
     This dataclass does not validate whether any identifiers are in
     the correct range: it only records the data. Validation is planned
