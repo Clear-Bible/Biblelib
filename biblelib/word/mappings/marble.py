@@ -24,7 +24,7 @@ class Mapper:
         # some UBS DGNT references have this as a suffix: fragile
         if re.search(r"\({N:00\d}\)$", marbleid) or re.search(r"{N:00\d}$", marbleid):
             marbleid = marbleid[:14]
-        assert len(marbleid) == 14, f"Not a UBS reference: {marbleid}"
+        assert len(marbleid) == 14, f"{len(marbleid)} characters, not a UBS reference: {marbleid}"
 
         bookid = marbleid[:3]
         if "000" < bookid < "040":
