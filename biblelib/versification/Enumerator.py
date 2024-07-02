@@ -16,6 +16,12 @@ from pathlib import Path
 import requests
 from typing import Any, Mapping
 
+from biblelib import has_connection
+
+if not has_connection():
+    print("Cannot load Enumerator without network connection.")
+
+
 SCHEME_URLS = {
     "eng": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/eng.json",
     "org": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/org.json",
