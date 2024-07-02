@@ -2,8 +2,17 @@ import pytest
 from biblelib.versification.Enumerator import Enumerator
 
 
+from biblelib import has_connection
+
+
 class TestEnumerator:
     enumerator = Enumerator("org")
+
+    def __init__(self) -> None:
+        """Make sure there's a network connection."""
+        if not has_connection():
+            print("Cannot load Enumerator without network connection.")
+            exit()
 
     def test_init(self) -> None:
         """Test the __init__ method."""
