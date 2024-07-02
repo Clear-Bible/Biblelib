@@ -57,7 +57,7 @@ import re
 from typing import Any, Union, get_args
 
 from biblelib.book import Books
-from .mappings import Mapper
+
 
 BOOKS = Books()
 
@@ -685,33 +685,6 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
-
-
-def fromubs(ref: str) -> list[BCVID | BCVWPID]:
-    """Return a list of BCV(WP) instances for a single UBS reference.
-
-    Hebrew Bible references sometimes map to two Macula tokens because
-    of segmentation differences. Word/part-level references return
-    BCVWPID instances based on mapping files. Those without a non-zero
-    word index are calculated and return BCVIDs.
-
-    This does not yet handle range references.
-
-    """
-    mpr = Mapper()
-    macularefs = mpr.to_macula(ref)
-    reflist: list[BCVID | BCVWPID] = []
-    if macularefs:
-        reflist = [BCVWPID(r) for r in macularefs]
-    elif ref.endswith("0000"):
-        # verse-level reference
-        # drop leading digit
-        assert ref[0] == "0", f"Leading digit should be 0: {ref}"
-        book = ref[1:3]
-        chapter = ref[3:6]
-        verse = ref[6:9]
-        reflist = [BCVID(ID=f"{book}{chapter}{verse}")]
-    return reflist
 
 
 def to_bcv(token: str | BCVWPID | BCVID) -> str:

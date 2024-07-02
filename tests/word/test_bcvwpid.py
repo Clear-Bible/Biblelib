@@ -5,7 +5,7 @@ import typing
 import pytest
 
 from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, fromubs, simplify, to_bcv, make_id
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id
 
 from biblelib.word.bcvwpid import pad3
 
@@ -153,30 +153,6 @@ class TestFromUsfm:
         assert fromusfm("GEN 12:10") == BCVID("01012010")
         assert fromusfm("PSA 119:1") == BCVID("19119001")
         assert fromusfm("MRK 4:1") == BCVID("41004001")
-
-
-class TestFromUBS:
-    """Test basic functionality of fromubs()."""
-
-    def test_from_ubs(self) -> None:
-        """Test returned values"""
-        assert fromubs("02306000600008") == [BCVWPID("23060006004")]
-        assert fromubs("02306000600008{N:001}") == [BCVWPID("23060006004")]
-        assert fromubs("02306000600008({N:001})") == [BCVWPID("23060006004")]
-        assert fromubs("04100400300008") == [BCVWPID("41004003004")]
-        assert fromubs("04100400300008") == [BCVWPID("41004003004")]
-        # verse-level reference returns BCVID
-        assert fromubs("00100301500000") == [BCVID("01003015")]
-        assert fromubs("04100400900000") == [BCVID("41004009")]
-        with pytest.raises(AssertionError):
-            # missing leading zero
-            assert fromubs("4100401800000") == [BCVID("41004009")]
-
-    @pytest.mark.filterwarnings("ignore:Invalid book ID for MARBLE ID")
-    def test_from_ubs_warnings(self) -> None:
-        """Test returned values from from_ubs()."""
-        # DC reference returns empty list
-        assert fromubs("07300102100020") == []
 
 
 class TestBID:
