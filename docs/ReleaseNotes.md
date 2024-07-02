@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.3.9
+
+- Moved `fromubs()` to its own module, only loaded on demand, since it
+  requires a network connection and takes a few extra seconds to
+  load. Use `from biblelib.word import ubs` to load it now.
+
 ## 0.3.8
 
 - Added `make_id()` method to `word.bcvwpid` to return an instance of
