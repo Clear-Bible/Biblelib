@@ -28,6 +28,7 @@ from .bcvwpid import (
     simplify,
     to_bcv,
     make_id,
+    is_bcvwpid,
 )
 
 _exportlist = [
@@ -45,6 +46,7 @@ _exportlist = [
     "simplify",
     "to_bcv",
     "make_id",
+    "is_bcvwpid",
 ]
 
 

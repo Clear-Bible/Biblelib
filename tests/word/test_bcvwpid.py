@@ -5,7 +5,7 @@ import typing
 import pytest
 
 from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id
+from biblelib.word import fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id, is_bcvwpid
 
 from biblelib.word.bcvwpid import pad3
 
@@ -482,3 +482,19 @@ class TestMake_id:
         assert make_id("n41004003001") == BCVWPID("41004003001")
         assert make_id("410040030011") == BCVWPID("41004003001")
         assert make_id("n410040030011") == BCVWPID("41004003001")
+
+
+class TestIs_bcvwpid:
+    """Test is_bcvwpid()."""
+
+    def test_make_id(self) -> None:
+        """Test is_bcvwpid().
+
+        This also points out some limitations of this heuristic code.
+        """
+        assert is_bcvwpid("41004003001") is True
+        assert is_bcvwpid("410040030011") is True
+        assert is_bcvwpid("n41004003001") is True
+        assert is_bcvwpid("n410040030011") is True
+        # not BCV
+        assert is_bcvwpid("41004003") is False

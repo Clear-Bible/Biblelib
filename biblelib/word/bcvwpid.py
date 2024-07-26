@@ -735,4 +735,4 @@ def is_bcvwpid(identifier: str) -> bool:
 
     """
     idpat = re.compile(r"^[no]?\d{11,12}$")
-    return idpat.match(identifier)
+    return bool(idpat.match(identifier))
