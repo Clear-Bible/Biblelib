@@ -1,5 +1,13 @@
 # Release Notes
 
+## UNRELEASED
+
+
+## 0.3.10
+
+- Added `word.bcvwpid.is_bcvwpid()` for lightweight check whether a
+  string looks like a BCVWPID identifier.
+
 ## 0.3.9
 
 - Moved `fromubs()` to its own module, only loaded on demand, since it
