@@ -3,6 +3,11 @@
 ## UNRELEASED
 
 
+## 0.3.11
+
+- Fix to `word.bcvwpid.is_bcvwpid()` to actually return a bool (now
+  that i added a test and it initially failed).
+
 ## 0.3.10
 
 - Added `word.bcvwpid.is_bcvwpid()` for lightweight check whether a
