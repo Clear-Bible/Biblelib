@@ -423,8 +423,7 @@ class BCVWPID(BCVID):
 
         # cannot call super because allows either 11 or 12 length
         # super()__post_init__()
-        idpat = re.compile(r"^[no]?\d{11,12}$")
-        assert idpat.match(self.ID), f"Invalid identifier: {self.ID}"
+        assert is_bcvwpid(self.ID), f"Invalid identifier: {self.ID}"
         # assert 13 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
         if self.ID.startswith("o") or self.ID.startswith("n"):
             self.canon_prefix = self.ID[0]
@@ -724,3 +723,16 @@ def make_id(refstr: str) -> BID | BCID | BCVID | BCVWPID:
     else:
         instance: BID | BCID | BCVID | BCVWPID = refclass(refstr)
         return instance
+
+
+def is_bcvwpid(identifier: str) -> bool:
+    """Return True if identifier matches the pattern for a BCVWP identifier.
+
+    This does not check validity of book/chapter/verse values, and
+    does not enforce e.g. whether target values should have a word
+    part: only that it matches the pattern. So it's heuristic at
+    best. To really test, use the identifier to create an instance.
+
+    """
+    idpat = re.compile(r"^[no]?\d{11,12}$")
+    return idpat.match(identifier)
