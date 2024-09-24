@@ -3,14 +3,18 @@
 Some duplication here with book.book that should be resolved, probably
 by migrating that code here.
 
+TODO:
+- populate unit.book.Book instances and store on a Books instance, keyed by USFM name
+
+
 >>> from biblelib.unit import book
 # normally initialized by AllBookChapters
 >>> mrk = book.BookChapters("41", "41016", start_ID="410001")
 >>> mrk.bookname
 'MRK'
 
->>> b
-Book(identifier='BID('41')')
+>>> from biblelib.word import BID
+>>> b = book.Book(inst=BID('41'))
 >>> b.identifier.book_ID
 '41'
 >>> b.lastchapter
@@ -119,6 +123,7 @@ class AllBookChapters(UserDict):
                 chaps.append(Chapter(inst=BCID(chapter_ID)))
         # finish the last one
         self.data[lastbookid] = chaps
+        # add Book instances
 
 
 class Book(Unit):
@@ -146,9 +151,13 @@ class Book(Unit):
     def enumerate(self, arg0: int, arg1: int = 0) -> list[Chapter]:
         """Return a list of chapter instances.
 
-        With two args, interpret as start-1 and stop, unlike range,
-        but 1-based (contrary to normal Python indexing), because
-        verse numbers are 1-based.
+        With one arg, return this many chapters, starting with the
+        first one.
+
+        With two args, interpret as start-1 and stop. This is 1-based
+        (contrary to normal Python indexing and range()), because
+        chapter numbers are 1-based.
+
         """
         if not arg1:
             # arg0 is the stopping point
