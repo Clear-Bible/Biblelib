@@ -40,3 +40,10 @@ class TestUnit(object):
         # fail if not same types
         with pytest.raises(Exception):
             assert unit0 == v0
+
+
+# possible test additions:
+# - __repr__()
+# - intersection()
+# - Versification()
+# - pad() (but maybe zfill is a better choice, and deprecate this?)
