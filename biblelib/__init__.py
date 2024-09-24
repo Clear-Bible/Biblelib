@@ -8,6 +8,22 @@ This namespace is intentionally bare: see individual packages
 import requests
 
 
+CANONIDS: set[str] = {
+    "nt",
+    "ot",
+    # meaning the entire 66 book corpus
+    "protestant",
+}
+
+VERSIFICATIONIDS: set[str] = {
+    "eng",
+    "org",
+    "rso",
+    # not yet implemented
+    # "ethiopian_custom", "lxx", "rsc", "vul"
+}
+
+
 def has_connection() -> bool:
     """Return True if there is an active network connection."""
     try:
@@ -18,7 +34,11 @@ def has_connection() -> bool:
         return False
 
 
-__all__ = ["has_connection"]
+__all__ = [
+    "CANONIDS",
+    "VERSIFICATIONIDS",
+    "has_connection",
+]
 
 
 # this is a bit slow to load: is it worth it?
