@@ -2,6 +2,14 @@
 
 ## UNRELEASED
 
+## 0.3.12
+
+- add CANONIDS, VERSIFICATIONIDs to `__init__`. These define some valid
+  values for other code.
+- `book.book`: add _`abbreviationschemes` to indicate what schemes are
+  available.
+- other minor fixes
+
 
 ## 0.3.11
 
