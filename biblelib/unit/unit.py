@@ -30,7 +30,7 @@ class Unit(UserList):
 
     def __repr__(self) -> str:
         """Return a string representation."""
-        return f"{type(self).__name__}(identifier='{self.identifier}')"
+        return f"{type(self).__name__}(identifier={self.identifier})"
 
     def __lt__(self, other: Any) -> bool:
         """Return true if self < other."""
