@@ -19,20 +19,13 @@ from collections import UserList
 
 import requests
 
+from biblelib import CANONIDS, VERSIFICATIONIDS, has_connection
 from biblelib.word import bcvwpid
 
 
 class VrefReader(UserList):
     """Read a vref file with versification data."""
 
-    schemes: set[str] = {
-        "eng",
-        "org",
-        "rso",
-        # not yet implemented
-        # "ethiopian_custom", "lxx", "rsc", "vul"
-    }
-    canons: set[str] = {"nt", "ot", "protestant"}
     vrefbase: str = "https://raw.githubusercontent.com/Clear-Bible/Biblelib/master/biblelib/versification/"
 
     def __init__(self, scheme: str, canon: str, asbcv: bool = True) -> None:
@@ -42,11 +35,14 @@ class VrefReader(UserList):
         to BCV: otherwise they remain as USFM.
 
         """
-        assert scheme in self.schemes, f"Unsupported scheme: {scheme}"
-        assert canon in self.canons, f"Unsupported canon: {canon}"
+        assert scheme in VERSIFICATIONIDS, f"Unsupported scheme: {scheme}"
+        assert canon in CANONIDS, f"Unsupported canon: {canon}"
         self.scheme = scheme
         self.canon = canon
         self.vref_file: str = self.get_vref_file(scheme, canon)
+        if not has_connection():
+            print("Cannot load vref file without network connection.")
+            exit()
         r = requests.get(self.vref_file)
         assert r.status_code == 200, f"Failed to get content from {self.vref_file}"
         vref_usfm: list[str] = r.text.split("\n")
