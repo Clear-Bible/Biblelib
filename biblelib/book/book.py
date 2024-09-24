@@ -86,6 +86,7 @@ class Book:
     altname: str = ""
     _canon_traditions: tuple = ("Catholic", "Jewish", "Protestant")
     # keep this in sync with the attributes below
+    _abbreviationschemes: tuple = ("logosID", "usfmnumber", "usfmname", "osisID")
     _fieldnames: tuple = ("logosID", "usfmnumber", "usfmname", "osisID", "name", "altname")
     # canon-specific
     ordinal: int = field(init=False)
