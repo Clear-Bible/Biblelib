@@ -14,7 +14,7 @@ verse 0) with verse 1, so `org` verse 1 has more word content than
 import requests
 from typing import Any
 
-from biblelib.word import fromusfm
+from biblelib import VERSIFICATIONIDS, has_connection
 
 
 class Mapper:
@@ -34,6 +34,8 @@ class Mapper:
 
     def __init__(self, fromscheme: str, toscheme: str) -> None:
         """Create mappings from one versification scheme to another."""
+        assert fromscheme in VERSIFICATIONIDS, f"Unsupported fromscheme: {fromscheme}"
+        assert toscheme in VERSIFICATIONIDS, f"Unsupported toscheme: {toscheme}"
         self.fromscheme = fromscheme
         self.toscheme = toscheme
         self.fromjson: dict[str, dict[str, str]] = self._load_scheme(self.fromscheme)
@@ -41,6 +43,9 @@ class Mapper:
     def _load_scheme(self, scheme: str) -> dict[str, Any]:
         """Load json data for scheme."""
         mappingfile = f"{self.jsonbase}/{scheme}.json"
+        if not has_connection():
+            print("Cannot load mapping file without network connection.")
+            exit()
         r = requests.get(mappingfile)
         assert r.status_code == 200, f"Failed to get content from {mappingfile}"
         schemejson: dict[str, Any] = r.json()
