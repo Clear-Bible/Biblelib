@@ -31,6 +31,9 @@ from .bcvwpid import (
     is_bcvwpid,
 )
 
+# see logic below about when this is really exported
+from .ubs import fromubs
+
 _exportlist = [
     # bcvwpid
     "BID",
