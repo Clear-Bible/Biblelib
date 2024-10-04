@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## 0.3.13
+
+- added `word.bcvwpid.frombiblia()`, along with some minor bug fixes
+
 ## 0.3.12
 
 - add CANONIDS, VERSIFICATIONIDs to `__init__`. These define some valid
