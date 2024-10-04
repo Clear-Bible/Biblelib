@@ -328,6 +328,19 @@ class BCVIDRange:
         """Return a printed representation."""
         return f"{type(self).__name__}({self.startid!r}, {self.endid!r})"
 
+    def get_id(self, use_endash: bool = False) -> str:
+        """Return a string identifier for the instance.
+
+        Default is to use a hyphen: use a proper en dash ('\u2013')
+        instead with use_endash=True.
+
+        No support for prefixes, since these are token identifiers,
+        not Macula identifiers.
+
+        """
+        sepchar = "–" if use_endash else "-"
+        return f"{self.startid.get_id()}{sepchar}{self.endid.get_id()}"
+
     def enumerate(self) -> list[BCVID]:
         """Return a list of BCVID instances enumerating the verses in the range.
 

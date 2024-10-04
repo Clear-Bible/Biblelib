@@ -178,11 +178,8 @@ class TestFromBiblia:
         assert frombiblia("Mk 4:1") == BCVID("41004001")
 
     def test_frombiblia_verserange(self) -> None:
-        """Test returned values"""
-        assert frombiblia("Ge 2:1-3") == BCVIDRange(BCVID("01002001"), BCVID("01002003"))
-        assert frombiblia("Ge 12:10") == BCVID("01012010")
-        assert frombiblia("Ps 119:1") == BCVID("19119001")
-        assert frombiblia("Mk 4:1") == BCVID("41004001")
+        """Test returned values."""
+        assert frombiblia("Ge 2:1-3").get_id() == "01002001-01002003"
 
 
 class TestBID:
