@@ -110,10 +110,10 @@ class TestFromOsis:
     def test_fromosis_case(self) -> None:
         """Test returned values"""
         assert fromosis("1Cor") == BID("46")
-        with pytest.raises(KeyError):
+        with pytest.raises(AssertionError):
             # wrong case
             _ = fromosis("1cor")
-        with pytest.raises(KeyError):
+        with pytest.raises(AssertionError):
             # wrong case
             _ = fromosis("1COR")
 
