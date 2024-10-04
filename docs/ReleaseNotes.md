@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## 0.3.15
+
+- Add get_id() to BCVIDRange.
+
 ## 0.3.14
 
 - Add range handling to frombiblia and tweak BCVIDRange to better
