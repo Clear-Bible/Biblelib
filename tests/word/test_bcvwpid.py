@@ -177,6 +177,13 @@ class TestFromBiblia:
         assert frombiblia("Ps 119:1") == BCVID("19119001")
         assert frombiblia("Mk 4:1") == BCVID("41004001")
 
+    def test_frombiblia_verserange(self) -> None:
+        """Test returned values"""
+        assert frombiblia("Ge 2:1-3") == BCVIDRange(BCVID("01002001"), BCVID("01002003"))
+        assert frombiblia("Ge 12:10") == BCVID("01012010")
+        assert frombiblia("Ps 119:1") == BCVID("19119001")
+        assert frombiblia("Mk 4:1") == BCVID("41004001")
+
 
 class TestBID:
     """Test basic functionality of BID dataclass."""
@@ -341,7 +348,7 @@ class TestBCVIDRange:
         """Test initialization and attributes."""
         assert self.markrange.startid == self.mark4_8
         assert self.markrange.endid == self.mark4_13
-        assert repr(self.markrange) == "BCVIDRange('41004008-41004013')"
+        assert repr(self.markrange) == "BCVIDRange(BCVID('41004008'), BCVID('41004013'))"
         assert self.markrange.ID == "41004008-41004013"
         assert self.markrange.book == BID("41")
         assert self.markrange.chapter == BCID("41004")

@@ -326,7 +326,7 @@ class BCVIDRange:
 
     def __repr__(self) -> str:
         """Return a printed representation."""
-        return f"{type(self).__name__}('{self.ID}')"
+        return f"{type(self).__name__}({self.startid!r}, {self.endid!r})"
 
     def enumerate(self) -> list[BCVID]:
         """Return a list of BCVID instances enumerating the verses in the range.
@@ -689,13 +689,13 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
 def frombiblia(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a Biblia-style name reference.
 
-    Only handles book, book + chapter, and book chapter verse
-    references like 1Co 4:8. Does not handle ranges or
-    non-numeric verses like 'title'. Does not check the validity of
-    chapter and verse numbers for the book. Book name must be
-    correctly cased and match the `biblia` column in book/books.tsv.
+    Handles book, book + chapter, and book chapter verse, and verse
+    ranges. Does not check the validity of chapter and verse numbers
+    for the book. Book name must be correctly cased and match the
+    `biblia` column in book/books.tsv.
 
     """
+    rangere = re.compile(r"[-–]")
     if " " not in ref:
         # book only
         bibliabook = BOOKS.frombiblia(ref).usfmnumber
@@ -709,7 +709,13 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
         else:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)
-            return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
+            vsplit = rangere.split(verse)
+            if len(vsplit) == 2:
+                bcvstart = BCVID(f"{bibliabook}{pad3(chapter)}{pad3(vsplit[0])}")
+                bcvend = BCVID(f"{bibliabook}{pad3(chapter)}{pad3(vsplit[1])}")
+                return BCVIDRange(bcvstart, bcvend)
+            else:
+                return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
 
 
 def to_bcv(token: str | BCVWPID | BCVID) -> str:
