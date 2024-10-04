@@ -277,8 +277,8 @@ class Books(UserDict):
         if not self.logosmap:
             # initialize on demand
             self.logosmap = {b.logosID: b for _, b in self.data.items()}
-        assert logosID in self.logosmap, f"Invalid logosID {logosID}"
-        bookinst: Book = self.logosmap[logosID]
+        bookinst: Book = self.namemap.get(logosID)
+        assert bookinst, f"Invalid logoID: {logosID}"
         return bookinst
 
     def fromname(self, bookname: str) -> Book:
@@ -292,7 +292,8 @@ class Books(UserDict):
         # approach, and long form names should use a different
         # approach
         bookname = self.quickfixes.get(bookname, bookname)
-        bookinst: Book = self.namemap[bookname]
+        bookinst: Book = self.namemap.get(bookname)
+        assert bookinst, f"Invalid book name: {bookname}"
         return bookinst
 
     def _ensure_osismap(self) -> dict[str, str]:
@@ -310,7 +311,8 @@ class Books(UserDict):
                 like "Matt".
         """
         self._ensure_osismap()
-        bookinst: Book = self.osismap[osisID]
+        bookinst: Book = self.osismap.get(osisID)
+        assert bookinst, f"Invalid OSIS book name: {osisID}"
         return bookinst
 
     def _ensure_bibliamap(self) -> dict[str, str]:
@@ -328,7 +330,8 @@ class Books(UserDict):
                 like "Matt".
         """
         self._ensure_bibliamap()
-        bookinst: Book = self.bibliamap[biblia]
+        bookinst: Book = self.bibliamap.get(biblia)
+        assert bookinst, f"Invalid Biblia book name: {biblia}"
         return bookinst
 
     def fromusfmnumber(self, usfmnumber: str, legacynumbering: bool = False) -> Book:
@@ -352,7 +355,9 @@ class Books(UserDict):
         else:
             usfmnumbermap = {b.usfmnumber: b for _, b in self.data.items()}
         #        return usfmnumbermap[usfmnumber]
-        return usfmnumbermap[usfmnumber]
+        bookinst: Book = usfmnumbermap.get(usfmnumber)
+        assert bookinst, f"Invalid USFM number: {usfmnumber}"
+        return bookinst
 
 
 class _Canon(Books):
