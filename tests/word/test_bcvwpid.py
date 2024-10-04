@@ -5,7 +5,7 @@ import typing
 import pytest
 
 from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
-from biblelib.word import fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id, is_bcvwpid
+from biblelib.word import frombiblia, fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id, is_bcvwpid
 
 from biblelib.word.bcvwpid import pad3
 
@@ -153,6 +153,29 @@ class TestFromUsfm:
         assert fromusfm("GEN 12:10") == BCVID("01012010")
         assert fromusfm("PSA 119:1") == BCVID("19119001")
         assert fromusfm("MRK 4:1") == BCVID("41004001")
+
+
+class TestFromBiblia:
+    """Test basic functionality of frombiblia()."""
+
+    def test_frombiblia(self) -> None:
+        """Test frombiblia()."""
+        assert frombiblia("Ge") == BID("01")
+        assert frombiblia("Mk") == BID("41")
+
+    def test_frombiblia_chapter(self) -> None:
+        """Test returned values"""
+        assert frombiblia("Ge 2") == BCID("01002")
+        assert frombiblia("Ge 12") == BCID("01012")
+        assert frombiblia("Ps 119") == BCID("19119")
+        assert frombiblia("Mk 4") == BCID("41004")
+
+    def test_frombiblia_chapter_verse(self) -> None:
+        """Test returned values"""
+        assert frombiblia("Ge 2:3") == BCVID("01002003")
+        assert frombiblia("Ge 12:10") == BCVID("01012010")
+        assert frombiblia("Ps 119:1") == BCVID("19119001")
+        assert frombiblia("Mk 4:1") == BCVID("41004001")
 
 
 class TestBID:
