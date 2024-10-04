@@ -277,7 +277,7 @@ class Books(UserDict):
         if not self.logosmap:
             # initialize on demand
             self.logosmap = {b.logosID: b for _, b in self.data.items()}
-        bookinst: Book = self.namemap.get(logosID)
+        bookinst: Book = self.logosmap.get(logosID)
         assert bookinst, f"Invalid logoID: {logosID}"
         return bookinst
 
