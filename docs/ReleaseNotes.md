@@ -2,6 +2,11 @@
 
 ## UNRELEASED
 
+## 0.3.14
+
+- Add range handling to frombiblia and tweak BCVIDRange to better
+  match initialization.
+
 ## 0.3.13
 
 - added `word.bcvwpid.frombiblia()`, along with some minor bug fixes
