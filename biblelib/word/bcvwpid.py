@@ -686,6 +686,32 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
             return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 
+def frombiblia(ref: str) -> BID | BCID | BCVID:
+    """Return a BCV instance for a Biblia-style name reference.
+
+    Only handles book, book + chapter, and book chapter verse
+    references like 1Co 4:8. Does not handle ranges or
+    non-numeric verses like 'title'. Does not check the validity of
+    chapter and verse numbers for the book. Book name must be
+    correctly cased and match the `biblia` column in book/books.tsv.
+
+    """
+    if " " not in ref:
+        # book only
+        bibliabook = BOOKS.frombiblia(ref).usfmnumber
+        return BID(bibliabook)
+    else:
+        bookabbrev, rest = ref.split(" ", 1)
+        bibliabook = BOOKS.frombiblia(bookabbrev).usfmnumber
+        if ":" not in rest:
+            # book and chapter
+            return BCID(f"{bibliabook}{pad3(rest)}")
+        else:
+            # book, chapter, verse
+            chapter, verse = rest.split(":", 1)
+            return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
+
+
 def to_bcv(token: str | BCVWPID | BCVID) -> str:
     """Return the BCV string for a reference instance or identifier.
 
