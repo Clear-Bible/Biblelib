@@ -87,11 +87,6 @@ class _Base:
         """Return a hash value."""
         return hash(self.ID)
 
-    @property
-    def to_bid(self) -> str:
-        """Return the book ID."""
-        return self.book_ID
-
 
 @dataclass(repr=False, unsafe_hash=True)
 class BID(_Base):
@@ -111,6 +106,15 @@ class BID(_Base):
         # this covers the protestant canon and deuterocanon, but not perfectly
         # this breaks code in book.py
         # assert re.match("^[0-8][0-9]", self.book_ID), f"Invalid book number {self.book_ID}"
+
+    @property
+    def to_bid(self) -> str:
+        """Return the book ID."""
+        return self.book_ID
+
+    def get_id(self) -> str:
+        """Return BCVID string. For compatibility with BCVWPID."""
+        return self.to_bid
 
     # could go in a base class?
     # can't reference B*ID types until defined :-/
@@ -175,6 +179,10 @@ class BCID(BID):
     def to_bcid(self) -> str:
         """Return string for the book and chapter ID."""
         return self.book_ID + self.chapter_ID
+
+    def get_id(self) -> str:
+        """Return BCVID string. For compatibility with BCVWPID."""
+        return self.to_bcid
 
     def includes(self, other: Any) -> bool:
         """Return True if other is included in the scope of self.

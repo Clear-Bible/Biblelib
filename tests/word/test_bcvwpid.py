@@ -192,8 +192,9 @@ class TestBID:
         """Test initialization and attributes."""
         assert BID(self.genid).book_ID == self.genid
         assert BID(self.markid).book_ID == self.markid
-        # defined on the superclass
         assert BID(self.markid).to_bid == self.markid
+        # for consistency with other B* classes
+        assert BID(self.markid).get_id() == self.markid
 
     def test_hash(self) -> None:
         """Ensure hashable.
@@ -230,6 +231,8 @@ class TestBCID:
         assert repr(self.testid) == "BCID('43001')"
         assert self.testid.to_bid == "43"
         assert self.testid.to_bcid == self.NA1904_ID
+        # for consistency with other B* classes
+        assert self.testid.get_id() == self.NA1904_ID
 
     def test_hash(self) -> None:
         """Ensure hashable.
