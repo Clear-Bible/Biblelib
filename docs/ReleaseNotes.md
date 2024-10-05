@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## 0.3.16
+
+- Add get_id() to BID and BCID for consistency.
+
 ## 0.3.15
 
 - Add get_id() to BCVIDRange.
