@@ -4,6 +4,11 @@
 
 ## 0.3.16
 
+- Support cross-chapter ranges in `frombiblia()`. You can't enumerate
+  these, but at least they're now represented.
+
+## 0.3.16
+
 - Add get_id() to BID and BCID for consistency.
 
 ## 0.3.15
