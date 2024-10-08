@@ -727,6 +727,16 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
         if ":" not in rest:
             # book and chapter
             return BCID(f"{bibliabook}{pad3(rest)}")
+        elif len(rest.split(":")) == 3:
+            # cross-chapter range
+            start, end = rangere.split(rest)
+            startchapter, startverse = start.split(":")
+            endchapter, endverse = end.split(":")
+            bcvstart = BCVID(f"{bibliabook}{pad3(startchapter)}{pad3(startverse)}")
+            bcvend = BCVID(f"{bibliabook}{pad3(endchapter)}{pad3(endverse)}")
+            return BCVIDRange(bcvstart, bcvend)
+        elif len(rest.split(":")) > 3:
+            raise ValueError(f"Invalid reference: {ref}")
         else:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)

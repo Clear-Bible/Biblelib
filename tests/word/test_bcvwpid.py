@@ -181,6 +181,10 @@ class TestFromBiblia:
         """Test returned values."""
         assert frombiblia("Ge 2:1-3").get_id() == "01002001-01002003"
 
+    def test_frombiblia_crosschapter(self) -> None:
+        """Test returned values."""
+        assert frombiblia("Ho 11:12-12:6").get_id() == "28011012-28012006"
+
 
 class TestBID:
     """Test basic functionality of BID dataclass."""
