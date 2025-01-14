@@ -2,7 +2,11 @@
 
 ## UNRELEASED
 
-## 0.3.16
+## 0.3.18
+
+- add `to_usfm()` to `word.bcvwpid.BCVIDRange` for display.
+
+## 0.3.17
 
 - Support cross-chapter ranges in `frombiblia()`. You can't enumerate
   these, but at least they're now represented.
