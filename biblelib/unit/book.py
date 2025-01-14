@@ -14,18 +14,21 @@ TODO:
 'MRK'
 
 >>> from biblelib.word import BID
->>> b = book.Book(inst=BID('41'))
->>> b.identifier.book_ID
+>>> mrk = book.Book(inst=BID('41'))
+>>> mrk.identifier.book_ID
 '41'
->>> b.lastchapter
+# how many chapters?
+>>> mrk.lastchapter
 16
->>> b.data
+>>> mrk.data
 [Chapter(identifier='BCID('41001')'), Chapter(identifier='BCID('41002')'), Chapter(identifier='BCID('41003')'), Chapter(identifier='BCID('41004')'), Chapter(identifier='BCID('41005')'), Chapter(identifier='BCID('41006')'), Chapter(identifier='BCID('41007')'), Chapter(identifier='BCID('41008')'), Chapter(identifier='BCID('41009')'), Chapter(identifier='BCID('41010')'), Chapter(identifier='BCID('41011')'), Chapter(identifier='BCID('41012')'), Chapter(identifier='BCID('41013')'), Chapter(identifier='BCID('41014')'), Chapter(identifier='BCID('41015')'), Chapter(identifier='BCID('41016')')]
->>> b.enumerate(4)
+>>> mrk.enumerate(4)
 [Chapter(identifier='BCID('41001')'), Chapter(identifier='BCID('41002')'), Chapter(identifier='BCID('41003')'), Chapter(identifier='BCID('41004')')]
->>> b.enumerate(2, 4)
+>>> mrk.enumerate(2, 4)
 [Chapter(identifier='BCID('41002')'), Chapter(identifier='BCID('41003')'), Chapter(identifier='BCID('41004')')]
 
+# get a count of the verses for the chapters in a book
+>>> sum([len(chap) for chap in mrk])
 """
 
 from collections import UserDict
