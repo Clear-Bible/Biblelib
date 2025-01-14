@@ -375,6 +375,10 @@ class TestBCVIDRange:
             # not implemented
             _ = BCVIDRange(BCVID("41004008"), BCVID("41005001")).enumerate()
 
+    def test_to_usfm(self) -> None:
+        """Test to_usfm()."""
+        assert self.markrange.to_usfm() == "MRK 4:8-4:13"
+
 
 class TestBCVWPID:
     """Test basic functionality of BCVWPID dataclass."""

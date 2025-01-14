@@ -373,6 +373,16 @@ class BCVIDRange:
                 for n in range(int(self.startid.verse_ID), int(self.endid.verse_ID) + 1)
             ]
 
+    def to_usfm(self) -> str:
+        """Return a (naive) USFM representation.
+
+        No attempt to be smart about abbreviatory conventions
+        """
+        usfmbook = BOOKS.fromusfmnumber(self.startid.book_ID).usfmname
+        startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
+        endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
+        return f"{usfmbook} {startbc}-{endbc}"
+        return
 
 @dataclass(repr=False, unsafe_hash=True)
 class BCVWPID(BCVID):
