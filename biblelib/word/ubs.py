@@ -1,4 +1,11 @@
-"""Return BCV(WP)ID instances from UBS Marble references."""
+"""Return BCV(WP)ID instances from UBS Marble references.
+
+# this attempts to be smart about failing gracefully if there's no network connection
+>>> from biblelib.word import fromubs
+>>> fromubs("02306000600008")
+[BCVWPID('230600060041')]
+
+"""
 
 # requires a network connection
 from .mappings import Mapper

@@ -9,7 +9,7 @@ ChapterVerses(chapter_ID="66022", end_ID="66022021")
 # what's the last verse of Rev 22 ("66022")?
 >>> chapter.Chapter.chapters["66022"].lastverse
 21
->>> chapter.Chapter.books["REV"]
+>>> chapter.Chapter._books["REV"]
 <Book: REV>
 # instantiate a Chapter instance for Jude chapter 1. Note the
 # identifier must be a BCID instance
