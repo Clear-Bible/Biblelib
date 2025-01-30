@@ -2,6 +2,12 @@
 
 ## UNRELEASED
 
+## 0.3.19
+
+- add `word.bcvwpid.urlmanager` to generate URLs from BCV
+  references. Current coverage is only for bible.com .
+- add `cross_chapter` to `word.bcvwpid.BCVIDRange`.
+
 ## 0.3.18
 
 - add `to_usfm()` to `word.bcvwpid.BCVIDRange` for display.
