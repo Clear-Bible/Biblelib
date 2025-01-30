@@ -93,6 +93,11 @@ class VerseRange:
         """Return a printed representation."""
         return "<VerseRange: {self.ID}>"
 
+    @property
+    def cross_chapter(self) -> bool:
+        """True if starting chapter != end chapter."""
+        return self.startid.chapter_ID != self.endid.chapter_ID
+
     def enumerate(self) -> list[Verse]:
         """Return a list of Verse instances enumerating the verses in the range.
 

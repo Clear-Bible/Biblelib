@@ -336,6 +336,11 @@ class BCVIDRange:
         """Return a printed representation."""
         return f"{type(self).__name__}({self.startid!r}, {self.endid!r})"
 
+    @property
+    def cross_chapter(self) -> bool:
+        """True if starting chapter != end chapter."""
+        return self.chapter != self.end_chapter
+
     def get_id(self, use_endash: bool = False) -> str:
         """Return a string identifier for the instance.
 
@@ -383,6 +388,7 @@ class BCVIDRange:
         endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
         return f"{usfmbook} {startbc}-{endbc}"
         return
+
 
 @dataclass(repr=False, unsafe_hash=True)
 class BCVWPID(BCVID):
