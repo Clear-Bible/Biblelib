@@ -2,6 +2,11 @@
 
 ## UNRELEASED
 
+## 0.3.20
+
+- Export `URLManager` from `biblelib.word`. Support Berean Standard
+  Bible for `get_uri()`.
+
 ## 0.3.19
 
 - add `word.bcvwpid.urlmanager` to generate URLs from BCV
