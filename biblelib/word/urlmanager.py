@@ -17,6 +17,7 @@ class URLManager:
             "NIV": 111,
             "NLT": 116,
             "NASB202": 2692,
+            "BSB": 3034,
             # there are many more: add if you wish
         }
     }
