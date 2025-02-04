@@ -31,6 +31,7 @@ from .bcvwpid import (
     make_id,
     is_bcvwpid,
 )
+from .urlmanager import URLManager
 
 # see logic below about when this is really exported
 from .ubs import fromubs
@@ -52,6 +53,8 @@ _exportlist = [
     "to_bcv",
     "make_id",
     "is_bcvwpid",
+    # urlmanager
+    "URLManager",
 ]
 
 
