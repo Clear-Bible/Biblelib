@@ -2,6 +2,11 @@
 
 ## UNRELEASED
 
+## 0.3.21
+
+- added to_nameref for BCVID and BCVIDRange
+- Attempting more graceful failure when no internet connection.
+
 ## 0.3.20
 
 - Export `URLManager` from `biblelib.word`. Support Berean Standard
