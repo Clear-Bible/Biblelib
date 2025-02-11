@@ -7,8 +7,13 @@
 
 """
 
+from biblelib import has_connection
+
 # requires a network connection
-from .mappings import Mapper
+if has_connection():
+    from .marble import Mapper
+else:
+    print("No internet connection: unable to load Mapper.")
 
 from .bcvwpid import BCVID, BCVWPID
 
