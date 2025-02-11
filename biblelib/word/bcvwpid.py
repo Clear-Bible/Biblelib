@@ -288,6 +288,12 @@ class BCVID(BCID):
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
 
+    def to_nameref(self) -> str:
+        """Return a USFM representation."""
+        bookname = BOOKS.fromusfmnumber(self.book_ID).name
+        return f"{bookname} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
+
 def from_bcid_verse(bcid: BCID, verse: int) -> BCVID:
     """Return a BCVID instance from a BCID and verse number."""
     return BCVID(f"{bcid.ID}{pad3(str(verse))}")
@@ -330,7 +336,9 @@ class BCVIDRange:
         ), f"Startid {self.startid} and endid {self.endid} must be in the same book."
         # note this allows a vacuous range with the same start and
         # end: does that make sense?
-        assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
+        assert (
+            self.startid <= self.endid
+        ), f"Startid {self.startid} must precede endid {self.endid}."
 
     def __repr__(self) -> str:
         """Return a printed representation."""
@@ -378,16 +386,23 @@ class BCVIDRange:
                 for n in range(int(self.startid.verse_ID), int(self.endid.verse_ID) + 1)
             ]
 
+    # consolidate into one method with a style parameter
     def to_usfm(self) -> str:
         """Return a (naive) USFM representation.
 
         No attempt to be smart about abbreviatory conventions
         """
-        usfmbook = BOOKS.fromusfmnumber(self.startid.book_ID).usfmname
+        bookname = BOOKS.fromusfmnumber(self.startid.book_ID).usfmname
         startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
         endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
-        return f"{usfmbook} {startbc}-{endbc}"
-        return
+        return f"{bookname} {startbc}-{endbc}"
+
+    def to_nameref(self) -> str:
+        """Return a USFM representation."""
+        bookname = BOOKS.fromusfmnumber(self.startid.book_ID).name
+        startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
+        endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
+        return f"{bookname} {startbc}-{endbc}"
 
 
 @dataclass(repr=False, unsafe_hash=True)
@@ -474,7 +489,9 @@ class BCVWPID(BCVID):
             # self.ID = self.canon_prefix + self.ID
         self.book_ID = restid[0:2]
         # TODO: add tests, presumably a closed set of values
-        assert self.canon_prefix == _get_canon_prefix(self.book_ID), f"Canon prefix must match book ID: {self.ID}"
+        assert self.canon_prefix == _get_canon_prefix(
+            self.book_ID
+        ), f"Canon prefix must match book ID: {self.ID}"
         self.chapter_ID = restid[2:5]
         self.verse_ID = restid[5:8]
         self.word_ID = restid[8:11]
@@ -798,7 +815,9 @@ def make_id(refstr: str) -> BID | BCID | BCVID | BCVWPID:
     }
     refclass = idlengths.get(len(refstr))
     if not refclass:
-        raise ValueError(f"Can't select appropriate class for {len(refstr)}-character reference {refstr}")
+        raise ValueError(
+            f"Can't select appropriate class for {len(refstr)}-character reference {refstr}"
+        )
     else:
         instance: BID | BCID | BCVID | BCVWPID = refclass(refstr)
         return instance
