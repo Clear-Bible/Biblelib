@@ -11,7 +11,7 @@ from biblelib import has_connection
 
 # requires a network connection
 if has_connection():
-    from biblelib.word.mappings import Mapper
+    from .mappings import Mapper
 else:
     print("No internet connection: unable to load Mapper.")
 
