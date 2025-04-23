@@ -35,6 +35,10 @@ To do:
     has 14.
     Indicate relations to alternate books, e.g. 'DAN' and 'DAG' (Greek Daniel, which includes other content)?
 
+    STEPBible has its own reference scheme described at
+    https://github.com/STEPBible/STEPBible-Data?tab=readme-ov-file:
+    not sure it's required here.
+
 """
 
 from collections import UserDict
