@@ -287,7 +287,6 @@ class BCVID(BCID):
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
-
     def to_nameref(self) -> str:
         """Return a USFM representation."""
         bookname = BOOKS.fromusfmnumber(self.book_ID).name
@@ -336,9 +335,7 @@ class BCVIDRange:
         ), f"Startid {self.startid} and endid {self.endid} must be in the same book."
         # note this allows a vacuous range with the same start and
         # end: does that make sense?
-        assert (
-            self.startid <= self.endid
-        ), f"Startid {self.startid} must precede endid {self.endid}."
+        assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
 
     def __repr__(self) -> str:
         """Return a printed representation."""
@@ -489,9 +486,7 @@ class BCVWPID(BCVID):
             # self.ID = self.canon_prefix + self.ID
         self.book_ID = restid[0:2]
         # TODO: add tests, presumably a closed set of values
-        assert self.canon_prefix == _get_canon_prefix(
-            self.book_ID
-        ), f"Canon prefix must match book ID: {self.ID}"
+        assert self.canon_prefix == _get_canon_prefix(self.book_ID), f"Canon prefix must match book ID: {self.ID}"
         self.chapter_ID = restid[2:5]
         self.verse_ID = restid[5:8]
         self.word_ID = restid[8:11]
@@ -536,10 +531,17 @@ class BCVWPID(BCVID):
         return self.ID == other.ID
 
     # not sure this is a proper USFM-ification
-    def to_usfm(self) -> str:
-        """Return a USFM representation."""
+    def to_usfm(self, with_word: bool = False) -> str:
+        """Return a USFM representation.
+
+        If with_word is True, include the word ID.
+        """
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
-        return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+        verseref = f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+        if with_word:
+            return f"{verseref}!{int(self.word_ID)}"
+        else:
+            return verseref
 
 
 # @dataclass
@@ -815,9 +817,7 @@ def make_id(refstr: str) -> BID | BCID | BCVID | BCVWPID:
     }
     refclass = idlengths.get(len(refstr))
     if not refclass:
-        raise ValueError(
-            f"Can't select appropriate class for {len(refstr)}-character reference {refstr}"
-        )
+        raise ValueError(f"Can't select appropriate class for {len(refstr)}-character reference {refstr}")
     else:
         instance: BID | BCID | BCVID | BCVWPID = refclass(refstr)
         return instance

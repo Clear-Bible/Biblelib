@@ -5,7 +5,17 @@ import typing
 import pytest
 
 from biblelib.word import BID, BCID, BCVID, BCVIDRange, BCVWPID
-from biblelib.word import frombiblia, fromlogos, fromname, fromosis, fromusfm, simplify, to_bcv, make_id, is_bcvwpid
+from biblelib.word import (
+    frombiblia,
+    fromlogos,
+    fromname,
+    fromosis,
+    fromusfm,
+    simplify,
+    to_bcv,
+    make_id,
+    is_bcvwpid,
+)
 
 from biblelib.word.bcvwpid import pad3
 
@@ -462,6 +472,11 @@ class TestBCVWPID:
         assert self.testid.to_bcvid == "43001001"
 
     # should also test a real part_ID value
+
+    def test_to_usfm(self) -> None:
+        """Test to_usfm()."""
+        assert self.testid.to_usfm() == "JHN 1:1"
+        assert self.testid.to_usfm(with_word=True) == "JHN 1:1!5"
 
 
 class TestSimplify:
