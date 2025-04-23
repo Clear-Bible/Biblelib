@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## 0.3.23
+
+- Adjust python dependency to python = ">=3.9,<4.0"
+
 ## 0.3.22
 
 - Added `with_word` parameter to BCVWPID.to_usfm. If True,
