@@ -2,6 +2,11 @@
 
 ## UNRELEASED
 
+## 0.3.22
+
+- Added `with_word` parameter to BCVWPID.to_usfm. If True,
+  "43001001005" is output as "JHN 1:1!5".
+
 ## 0.3.21
 
 - added to_nameref for BCVID and BCVIDRange
