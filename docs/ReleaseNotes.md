@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## 0.3.25
+
+- Work around some idiosyncratic TBD abbreviations.
+
 ## 0.3.24
 
 - Added `word.fromtbd()` to convert Tyndale Bible Dictionary
