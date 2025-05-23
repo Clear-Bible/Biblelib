@@ -10,6 +10,7 @@ from biblelib.word import (
     fromlogos,
     fromname,
     fromosis,
+    fromtbd,
     fromusfm,
     simplify,
     to_bcv,
@@ -194,6 +195,19 @@ class TestFromBiblia:
     def test_frombiblia_crosschapter(self) -> None:
         """Test returned values."""
         assert frombiblia("Ho 11:12-12:6").get_id() == "28011012-28012006"
+
+
+class TestFromTBD:
+    """Test basic functionality of fromtbd()."""
+
+    def test_fromtbd(self) -> None:
+        """Test fromtbd()."""
+        assert fromtbd("bref^Acts_16_7") == BCVID("44016007")
+        assert fromtbd("bref^2Cor_3_17") == BCVID("47003017")
+
+    def test_fromtbd_verserange(self) -> None:
+        """Test returned values."""
+        assert fromtbd("bref^2Cor_4_4-6").get_id() == "47004004-47004006"
 
 
 class TestBID:

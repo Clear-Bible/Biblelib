@@ -23,6 +23,9 @@ True
 BCVID("01003016")
 >>> BCVID.fromlogos("bible.1.2.3")
 BCVID("01002003")
+# From Tyndale Bible Dictionary markup
+>>> BCVID.fromtbd("bref^Gen_3_16")
+BCVID("01003016")
 
 Similar things work with BCID (book and chapter) and BCVWPID.
 
@@ -782,6 +785,33 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
                 return BCVIDRange(bcvstart, bcvend)
             else:
                 return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
+
+
+def fromtbd(ref: str) -> BCVID | BCVIDRange:
+    """Return a BCV instance for a Tyndale Bible Dictionary reference.
+
+    The TynBD markup has references like "bref^Isa_16_8-9" and
+    "bref^Jer_48_32". This converts these references to BCVID or
+    BCVIDRange instances.
+
+    Assumes all references are BCV (no BCID or BID). Does not check
+    the validity of chapter and verse numbers for the book.
+
+    """
+    assert ref.startswith("bref^"), f"TynBD reference must start with 'bref^': {ref}"
+    ref = ref[5:]  # remove 'bref^'
+    if "-" in ref:
+        # cross-chapter range
+        book, chapter, verserange = ref.split("_", 2)
+        startverse, endverse = verserange.split("-", 1)
+        bookrecord = BOOKS.findbook(book)
+        bcvstart = BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(startverse)}")
+        bcvend = BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(endverse)}")
+        return BCVIDRange(bcvstart, bcvend)
+    else:
+        book, chapter, verse = ref.split("_", 2)
+        bookrecord = BOOKS.findbook(book)
+        return BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(verse)}")
 
 
 def to_bcv(token: str | BCVWPID | BCVID) -> str:
