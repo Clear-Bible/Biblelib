@@ -2,6 +2,14 @@
 
 ## UNRELEASED
 
+## 0.3.24
+
+- Added `word.fromtbd()` to convert Tyndale Bible Dictionary
+  references like "bref^Isa_16_8-9" and "bref^Jer_48_32" to
+  `BCVID(Range)` instances.
+- Supporting code in `book.book.Books.findbook` to look up a name or
+  abbreviation if you don't know which scheme is being used.
+
 ## 0.3.23
 
 - Adjust python dependency to python = ">=3.9,<4.0"
