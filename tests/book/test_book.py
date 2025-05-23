@@ -1,9 +1,45 @@
 """Pytest tests for biblelib.book."""
 
-# import pytest
+import pytest
 
 
 from biblelib import book
+
+
+class TestBook(object):
+    """Test Book class."""
+
+    allbooks = book.Books()
+
+    def test_init(self) -> None:
+        """Test the initialization of the Book class."""
+        # will need updating if the list changes
+        gen = self.allbooks["GEN"]
+        assert str(gen) == "<Book: GEN>"
+        assert gen.usfmnumber == "01"
+        assert gen.osisID == "Gen"
+        assert gen.biblia == "Ge"
+        assert gen.altname == ""
+        assert gen.render() == "Gen"
+        assert gen.render("usfmname") == "GEN"
+        assert gen.render("logosID") == "bible.1"
+        assert gen.logosURI == "https://ref.ly/logosref/bible.1"
+
+    def test_altname(self) -> None:
+        """Test the alternate names of the Book class."""
+        # will need updating if the list changes
+        sng = self.allbooks["SNG"]
+        assert sng.name == "Song of Songs"
+        assert sng.altname == "Song of Solomon"
+
+    def test_comparison(self) -> None:
+        """Test the comparison of the Book class."""
+        # will need updating if the list changes
+        gen = self.allbooks["GEN"]
+        exo = self.allbooks["EXO"]
+        assert gen < exo
+        assert exo > gen
+        assert gen != exo
 
 
 class TestMark(object):
@@ -105,3 +141,31 @@ class TestMark(object):
         assert name2cor.usfmname == "2CO"
         assert self.allbooks.nameregexp.match("1 Corinthians 13")
         assert self.allbooks.nameregexp.match("1 Corinthians 13:1")
+
+    def test_findbook(self) -> None:
+        """Test findbook()."""
+        assert (
+            self.allbooks.findbook("GEN").usfmname
+            == self.allbooks.findbook("Gen").usfmname
+            == self.allbooks.findbook("Ge").usfmname
+            == self.allbooks.findbook("Genesis").usfmname
+            == "GEN"
+        )
+        assert (
+            self.allbooks.findbook("1SA").usfmname
+            == self.allbooks.findbook("1Sam").usfmname
+            == self.allbooks.findbook("1Sa").usfmname
+            == self.allbooks.findbook("1 Samuel").usfmname
+            == "1SA"
+        )
+        # check quickfixes
+        assert (
+            self.allbooks.findbook("Song of Solomon").usfmname
+            == self.allbooks.findbook("Song of Songs").usfmname
+            == self.allbooks.findbook("SNG").usfmname
+            == self.allbooks.findbook("Song").usfmname
+            == self.allbooks.findbook("So").usfmname
+            == "SNG"
+        )
+        with pytest.raises(ValueError):
+            assert self.allbooks.findbook("Not a book").usfmname == "NAB"

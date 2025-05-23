@@ -8,23 +8,29 @@ This defines canonical sets of Bible books, along with
   verse. This is tradition-specific: Gen 31 has 55 verses in ESV, but
   54 in BHS.
 
+>>> from biblelib import book
+>>> allbooks = book.Books()
+>>> allbooks["MRK"]
+<Book: MRK>
+# return an OSIS id for a book instance
+>>> allbooks["MRK"].osisID
+'Mark'
+>>>
+# retrive a Book instance from an OSIS ID
+>>> allbooks.fromosis("Matt").name
+'Matthew'
+# convert number from Logos scheme to USFM: Tobit should be 68,
+# not 40
+>>> allbooks.fromlogos("bible.40").usfmnumber
+'68'
 
-Examples:
-    >>> from biblelib import book
-    >>> allbooks = book.Books()
-    >>> allbooks["MRK"]
-    <Book: MRK>
-    # return an OSIS id for a book instance
-    >>> allbooks["MRK"].osisID
-    'Mark'
-    >>>
-    # retrive a Book instance from an OSIS ID
-    >>> allbooks.fromosis("Matt").name
-    'Matthew'
-    # convert number from Logos scheme to USFM: Tobit should be 68,
-    # not 40
-    >>> allbooks.fromlogos("bible.40").usfmnumber
-    '68'
+# if you don't know which abbreviation scheme to use for a book
+# name/abbrev: this raises a ValueError if it's not following any
+# existing scheme
+>>> allbooks.findbook("Ge")
+<Book: GEN>
+>>> allbooks.findbook("Genesis")
+<Book: GEN>
 
 See the tests `Biblelib/tests` for additional examples.
 
@@ -53,7 +59,7 @@ from typing import Any, Union
 BOOKSPATH = Path(__file__).parent
 
 
-@dataclass
+@dataclass(order=True)
 class Book:
     """Dataclass for managing metadata identifying a book from the Bible.
 
@@ -93,7 +99,7 @@ class Book:
     _abbreviationschemes: tuple = ("logosID", "usfmnumber", "usfmname", "osisID")
     _fieldnames: tuple = ("logosID", "usfmnumber", "usfmname", "osisID", "name", "altname")
     # canon-specific
-    ordinal: int = field(init=False)
+    ordinal: int = field(init=False, default=0)
 
     # - add in JPS sequence numbers for OT books?
 
@@ -108,26 +114,6 @@ class Book:
         functionally immutable (but don't change attribute values!).
         """
         return hash(self.osisID)
-
-    def __eq__(self, o: Any) -> bool:
-        """Return True if self is == to other, else False, based on ordinals."""
-        return bool(self.ordinal == o.ordinal)
-
-    def __ge__(self, o: Any) -> bool:
-        """Return True if self is >= other, else False, based on ordinals."""
-        return bool(self.ordinal >= o.ordinal)
-
-    def __gt__(self, o: Any) -> bool:
-        """Return True if self is > other, else False, based on ordinals."""
-        return bool(self.ordinal > o.ordinal)
-
-    def __le__(self, o: Any) -> bool:
-        """Return True if self is <= other, else False, based on ordinals."""
-        return bool(self.ordinal <= o.ordinal)
-
-    def __lt__(self, o: Any) -> bool:
-        """Return True if self is < other, else False, based on ordinals."""
-        return bool(self.ordinal < o.ordinal)
 
     @property
     def usfmnumberalt(self) -> str:
@@ -362,6 +348,36 @@ class Books(UserDict):
         bookinst: Book = usfmnumbermap.get(usfmnumber)
         assert bookinst, f"Invalid USFM number: {usfmnumber}"
         return bookinst
+
+    def findbook(self, bookname: str) -> Book:
+        """Find the book instance for a book name.
+
+        Case must match. If not found in any name map, raise a
+        ValueError.
+
+        This may require looking at multiple naming schemes to find a
+        match. The first match is returned, but i don't believe order
+        consulted should change results.
+
+        Args:
+            bookname: the abbreviation or full name to use in looking up the Book,
+                like 'MATT', 'MRK, or "Matthew".
+
+        """
+        # some minor standardization: this is not an extensible
+        # approach, and long form names should use a different
+        # approach
+        bookname = self.quickfixes.get(bookname, bookname)
+        namemaps = [self.data, self.namemap, self.logosmap, self.bibliamap, self.osismap]
+        # there's probably a smarter way
+        self._ensure_osismap()
+        self._ensure_bibliamap()
+        for namemap in namemaps:
+            if bookname in namemap:
+                book: Book = namemap[bookname]
+                return book
+        else:
+            raise ValueError(f"Book name not found: {bookname}")
 
 
 class _Canon(Books):
