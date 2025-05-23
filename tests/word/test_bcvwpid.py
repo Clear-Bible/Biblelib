@@ -209,6 +209,17 @@ class TestFromTBD:
         """Test returned values."""
         assert fromtbd("bref^2Cor_4_4-6").get_id() == "47004004-47004006"
 
+    def test_fromtbd_fixmap(self) -> None:
+        """Test fromtbd() with fixmap. This handles some idiosyncratic abbreviations."""
+        assert fromtbd("bref^1Thes_1_1").get_id() == "52001001"
+        assert fromtbd("bref^Tb_1_1").get_id() == "68001001"
+
+    def test_fromtbd_validity(self) -> None:
+        """Test fromtbd() with invalid input."""
+        with pytest.raises(AssertionError):
+            # range into next chapter
+            assert fromtbd("bref^2Cor_2_13-3").get_id() == "47002013-47003000"
+
 
 class TestBID:
     """Test basic functionality of BID dataclass."""

@@ -61,7 +61,6 @@ from typing import Any, Union, get_args
 
 from biblelib.book import Books
 
-
 BOOKS = Books()
 
 
@@ -787,6 +786,11 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
                 return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
 
 
+# INCOMPLETE: TynBD has
+# - cross-chapter references like bref^Num_13_30-14
+# - chapter range references like bref^Tb_1_2
+
+
 def fromtbd(ref: str) -> BCVID | BCVIDRange:
     """Return a BCV instance for a Tyndale Bible Dictionary reference.
 
@@ -800,17 +804,27 @@ def fromtbd(ref: str) -> BCVID | BCVIDRange:
     """
     assert ref.startswith("bref^"), f"TynBD reference must start with 'bref^': {ref}"
     ref = ref[5:]  # remove 'bref^'
+    # fix a few idiosyncratic abbreviations
+    fixmap: dict[str, str] = {
+        "1Thes": "1TH",
+        "2Thes": "2TH",
+        "AddEsth": "ESG",
+        "Ecclus": "SIR",
+        "Hagg": "HAG",
+        "Tb": "TOB",
+        "Wisd": "WIS",
+    }
     if "-" in ref:
         # cross-chapter range
         book, chapter, verserange = ref.split("_", 2)
         startverse, endverse = verserange.split("-", 1)
-        bookrecord = BOOKS.findbook(book)
+        bookrecord = BOOKS.findbook(fixmap.get(book, book))
         bcvstart = BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(startverse)}")
         bcvend = BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(endverse)}")
         return BCVIDRange(bcvstart, bcvend)
     else:
         book, chapter, verse = ref.split("_", 2)
-        bookrecord = BOOKS.findbook(book)
+        bookrecord = BOOKS.findbook(fixmap.get(book, book))
         return BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(verse)}")
 
 
