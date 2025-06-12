@@ -349,6 +349,18 @@ class Books(UserDict):
         assert bookinst, f"Invalid USFM number: {usfmnumber}"
         return bookinst
 
+    def get_bookname(self, usfmnumber: str, style: str) -> str:
+        """Return the book name for usfmnumber in the requested style."""
+        assert style in (
+            "usfmname",
+            "name",
+            "osisID",
+            "biblia",
+        ), f"Unknown style {style} for book name."
+        bookinst: Book = self.fromusfmnumber(usfmnumber)
+        ref: str = getattr(bookinst, style)
+        return ref
+
     def findbook(self, bookname: str) -> Book:
         """Find the book instance for a book name.
 
