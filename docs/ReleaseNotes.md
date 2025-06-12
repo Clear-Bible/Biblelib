@@ -2,6 +2,12 @@
 
 ## UNRELEASED
 
+## 0.3.26
+
+- Added reference rendering methods `to_osisID()` and `to_biblia()`,
+  both for `BCVID` and `BCVIDRange`.
+- Added `get_bookname()` to book.py to support this in a general way.
+
 ## 0.3.25
 
 - Work around some idiosyncratic TBD abbreviations.
