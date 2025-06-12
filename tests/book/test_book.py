@@ -142,6 +142,17 @@ class TestMark(object):
         assert self.allbooks.nameregexp.match("1 Corinthians 13")
         assert self.allbooks.nameregexp.match("1 Corinthians 13:1")
 
+    def test_get_bookname(self) -> None:
+        """Test get_bookname()."""
+        assert self.allbooks.get_bookname("01", "usfmname") == "GEN"
+        assert self.allbooks.get_bookname("01", "name") == "Genesis"
+        assert self.allbooks.get_bookname("01", "osisID") == "Gen"
+        assert self.allbooks.get_bookname("01", "biblia") == "Ge"
+        assert self.allbooks.get_bookname("46", "usfmname") == "1CO"
+        assert self.allbooks.get_bookname("46", "name") == "1 Corinthians"
+        assert self.allbooks.get_bookname("46", "osisID") == "1Cor"
+        assert self.allbooks.get_bookname("46", "biblia") == "1Co"
+
     def test_findbook(self) -> None:
         """Test findbook()."""
         assert (

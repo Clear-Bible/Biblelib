@@ -89,6 +89,17 @@ class _Base:
         """Return a hash value."""
         return hash(self.ID)
 
+    def _get_bookname(self, style: str) -> str:
+        """Return the book name in the requested style."""
+        assert style in (
+            "usfmname",
+            "name",
+            "osisID",
+            "biblia",
+        ), f"Unknown style {style} for book name."
+        bookname: str = BOOKS.get_bookname(usfmnumber=self.book_ID, style=style)
+        return bookname
+
 
 @dataclass(repr=False, unsafe_hash=True)
 class BID(_Base):
@@ -294,6 +305,16 @@ class BCVID(BCID):
         bookname = BOOKS.fromusfmnumber(self.book_ID).name
         return f"{bookname} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
+    def to_osisID(self) -> str:
+        """Return a USFM representation."""
+        bookname = BOOKS.fromusfmnumber(self.book_ID).osisID
+        return f"{bookname} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
+    def to_biblia(self) -> str:
+        """Return a USFM representation."""
+        bookname = BOOKS.fromusfmnumber(self.book_ID).biblia
+        return f"{bookname} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+
 
 def from_bcid_verse(bcid: BCID, verse: int) -> BCVID:
     """Return a BCVID instance from a BCID and verse number."""
@@ -385,23 +406,42 @@ class BCVIDRange:
                 for n in range(int(self.startid.verse_ID), int(self.endid.verse_ID) + 1)
             ]
 
-    # consolidate into one method with a style parameter
-    def to_usfm(self) -> str:
-        """Return a (naive) USFM representation.
+    def _get_bookname(self, style: str) -> str:
+        """Return the book name in the requested style."""
+        assert style in (
+            "usfmname",
+            "name",
+            "osisID",
+            "biblia",
+        ), f"Unknown style {style} for book name."
+        bookname: str = BOOKS.get_bookname(usfmnumber=self.startid.book_ID, style=style)
+        return bookname
 
-        No attempt to be smart about abbreviatory conventions
-        """
-        bookname = BOOKS.fromusfmnumber(self.startid.book_ID).usfmname
+    def to_format(self, style: str) -> str:
+        """Return a string representation of the range in the requested style.
+
+        No attempt to be smart about abbreviatory conventions."""
+        bookname = self._get_bookname(style)
         startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
         endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
         return f"{bookname} {startbc}-{endbc}"
+
+    # for backwards compatibility, but should be deprecated
+    def to_usfm(self) -> str:
+        """Return a (naive) USFM representation."""
+        return self.to_format("usfmname")
 
     def to_nameref(self) -> str:
-        """Return a USFM representation."""
-        bookname = BOOKS.fromusfmnumber(self.startid.book_ID).name
-        startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
-        endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
-        return f"{bookname} {startbc}-{endbc}"
+        """Return a name representation."""
+        return self.to_format("name")
+
+    def to_osisID(self) -> str:
+        """Return a OSIS representation."""
+        return self.to_format("osisID")
+
+    def to_biblia(self) -> str:
+        """Return a Biblia/Logos representation."""
+        return self.to_format("biblia")
 
 
 @dataclass(repr=False, unsafe_hash=True)
@@ -787,7 +827,8 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
 
 
 # INCOMPLETE: TynBD has
-# - cross-chapter references like bref^Num_13_30-14
+# - cross-chapter references like bref^Num_13_30-14 and bref^Zech_1_7-6_8
+# - conjoined references like bref^Ezra_5_1,14-15
 # - chapter range references like bref^Tb_1_2
 
 
@@ -814,6 +855,12 @@ def fromtbd(ref: str) -> BCVID | BCVIDRange:
         "Tb": "TOB",
         "Wisd": "WIS",
     }
+    # MORE NEEDED HERE
+    # if "," in ref:
+    #     # bref^Hagg_2_1,10,18-20 or bref^Amos_7_1,4,7 or bref^Hagg_1_1,15
+    #     # sometimes a stray final comma like like "bref^Zech_1_7,"
+    #     splits = ref.split(",")
+
     if "-" in ref:
         # cross-chapter range
         book, chapter, verserange = ref.split("_", 2)

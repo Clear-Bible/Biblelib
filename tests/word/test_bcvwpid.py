@@ -256,6 +256,14 @@ class TestBID:
         assert not mark.includes(BCVID("40001001"))
         assert not mark.includes(BCVWPID("400010010011"))
 
+    def test_bookname(self) -> None:
+        "Test _get_bookname()."
+        onecor = BID("46")
+        assert onecor._get_bookname(style="usfmname") == "1CO"
+        assert onecor._get_bookname(style="name") == "1 Corinthians"
+        assert onecor._get_bookname(style="osisID") == "1Cor"
+        assert onecor._get_bookname(style="biblia") == "1Co"
+
 
 class TestBCID:
     """Test basic functionality of BCID dataclass."""
@@ -375,6 +383,14 @@ class TestBCVID:
         # this drops the word and part indices (by design)
         assert mrk481.to_usfm() == "MRK 4:8"
 
+    def test_to_format(self) -> None:
+        """Test rendering in various formats."""
+        love: BCVID = BCVID("46013001")
+        assert love.to_usfm() == "1CO 13:1"
+        assert love.to_nameref() == "1 Corinthians 13:1"
+        assert love.to_osisID() == "1Cor 13:1"
+        assert love.to_biblia() == "1Co 13:1"
+
 
 class TestBCVIDRange:
     """Test basic functionality of BCVWPRange dataclass."""
@@ -382,6 +398,9 @@ class TestBCVIDRange:
     mark4_8 = BCVID("41004008")
     mark4_13 = BCVID("41004013")
     markrange = BCVIDRange(mark4_8, mark4_13)
+    onecor4_8 = BCVID("46004008")
+    onecor4_13 = BCVID("46004013")
+    onecorrange = BCVIDRange(onecor4_8, onecor4_13)
 
     def test_init(self) -> None:
         """Test initialization and attributes."""
@@ -410,9 +429,12 @@ class TestBCVIDRange:
             # not implemented
             _ = BCVIDRange(BCVID("41004008"), BCVID("41005001")).enumerate()
 
-    def test_to_usfm(self) -> None:
+    def test_to_format(self) -> None:
         """Test to_usfm()."""
-        assert self.markrange.to_usfm() == "MRK 4:8-4:13"
+        assert self.onecorrange.to_usfm() == "1CO 4:8-4:13"
+        assert self.onecorrange.to_nameref() == "1 Corinthians 4:8-4:13"
+        assert self.onecorrange.to_osisID() == "1Cor 4:8-4:13"
+        assert self.onecorrange.to_biblia() == "1Co 4:8-4:13"
 
 
 class TestBCVWPID:
