@@ -1,6 +1,18 @@
 # Release Notes
 
-## UNRELEASED
+## 0.3.29
+
+- Extended `word.bcvwpid.fromusfm()` to handle references with word
+  parts ("MRK 4:1!4") and ranges ("MRK 4:1-4:9"). Note ranges requires
+  the end reference to specify the chapter.
+
+## 0.3.28
+
+- Fixed typo in definition i should have tested first.
+
+## 0.3.27
+
+- Updated `has_connection()` based on Claude input.
 
 ## 0.3.26
 

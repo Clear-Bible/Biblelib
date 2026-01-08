@@ -165,6 +165,20 @@ class TestFromUsfm:
         assert fromusfm("PSA 119:1") == BCVID("19119001")
         assert fromusfm("MRK 4:1") == BCVID("41004001")
 
+    def test_fromusfm_chapter_verse_word(self) -> None:
+        """Test returned values"""
+        assert fromusfm("MRK 4:1!4") == BCVWPID("41004001004")
+        with pytest.raises(AssertionError):
+            # zero word index is invalid
+            assert fromusfm("MRK 4:1!0") == BCVWPID("41004001000")
+
+    def test_fromusfm_verserange(self) -> None:
+        """Test returned values"""
+        assert fromusfm("MRK 4:1-4:9") == BCVIDRange(BCVID("41004001"), BCVID("41004009"))
+        with pytest.raises(AssertionError):
+            # incomplete end reference is not supported
+            assert fromusfm("MRK 4:1-9") == BCVIDRange(BCVID("41004001"), BCVID("41004009"))
+
 
 class TestFromBiblia:
     """Test basic functionality of frombiblia()."""

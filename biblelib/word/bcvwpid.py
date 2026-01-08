@@ -115,7 +115,7 @@ class BID(_Base):
         """Compute other values on initialization."""
         super().__post_init__()
         self.book_ID = self.ID[0:2]
-        # also test that they're all digits, in the right range, etc.
+        # also test that they're all digits, in the right etc, range.
         # this covers the protestant canon and deuterocanon, but not perfectly
         # this breaks code in book.py
         # assert re.match("^[0-8][0-9]", self.book_ID), f"Invalid book number {self.book_ID}"
@@ -759,13 +759,19 @@ def fromname(ref: str) -> BID | BCID | BCVID:
                 raise ValueError(f"Invalid BCV values: {ref}\n{e}")
 
 
-def fromusfm(ref: str) -> BID | BCID | BCVID:
+def from_usfm(ref: str) -> BID | BCID | BCVID | BCVWPID | BCVIDRange:
     """Return a BCV instance for a USFM-based reference.
 
-    Only handles book, book + chapter, and book chapter verse
-    references like MRK 4:8. Does not handle ranges or non-numeric
-    verses like 'title'. Does not check the validity of chapter and
-    verse numbers for the book.
+    Handles these cases:
+    - book
+    - book chapter
+    - book chapter:verse
+    - book chapter:verse
+    - book chapter:verse!word
+    - book chapter:verse-chapter:verse (range)
+
+    Does not handle non-numeric verses like 'title'. Does not check
+    the validity of chapter and verse numbers for the book.
 
     """
     if " " not in ref:
@@ -775,16 +781,33 @@ def fromusfm(ref: str) -> BID | BCID | BCVID:
     else:
         bookabbrev, rest = ref.split(" ", 1)
         usfmbook = BOOKS[bookabbrev.upper()].usfmnumber
+        if "-" in rest:
+            # verse range: must be same book, end portion must be
+            # otherwise fully specified
+            startref, endref = rest.split("-", 1)
+            assert ":" in endref, f"Range end must include chapter and verse: {ref}"
+            return BCVIDRange(from_usfm(f"{bookabbrev} {startref}"), from_usfm(f"{bookabbrev} {endref}"))
         if ":" not in rest:
             # book and chapter
             return BCID(f"{usfmbook}{pad3(rest)}")
         else:
             # book, chapter, verse
             chapter, verse = rest.split(":", 1)
-            return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
+            if "!" in verse:
+                # book, chapter, verse, and word
+                versepart, wordpart = verse.split("!", 1)
+                assert int(wordpart) > 0, f"Zero word index is invalid: {ref}"
+                return BCVWPID(f"{usfmbook}{pad3(chapter)}{pad3(versepart)}{pad3(wordpart)}")
+            else:
+                # book, chapter, verse, and word
+                return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
 
 
-def frombiblia(ref: str) -> BID | BCID | BCVID:
+# alternate name for backward compatibility: i made the wrong choice initially
+fromusfm = from_usfm
+
+
+def from_biblia(ref: str) -> BID | BCID | BCVID:
     """Return a BCV instance for a Biblia-style name reference.
 
     Handles book, book + chapter, and book chapter verse, and verse
@@ -826,13 +849,17 @@ def frombiblia(ref: str) -> BID | BCID | BCVID:
                 return BCVID(f"{bibliabook}{pad3(chapter)}{pad3(verse)}")
 
 
+# alternate name for backward compatibility: i made the wrong choice initially
+frombiblia = from_biblia
+
+
 # INCOMPLETE: TynBD has
 # - cross-chapter references like bref^Num_13_30-14 and bref^Zech_1_7-6_8
 # - conjoined references like bref^Ezra_5_1,14-15
 # - chapter range references like bref^Tb_1_2
 
 
-def fromtbd(ref: str) -> BCVID | BCVIDRange:
+def from_tbd(ref: str) -> BCVID | BCVIDRange:
     """Return a BCV instance for a Tyndale Bible Dictionary reference.
 
     The TynBD markup has references like "bref^Isa_16_8-9" and
@@ -873,6 +900,10 @@ def fromtbd(ref: str) -> BCVID | BCVIDRange:
         book, chapter, verse = ref.split("_", 2)
         bookrecord = BOOKS.findbook(fixmap.get(book, book))
         return BCVID(f"{bookrecord.usfmnumber}{pad3(chapter)}{pad3(verse)}")
+
+
+# alternate name for backward compatibility: i made the wrong choice initially
+fromtbd = from_tbd
 
 
 def to_bcv(token: str | BCVWPID | BCVID) -> str:
