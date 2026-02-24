@@ -4,7 +4,7 @@
 >>> mrk_2_5 = ChapterRange(start=BCID("41002"), end=BCID("41005"))
 >>> mrk_2_5.enumerate()
 [BCID('41002'), BCID('41003'), BCID('41004'), BCID('41005')]
->>> onechap = VerseRange(start=BCVID("41001040"), end=BCVID("41002002"))
+>>> onechap = VerseRange(startid=BCVID("41001040"), endid=BCVID("41002002"))
 >>> onechap.enumerate()
 [Verse(identifier='BCVID('41001040')'), Verse(identifier='BCVID('41001041')'), ... Verse(identifier='BCVID('41002002')')]
 
