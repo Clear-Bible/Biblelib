@@ -1,0 +1,109 @@
+# Spanish (spa) book names and abbreviations for biblelib
+# Conventions: Reina-Valera / NVI / interconfessional standard (UBS)
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Génesis	Gn
+EXO	Éxodo	Éx
+LEV	Levítico	Lv
+NUM	Números	Nm
+DEU	Deuteronomio	Dt
+JOS	Josué	Jos
+JDG	Jueces	Jue
+RUT	Rut	Rt
+1SA	1 Samuel	1Sm
+2SA	2 Samuel	2Sm
+1KI	1 Reyes	1Re
+2KI	2 Reyes	2Re
+1CH	1 Crónicas	1Cr
+2CH	2 Crónicas	2Cr
+EZR	Esdras	Esd
+NEH	Nehemías	Neh
+EST	Ester	Est
+JOB	Job	Job
+PSA	Salmos	Sal
+PRO	Proverbios	Pr
+ECC	Eclesiastés	Ec
+SNG	Cantares	Cnt
+ISA	Isaías	Is
+JER	Jeremías	Jer
+LAM	Lamentaciones	Lm
+EZK	Ezequiel	Ez
+DAN	Daniel	Dn
+HOS	Oseas	Os
+JOL	Joel	Jl
+AMO	Amós	Am
+OBA	Abdías	Abd
+JON	Jonás	Jon
+MIC	Miqueas	Mi
+NAM	Nahúm	Nah
+HAB	Habacuc	Hab
+ZEP	Sofonías	Sof
+HAG	Hageo	Hag
+ZEC	Zacarías	Zac
+MAL	Malaquías	Mal
+# Deuterocanonical books
+TOB	Tobías	Tob
+JDT	Judit	Jdt
+ESG	Ester (griego)	EstGr
+WIS	Sabiduría	Sab
+SIR	Eclesiástico	Eclo
+BAR	Baruc	Bar
+LJE	Carta de Jeremías	CJer
+S3Y	Cántico de los tres jóvenes	Ct3J
+SUS	Susana	Sus
+BEL	Bel y el Dragón	Bel
+1MA	1 Macabeos	1Mac
+2MA	2 Macabeos	2Mac
+1ES	1 Esdras	1Esd
+MAN	Oración de Manasés	OMn
+PS2	Salmo 151	Sal151
+3MA	3 Macabeos	3Mac
+2ES	2 Esdras	2Esd
+4MA	4 Macabeos	4Mac
+ODA	Odas	Od
+PSS	Salmos de Salomón	SalSal
+LAO	Carta a los Laodicenses	Lao
+# New Testament
+MAT	Mateo	Mt
+MRK	Marcos	Mc
+LUK	Lucas	Lc
+JHN	Juan	Jn
+ACT	Hechos	Hch
+ROM	Romanos	Ro
+1CO	1 Corintios	1Co
+2CO	2 Corintios	2Co
+GAL	Gálatas	Ga
+EPH	Efesios	Ef
+PHP	Filipenses	Fil
+COL	Colosenses	Col
+1TH	1 Tesalonicenses	1Ts
+2TH	2 Tesalonicenses	2Ts
+1TI	1 Timoteo	1Ti
+2TI	2 Timoteo	2Ti
+TIT	Tito	Tit
+PHM	Filemón	Flm
+HEB	Hebreos	Heb
+JAS	Santiago	Stg
+1PE	1 Pedro	1Pe
+2PE	2 Pedro	2Pe
+1JN	1 Juan	1Jn
+2JN	2 Juan	2Jn
+3JN	3 Juan	3Jn
+JUD	Judas	Jud
+REV	Apocalipsis	Ap
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Enoc	Enoc
+2BA	2 Baruc	2Bar
+LBA	Carta de Baruc	CBa
+DAG	Daniel (griego)	DanGr
+EZA	Apocalipsis de Esdras	ApEsd
+5EZ	5 Esdras	5Esd
+6EZ	6 Esdras	6Esd
+PS3	Salmos 152-155	Sal152
+JUB	Jubileos	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Reprensión	Rep
+4BA	4 Baruc	4Bar

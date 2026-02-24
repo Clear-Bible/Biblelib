@@ -4,6 +4,7 @@ import pytest
 
 
 from biblelib import book
+from biblelib.book import LocalizedBooks, get_localized_books
 
 
 class TestBook(object):
@@ -180,3 +181,78 @@ class TestMark(object):
         )
         with pytest.raises(ValueError):
             assert self.allbooks.findbook("Not a book").usfmname == "NAB"
+
+
+class TestLocalizedBooks:
+    """Test LocalizedBooks class and get_localized_books() factory."""
+
+    fra = LocalizedBooks("fra")
+
+    def test_init(self) -> None:
+        """Test that the French localization file loads correctly."""
+        assert self.fra.lang == "fra"
+        # spot-check a few books
+        assert self.fra.get_name("GEN") == "Genèse"
+        assert self.fra.get_abbrev("GEN") == "Gn"
+        assert self.fra.get_name("MAT") == "Matthieu"
+        assert self.fra.get_abbrev("MAT") == "Mt"
+        assert self.fra.get_name("REV") == "Apocalypse"
+        assert self.fra.get_abbrev("REV") == "Ap"
+
+    def test_ot_books(self) -> None:
+        """Test a selection of OT French names."""
+        assert self.fra.get_name("EXO") == "Exode"
+        assert self.fra.get_abbrev("PSA") == "Ps"
+        assert self.fra.get_name("ISA") == "Isaïe"
+        assert self.fra.get_abbrev("MRK") == "Mc"
+
+    def test_deuterocanon(self) -> None:
+        """Test deuterocanonical book names."""
+        assert self.fra.get_name("TOB") == "Tobie"
+        assert self.fra.get_abbrev("TOB") == "Tb"
+        assert self.fra.get_name("1MA") == "1 Maccabées"
+        assert self.fra.get_abbrev("SIR") == "Si"
+
+    def test_missing_book(self) -> None:
+        """Test that an unknown usfmname raises AssertionError."""
+        with pytest.raises(AssertionError):
+            self.fra.get_name("ZZZ")
+        with pytest.raises(AssertionError):
+            self.fra.get_abbrev("ZZZ")
+
+    def test_missing_language(self) -> None:
+        """Test that an unknown language code raises FileNotFoundError."""
+        with pytest.raises(FileNotFoundError):
+            LocalizedBooks("zzz")
+
+    def test_missing_language_fallback(self) -> None:
+        """Test that get_localized_books() warns and returns None for unknown lang."""
+        import warnings
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            result = get_localized_books("zzz")
+        assert result is None
+        assert len(caught) == 1
+        assert "zzz" in str(caught[0].message)
+        assert "falling back to English" in str(caught[0].message)
+
+    def test_cv_sep(self) -> None:
+        """Test that cv_sep is read from the TSV metadata comment."""
+        assert self.fra.cv_sep == "."
+
+    def test_cv_sep_default(self) -> None:
+        """Test that cv_sep defaults to ':' when not specified in the TSV."""
+        # LocalizedBooks("fra") has # cv_sep: . so use a different fixture.
+        # We test the default by checking that a LocalizedBooks instance
+        # without a cv_sep comment would use ":".  Since we can't easily
+        # create a language without a real file, we verify the field default
+        # directly via the dataclass.
+        import dataclasses
+        defaults = {f.name: f.default for f in dataclasses.fields(LocalizedBooks) if f.name == "cv_sep"}
+        assert defaults["cv_sep"] == ":"
+
+    def test_get_localized_books_cache(self) -> None:
+        """Test that get_localized_books() returns a cached instance."""
+        fra1 = get_localized_books("fra")
+        fra2 = get_localized_books("fra")
+        assert fra1 is fra2

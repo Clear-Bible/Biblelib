@@ -59,9 +59,28 @@ from dataclasses import dataclass, field
 import re
 from typing import Any, Union, get_args
 
-from biblelib.book import Books
+from biblelib.book import Books, get_localized_books
 
 BOOKS = Books()
+
+
+def _cv_sep(lang: str) -> str:
+    """Return the chapter-verse separator character for *lang*.
+
+    English uses ``":"`` (hardcoded); other languages read the value
+    from the ``# cv_sep:`` metadata line in their ``books_<lang>.tsv``
+    file (defaulting to ``":"`` if absent).
+
+    >>> _cv_sep("eng")
+    ':'
+    >>> _cv_sep("fra")
+    '.'
+
+    """
+    if lang == "eng":
+        return ":"
+    localized = get_localized_books(lang)
+    return localized.cv_sep if localized is not None else ":"
 
 
 @dataclass(order=True)
@@ -89,8 +108,28 @@ class _Base:
         """Return a hash value."""
         return hash(self.ID)
 
-    def _get_bookname(self, style: str) -> str:
-        """Return the book name in the requested style."""
+    def _get_bookname(self, style: str, lang: str = "eng") -> str:
+        """Return the book name in the requested style, optionally localized.
+
+        For non-English languages, *style* may be ``"name"`` (full name)
+        or ``"abbrev"`` (localized abbreviation). For ``lang="eng"``,
+        the standard English styles ``"usfmname"``, ``"name"``,
+        ``"osisID"``, and ``"biblia"`` are supported.
+
+        If *lang* is unsupported, falls back to English (a warning will
+        have been issued by :func:`get_localized_books`).
+        """
+        if lang != "eng":
+            localized = get_localized_books(lang)
+            if localized is not None:
+                usfmname: str = BOOKS.fromusfmnumber(self.book_ID).usfmname
+                if style == "abbrev":
+                    return localized.get_abbrev(usfmname)
+                return localized.get_name(usfmname)
+            # Unsupported language: fall back to English.
+            # "abbrev" has no English equivalent style; use "biblia".
+            if style == "abbrev":
+                style = "biblia"
         assert style in (
             "usfmname",
             "name",
@@ -300,10 +339,40 @@ class BCVID(BCID):
         usfmbook = BOOKS.fromusfmnumber(self.book_ID).usfmname
         return f"{usfmbook} {int(self.chapter_ID)}:{int(self.verse_ID)}"
 
-    def to_nameref(self) -> str:
-        """Return a USFM representation."""
-        bookname = BOOKS.fromusfmnumber(self.book_ID).name
-        return f"{bookname} {int(self.chapter_ID)}:{int(self.verse_ID)}"
+    def to_nameref(self, lang: str = "eng") -> str:
+        """Return a reference string using the full book name.
+
+        With the default ``lang="eng"``, returns an English full-name
+        reference like ``"Genesis 1:1"``. Pass an ISO 639-3 language
+        code to get a localized reference::
+
+            >>> BCVID("01001001").to_nameref()
+            'Genesis 1:1'
+            >>> BCVID("41004003").to_nameref(lang="fra")
+            'Marc 4.3'
+
+        """
+        bookname = self._get_bookname("name", lang=lang)
+        sep = _cv_sep(lang)
+        return f"{bookname} {int(self.chapter_ID)}{sep}{int(self.verse_ID)}"
+
+    def to_abbrevref(self, lang: str = "eng") -> str:
+        """Return a reference string using an abbreviated book name.
+
+        For ``lang="eng"``, uses the ``biblia`` abbreviation (e.g.
+        ``"Ge 1:1"``). For other languages, uses the ``abbrev`` field
+        from the localization file (e.g. ``"Gn 1.1"`` for French)::
+
+            >>> BCVID("01001001").to_abbrevref()
+            'Ge 1:1'
+            >>> BCVID("41004003").to_abbrevref(lang="fra")
+            'Mc 4.3'
+
+        """
+        style = "biblia" if lang == "eng" else "abbrev"
+        bookname = self._get_bookname(style, lang=lang)
+        sep = _cv_sep(lang)
+        return f"{bookname} {int(self.chapter_ID)}{sep}{int(self.verse_ID)}"
 
     def to_osisID(self) -> str:
         """Return a USFM representation."""
@@ -406,8 +475,21 @@ class BCVIDRange:
                 for n in range(int(self.startid.verse_ID), int(self.endid.verse_ID) + 1)
             ]
 
-    def _get_bookname(self, style: str) -> str:
-        """Return the book name in the requested style."""
+    def _get_bookname(self, style: str, lang: str = "eng") -> str:
+        """Return the book name in the requested style, optionally localized.
+
+        If *lang* is unsupported, falls back to English (a warning will
+        have been issued by :func:`get_localized_books`).
+        """
+        if lang != "eng":
+            localized = get_localized_books(lang)
+            if localized is not None:
+                usfmname: str = BOOKS.fromusfmnumber(self.startid.book_ID).usfmname
+                if style == "abbrev":
+                    return localized.get_abbrev(usfmname)
+                return localized.get_name(usfmname)
+            if style == "abbrev":
+                style = "biblia"
         assert style in (
             "usfmname",
             "name",
@@ -417,13 +499,14 @@ class BCVIDRange:
         bookname: str = BOOKS.get_bookname(usfmnumber=self.startid.book_ID, style=style)
         return bookname
 
-    def to_format(self, style: str) -> str:
+    def to_format(self, style: str, lang: str = "eng") -> str:
         """Return a string representation of the range in the requested style.
 
         No attempt to be smart about abbreviatory conventions."""
-        bookname = self._get_bookname(style)
-        startbc = f"{int(self.startid.chapter_ID)}:{int(self.startid.verse_ID)}"
-        endbc = f"{int(self.endid.chapter_ID)}:{int(self.endid.verse_ID)}"
+        bookname = self._get_bookname(style, lang=lang)
+        sep = _cv_sep(lang)
+        startbc = f"{int(self.startid.chapter_ID)}{sep}{int(self.startid.verse_ID)}"
+        endbc = f"{int(self.endid.chapter_ID)}{sep}{int(self.endid.verse_ID)}"
         return f"{bookname} {startbc}-{endbc}"
 
     # for backwards compatibility, but should be deprecated
@@ -431,9 +514,28 @@ class BCVIDRange:
         """Return a (naive) USFM representation."""
         return self.to_format("usfmname")
 
-    def to_nameref(self) -> str:
-        """Return a name representation."""
-        return self.to_format("name")
+    def to_nameref(self, lang: str = "eng") -> str:
+        """Return a full-name reference string, optionally localized.
+
+            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref()
+            'Mark 4:3-4:8'
+            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref(lang="fra")
+            'Marc 4.3-4.8'
+
+        """
+        return self.to_format("name", lang=lang)
+
+    def to_abbrevref(self, lang: str = "eng") -> str:
+        """Return an abbreviated reference string, optionally localized.
+
+            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref()
+            'Mk 4:3-4:8'
+            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref(lang="fra")
+            'Mc 4.3-4.8'
+
+        """
+        style = "biblia" if lang == "eng" else "abbrev"
+        return self.to_format(style, lang=lang)
 
     def to_osisID(self) -> str:
         """Return a OSIS representation."""

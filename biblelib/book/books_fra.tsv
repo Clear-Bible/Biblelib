@@ -1,0 +1,110 @@
+# French (fra) book names and abbreviations for biblelib
+# Columns: usfmname (key), name (full French name), abbrev (standard French abbreviation)
+# Abbreviations follow common usage in French translations (TOB, Bible de Jérusalem, etc.)
+# cv_sep: .
+# Protestant canon
+usfmname	name	abbrev
+GEN	Genèse	Gn
+EXO	Exode	Ex
+LEV	Lévitique	Lv
+NUM	Nombres	Nb
+DEU	Deutéronome	Dt
+JOS	Josué	Jos
+JDG	Juges	Jg
+RUT	Ruth	Rt
+1SA	1 Samuel	1S
+2SA	2 Samuel	2S
+1KI	1 Rois	1R
+2KI	2 Rois	2R
+1CH	1 Chroniques	1Ch
+2CH	2 Chroniques	2Ch
+EZR	Esdras	Esd
+NEH	Néhémie	Né
+EST	Esther	Est
+JOB	Job	Jb
+PSA	Psaumes	Ps
+PRO	Proverbes	Pr
+ECC	Ecclésiaste	Ec
+SNG	Cantique des Cantiques	Ct
+ISA	Isaïe	Is
+JER	Jérémie	Jr
+LAM	Lamentations	Lm
+EZK	Ézéchiel	Éz
+DAN	Daniel	Dn
+HOS	Osée	Os
+JOL	Joël	Jl
+AMO	Amos	Am
+OBA	Abdias	Ab
+JON	Jonas	Jon
+MIC	Michée	Mi
+NAM	Nahum	Na
+HAB	Habacuc	Ha
+ZEP	Sophonie	So
+HAG	Aggée	Ag
+ZEC	Zacharie	Za
+MAL	Malachie	Ml
+# Deuterocanonical books
+TOB	Tobie	Tb
+JDT	Judith	Jdt
+ESG	Esther (grec)	EstGr
+WIS	Sagesse	Sg
+SIR	Siracide	Si
+BAR	Baruch	Bar
+LJE	Lettre de Jérémie	LJé
+S3Y	Cantique des trois jeunes gens	Ct3J
+SUS	Suzanne	Sus
+BEL	Bel et le Dragon	Bel
+1MA	1 Maccabées	1M
+2MA	2 Maccabées	2M
+1ES	1 Esdras (grec)	1Esd
+MAN	Prière de Manassé	PrMan
+PS2	Psaume 151	Ps151
+3MA	3 Maccabées	3M
+2ES	2 Esdras (latin)	2Esd
+4MA	4 Maccabées	4M
+ODA	Odes	Od
+PSS	Psaumes de Salomon	PsSal
+LAO	Lettre aux Laodicéens	Lao
+# New Testament
+MAT	Matthieu	Mt
+MRK	Marc	Mc
+LUK	Luc	Lc
+JHN	Jean	Jn
+ACT	Actes	Ac
+ROM	Romains	Rm
+1CO	1 Corinthiens	1Co
+2CO	2 Corinthiens	2Co
+GAL	Galates	Ga
+EPH	Éphésiens	Ép
+PHP	Philippiens	Ph
+COL	Colossiens	Col
+1TH	1 Thessaloniciens	1Th
+2TH	2 Thessaloniciens	2Th
+1TI	1 Timothée	1Tm
+2TI	2 Timothée	2Tm
+TIT	Tite	Tt
+PHM	Philémon	Phm
+HEB	Hébreux	Hé
+JAS	Jacques	Jc
+1PE	1 Pierre	1P
+2PE	2 Pierre	2P
+1JN	1 Jean	1Jn
+2JN	2 Jean	2Jn
+3JN	3 Jean	3Jn
+JUD	Jude	Jude
+REV	Apocalypse	Ap
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Hénoch	1Hén
+2BA	2 Baruch (Apocalypse)	2Bar
+LBA	Lettre de Baruch	LBar
+DAG	Daniel (grec)	DanGr
+EZA	Apocalypse d'Esdras	ApEsd
+5EZ	5 Esdras	5Esd
+6EZ	6 Esdras	6Esd
+PS3	Psaumes 152-155	Ps152
+JUB	Jubilés	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Réprimande	Rép
+4BA	4 Baruch	4Bar

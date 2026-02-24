@@ -4,13 +4,15 @@
 
 """
 
-from .book import Book, Books, NTCanon, ProtestantCanon, CatholicCanon
+from .book import Book, Books, LocalizedBooks, NTCanon, ProtestantCanon, CatholicCanon, get_localized_books
 
 
 __all__ = [
     "Book",
     "Books",
+    "LocalizedBooks",
     "NTCanon",
     "ProtestantCanon",
     "CatholicCanon",
+    "get_localized_books",
 ]
