@@ -1,0 +1,111 @@
+# Swahili (swh) book names and abbreviations for biblelib
+# Conventions: Swahili Union Version (Toleo la Umoja), Bible Societies of Kenya/Tanzania
+# Abbreviations: standard Union Version abbreviations
+# Deuterocanonical names from Swahili Catholic editions; extended canon transliterated
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Mwanzo	Mwa
+EXO	Kutoka	Kut
+LEV	Mambo ya Walawi	Law
+NUM	Hesabu	Hes
+DEU	Kumbukumbu la Torati	Kum
+JOS	Yoshua	Yos
+JDG	Waamuzi	Wam
+RUT	Ruthu	Rut
+1SA	1 Samweli	1Sam
+2SA	2 Samweli	2Sam
+1KI	1 Wafalme	1Fal
+2KI	2 Wafalme	2Fal
+1CH	1 Mambo ya Nyakati	1Nya
+2CH	2 Mambo ya Nyakati	2Nya
+EZR	Ezra	Ezr
+NEH	Nehemia	Neh
+EST	Esta	Est
+JOB	Ayubu	Ayu
+PSA	Zaburi	Zab
+PRO	Mithali	Mit
+ECC	Mhubiri	Mhu
+SNG	Wimbo Ulio Bora	Wim
+ISA	Isaya	Isa
+JER	Yeremia	Yer
+LAM	Maombolezo	Mao
+EZK	Ezekieli	Eze
+DAN	Danieli	Dan
+HOS	Hosea	Hos
+JOL	Yoeli	Yoe
+AMO	Amosi	Amo
+OBA	Obadia	Oba
+JON	Yona	Yon
+MIC	Mika	Mik
+NAM	Nahumu	Nah
+HAB	Habakuki	Hab
+ZEP	Sefania	Sef
+HAG	Hagai	Hag
+ZEC	Zekaria	Zek
+MAL	Malaki	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Yudifu	Ydf
+ESG	Esta (Kigiriki)	Est.Gri
+WIS	Hekima ya Solomoni	Hek
+SIR	Siraki	Sir
+BAR	Baruku	Bar
+LJE	Waraka wa Yeremia	W.Yer
+S3Y	Wimbo wa Vijana Watatu	Wim.VW
+SUS	Susana	Sus
+BEL	Beli na Joka	Bel
+1MA	1 Makabayo	1Mak
+2MA	2 Makabayo	2Mak
+1ES	1 Ezra	1Ezr
+MAN	Sala ya Manase	Sal.Man
+PS2	Zaburi 151	Zab151
+3MA	3 Makabayo	3Mak
+2ES	2 Ezra	2Ezr
+4MA	4 Makabayo	4Mak
+ODA	Oda	Oda
+PSS	Zaburi za Solomoni	Zab.Sol
+LAO	Laodikia	Lao
+# New Testament
+MAT	Mathayo	Mat
+MRK	Marko	Mrk
+LUK	Luka	Luk
+JHN	Yohana	Yoh
+ACT	Matendo ya Mitume	Mdo
+ROM	Warumi	War
+1CO	1 Wakorintho	1Kor
+2CO	2 Wakorintho	2Kor
+GAL	Wagalatia	Gal
+EPH	Waefeso	Efe
+PHP	Wafilipi	Fil
+COL	Wakolosai	Kol
+1TH	1 Wathesalonike	1The
+2TH	2 Wathesalonike	2The
+1TI	1 Timotheo	1Tim
+2TI	2 Timotheo	2Tim
+TIT	Tito	Tit
+PHM	Filemoni	Flm
+HEB	Waebrania	Ebr
+JAS	Yakobo	Yak
+1PE	1 Petro	1Pet
+2PE	2 Petro	2Pet
+1JN	1 Yohana	1Yoh
+2JN	2 Yohana	2Yoh
+3JN	3 Yohana	3Yoh
+JUD	Yuda	Yud
+REV	Ufunuo	Ufu
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Henoko	Hen
+2BA	Baruku 2	2Bar
+LBA	Waraka wa Baruku	W.Bar
+DAG	Danieli (Kigiriki)	Dan.Gri
+EZA	Ufunuo wa Ezra	Ufu.Ezr
+5EZ	5 Ezra	5Ezr
+6EZ	6 Ezra	6Ezr
+PS3	Zaburi 152-155	Zab152
+JUB	Yubile	Yub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Karipio	Kar
+4BA	Baruku 4	4Bar
