@@ -1,5 +1,20 @@
 # Release Notes
 
+## 0.5.1
+
+- Added `Pericope.enumerate()` to return an ordered list of `BCVID` instances
+  for all verses in a pericope. Handles both same-chapter and cross-chapter
+  ranges by delegating to `unit.unitrange.VerseRange.enumerate_ids()`.
+  - This is approximate, and depends on the data in unit/chapters.tsv
+    for the chapters and chapterverses.tsv for the last canonical
+    verse in a chapter (based on `eng` versification). You should test
+    for the actual existence of individual verse references within a
+    text if you care, and you may need to convert to other
+    versification schemes.
+- Added tests for `Pericope.enumerate()`.
+- Fixed a doctest bug in the `biblelib.pericope.pericope` module docstring
+  (tuple display was missing parentheses).
+
 ## 0.5.0
 
 - Added `biblelib.pericope` subpackage for working with pericope data.
