@@ -1,0 +1,110 @@
+# Portuguese (por) book names and abbreviations for biblelib
+# Conventions: Sociedade Bíblica do Brasil (SBB) / ARA / NVI-PT
+# Spelling follows Brazilian Portuguese conventions
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Gênesis	Gn
+EXO	Êxodo	Êx
+LEV	Levítico	Lv
+NUM	Números	Nm
+DEU	Deuteronômio	Dt
+JOS	Josué	Js
+JDG	Juízes	Jz
+RUT	Rute	Rt
+1SA	1 Samuel	1Sm
+2SA	2 Samuel	2Sm
+1KI	1 Reis	1Rs
+2KI	2 Reis	2Rs
+1CH	1 Crônicas	1Cr
+2CH	2 Crônicas	2Cr
+EZR	Esdras	Esd
+NEH	Neemias	Ne
+EST	Ester	Et
+JOB	Jó	Jó
+PSA	Salmos	Sl
+PRO	Provérbios	Pv
+ECC	Eclesiastes	Ec
+SNG	Cânticos	Ct
+ISA	Isaías	Is
+JER	Jeremias	Jr
+LAM	Lamentações	Lm
+EZK	Ezequiel	Ez
+DAN	Daniel	Dn
+HOS	Oséias	Os
+JOL	Joel	Jl
+AMO	Amós	Am
+OBA	Obadias	Ob
+JON	Jonas	Jn
+MIC	Miquéias	Mq
+NAM	Naum	Na
+HAB	Habacuque	Hc
+ZEP	Sofonias	Sf
+HAG	Ageu	Ag
+ZEC	Zacarias	Zc
+MAL	Malaquias	Ml
+# Deuterocanonical books
+TOB	Tobias	Tb
+JDT	Judite	Jdt
+ESG	Ester (grego)	EstGr
+WIS	Sabedoria	Sb
+SIR	Eclesiástico	Eclo
+BAR	Baruc	Br
+LJE	Carta de Jeremias	CJr
+S3Y	Cântico dos três jovens	Ct3J
+SUS	Susana	Sus
+BEL	Bel e o Dragão	Bel
+1MA	1 Macabeus	1Mac
+2MA	2 Macabeus	2Mac
+1ES	1 Esdras	1Esd
+MAN	Oração de Manassés	OMn
+PS2	Salmo 151	Sl151
+3MA	3 Macabeus	3Mac
+2ES	2 Esdras	2Esd
+4MA	4 Macabeus	4Mac
+ODA	Odes	Od
+PSS	Salmos de Salomão	SlSl
+LAO	Carta aos Laodicenses	Lao
+# New Testament
+MAT	Mateus	Mt
+MRK	Marcos	Mc
+LUK	Lucas	Lc
+JHN	João	Jo
+ACT	Atos	At
+ROM	Romanos	Rm
+1CO	1 Coríntios	1Co
+2CO	2 Coríntios	2Co
+GAL	Gálatas	Gl
+EPH	Efésios	Ef
+PHP	Filipenses	Fp
+COL	Colossenses	Cl
+1TH	1 Tessalonicenses	1Ts
+2TH	2 Tessalonicenses	2Ts
+1TI	1 Timóteo	1Tm
+2TI	2 Timóteo	2Tm
+TIT	Tito	Tt
+PHM	Filemon	Fm
+HEB	Hebreus	Hb
+JAS	Tiago	Tg
+1PE	1 Pedro	1Pe
+2PE	2 Pedro	2Pe
+1JN	1 João	1Jo
+2JN	2 João	2Jo
+3JN	3 João	3Jo
+JUD	Judas	Jd
+REV	Apocalipse	Ap
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Enoque	En
+2BA	2 Baruc	2Bar
+LBA	Carta de Baruc	CBr
+DAG	Daniel (grego)	DnGr
+EZA	Apocalipse de Esdras	ApEsd
+5EZ	5 Esdras	5Esd
+6EZ	6 Esdras	6Esd
+PS3	Salmos 152-155	Sl152
+JUB	Jubileus	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Repreensão	Rep
+4BA	4 Baruc	4Bar
