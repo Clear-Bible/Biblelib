@@ -1,5 +1,18 @@
 # Release Notes
 
+## 0.4.0
+
+- Incorporated PR from the awesome Rick Brannan to support producing
+  localized strings for references.
+  - Adds `LocalizedBooks` dataclass and `get_localized_books()` (cached) to biblelib.book, loading per-language TSV files (books_<lang>.tsv)
+  - `BCVID.to_nameref(lang=)` and `to_abbrevref(lang=)` now accept an ISO 639-3 language code; `BCVIDRange` supports the same parameter
+  - Chapter-verse separator (`cv_sep`) is stored as a metadata comment in each TSV and respected when rendering references (e.g. French uses ., Spanish/Portuguese use :)
+  - Bundles three language files: French (fra, TOB/Bible de Jérusalem), Spanish (spa, Reina-Valera/NVI/UBS), Portuguese (por, SBB/ARA, Brazilian spelling)
+  - Adding further languages requires only a new books_<lang>.tsv — no
+    code changes
+- There may be other conventions for abbreviating book names outside
+  English: YMMV.
+
 ## 0.3.29
 
 - Extended `word.bcvwpid.fromusfm()` to handle references with word
