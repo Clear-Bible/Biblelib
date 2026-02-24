@@ -1,5 +1,18 @@
 # Release Notes
 
+## 0.5.0
+
+- Added `biblelib.pericope` subpackage for working with pericope data.
+  - `Pericope` dataclass represents an individual unit of a Bible text with
+    `startid`/`endid` (`BCVID`), `title`, `index`, `book` (`BID`), and
+    `extras` (for additional TSV columns). Supports full ordering
+    (`<`, `<=`, `>`, `>=`, `==`) within a parent, plus `next()` and `previous()` navigation.
+  - `PericopeDict` (a `UserDict`) loads pericope sets from TSV files named
+    `pericopes_<lang>_<version>.tsv`. Provides `get_pericope(bcvid)`,
+    `get_pericopes(bcvidrange)`, and `get_book_pericopes(bid)`.
+  - Bundles `pericopes_eng_BSB.tsv` (Berean Standard Bible).
+  - see docs/pericopes.md for the design spec. Code by Claude.
+
 ## 0.4.1
 
 - Rick Brannan added book name localization data for 7 languages:
