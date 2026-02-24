@@ -144,7 +144,7 @@ class Pericope:
         return self.parent.data.get(self.index - 1)
 
 
-class PericopeDict(UserDict):  # type: ignore[type-arg]
+class PericopeDict(UserDict):
     """An ordered collection of Pericope instances from a Bible edition.
 
     Pericopes are keyed by zero-based integer indices and loaded from a
