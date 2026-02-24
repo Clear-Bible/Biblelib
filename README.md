@@ -60,7 +60,31 @@ rng.to_abbrevref()           # 'Mk 4:3-4:8'
 
 ### Localized rendering
 
-`to_nameref()` and `to_abbrevref()` accept an optional `lang` parameter using [ISO 639-3](https://iso639-3.sil.org/) three-letter codes. French (`fra`) is currently bundled; see [Adding a language](#adding-a-language) below for others.
+`to_nameref()` and `to_abbrevref()` accept an optional `lang` parameter using [ISO 639-3](https://iso639-3.sil.org/) three-letter codes. The following languages are currently bundled:
+
+| Code | Language | Source translation |
+|------|----------|--------------------|
+| `apd` | Sudanese Arabic | Van Dyck Bible (OT); Biblica Sudanese Arabic NT |
+| `arb` | Arabic | Van Dyck Bible (Smith-Van Dyck, 1865) |
+| `bis` | Bislama | Baibel long Bislama (BSSP, 1995) |
+| `fra` | French | Bible en français courant / Louis Segond |
+| `hau` | Hausa | Littafi Mai Tsarki (Bible Society of Nigeria) |
+| `hin` | Hindi | Bible Society of India Hindi Old Version (Re-edited) |
+| `ibo` | Igbo | Akwụkwọ Nsọ (Bible Society of Nigeria) |
+| `ind` | Indonesian | Terjemahan Baru (LAI, 1974/rev.) |
+| `nep` | Nepali | Pavitra Grantha (Nepal Bible Society) |
+| `nld` | Dutch | Herziene Statenvertaling (HSV, 2010) |
+| `por` | Portuguese | Almeida Revista e Corrigida |
+| `rus` | Russian | Synodal Translation (Синодальный перевод, 1876) |
+| `spa` | Spanish | Reina-Valera / NVI |
+| `swh` | Swahili | Swahili Union Version (Toleo la Umoja) |
+| `tpi` | Tok Pisin | Baibel long Tok Pisin (BSPNG, 1989) |
+| `vie` | Vietnamese | Kinh Thánh Tin Lành 1925 |
+| `zhs` | Chinese (Simplified) | Chinese Union Version Simplified (和合本简体) |
+| `zht` | Chinese (Traditional) | Chinese Union Version Traditional (和合本) |
+| `zlm` | Malay | Alkitab dalam Bahasa Malaysia (BSM/BSS) |
+
+> **Note:** Non-English book names and abbreviations were AI-generated from the named source translations and should be verified by native-language speakers before production use, particularly for deuterocanonical and extended-canon entries.
 
 ```python
 from biblelib.word import BCVID, BCVIDRange
@@ -68,13 +92,17 @@ from biblelib.word import BCVID, BCVIDRange
 ref = BCVID("01001001")
 ref.to_nameref(lang="fra")    # 'Genèse 1.1'
 ref.to_abbrevref(lang="fra")  # 'Gn 1.1'
+ref.to_nameref(lang="nld")    # 'Genesis 1:1'
+ref.to_abbrevref(lang="hau")  # 'Far 1:1'
+ref.to_nameref(lang="vie")    # 'Sáng Thế Ký 1:1'
+ref.to_abbrevref(lang="vie")  # 'St 1:1'
 
 rng = BCVIDRange(BCVID("41004003"), BCVID("41004008"))
 rng.to_nameref(lang="fra")    # 'Marc 4.3-4.8'
 rng.to_abbrevref(lang="fra")  # 'Mc 4.3-4.8'
 ```
 
-Note that the chapter-verse separator is language-specific (English uses `:`, French uses `.`).
+Note that the chapter-verse separator is language-specific (English and most languages use `:`, French uses `.`).
 
 You can also work with `LocalizedBooks` directly:
 

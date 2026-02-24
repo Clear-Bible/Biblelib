@@ -1,0 +1,111 @@
+# Nepali (nep) book names and abbreviations for biblelib
+# Conventions: Nepal Bible Society (NBS) Pavitra Grantha (पवित्र ग्रन्थ)
+# Abbreviations: derived from initial syllables; no published standard exists
+# Deuterocanonical and extended canon names are transliterations; no standard NBS Catholic edition exists
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	उत्पत्ति	उत्प
+EXO	प्रस्थान	प्रस्था
+LEV	लेवी	लेवी
+NUM	गन्ती	गन्ती
+DEU	व्यवस्था विवरण	व्यव
+JOS	यहोशू	यहो
+JDG	न्यायकर्ताहरू	न्याय
+RUT	रूत	रूत
+1SA	1 शमूएल	1शमू
+2SA	2 शमूएल	2शमू
+1KI	1 राजा	1राजा
+2KI	2 राजा	2राजा
+1CH	1 इतिहास	1इति
+2CH	2 इतिहास	2इति
+EZR	एज्रा	एज्रा
+NEH	नहेम्याह	नहे
+EST	एस्तर	एस्त
+JOB	अय्यूब	अय्यू
+PSA	भजनसंग्रह	भज
+PRO	हितोपदेश	हित
+ECC	उपदेशक	उप
+SNG	श्रेष्ठगीत	श्रेष्ठ
+ISA	यशैया	यशै
+JER	यर्मिया	यर्मि
+LAM	विलापगीत	विला
+EZK	यहेजकेल	यहेज
+DAN	दानियल	दानि
+HOS	होशे	होशे
+JOL	योएल	योए
+AMO	आमोस	आमो
+OBA	ओबद्याह	ओबद
+JON	योना	योना
+MIC	मीका	मीका
+NAM	नहूम	नहूम
+HAB	हबकूक	हबकू
+ZEP	सपन्याह	सपन
+HAG	हाग्गै	हाग्गै
+ZEC	जकरिया	जकरि
+MAL	मलाकी	मला
+# Deuterocanonical books
+TOB	तोबित	तोबि
+JDT	यूदित	यूदि
+ESG	एस्तर (ग्रीक)	एस्तग्री
+WIS	बुद्धि	बुद्धि
+SIR	सिराख	सिरा
+BAR	बारूक	बारू
+LJE	यर्मियाको पत्र	यर्मि.प
+S3Y	तीन युवकहरूको गीत	ती.युगी
+SUS	सुसन्ना	सुसन
+BEL	बेल र अजिङ्गर	बेल.अज
+1MA	1 मकाबी	1मकाबी
+2MA	2 मकाबी	2मकाबी
+1ES	1 एज्रा	1एज्रा
+MAN	मनश्शेको प्रार्थना	मनश्शे.प्रा
+PS2	भजन 151	भज151
+3MA	3 मकाबी	3मकाबी
+2ES	2 एज्रा (ल्याटिन)	2एज्रा
+4MA	4 मकाबी	4मकाबी
+ODA	ओड्स	ओड्स
+PSS	सुलेमानका भजन	सु.भज
+LAO	लाओडिसियाको पत्र	लाओदि.प
+# New Testament
+MAT	मत्ती	मत्त
+MRK	मर्कुस	मर्कु
+LUK	लूका	लूका
+JHN	यूहन्ना	यूह
+ACT	प्रेरितहरूका काम	प्रेरि
+ROM	रोमी	रोमी
+1CO	1 कोरिन्थी	1कोरि
+2CO	2 कोरिन्थी	2कोरि
+GAL	गलाती	गला
+EPH	एफिसी	एफि
+PHP	फिलिपी	फिलि
+COL	कलस्सी	कलस्सी
+1TH	1 थेसलोनिकी	1थेस
+2TH	2 थेसलोनिकी	2थेस
+1TI	1 तिमोथी	1तिमो
+2TI	2 तिमोथी	2तिमो
+TIT	तीतस	तीत
+PHM	फिलेमोन	फिले
+HEB	हिब्रू	हिब्रू
+JAS	याकूब	याकू
+1PE	1 पत्रुस	1पत्रु
+2PE	2 पत्रुस	2पत्रु
+1JN	1 यूहन्ना	1यूह
+2JN	2 यूहन्ना	2यूह
+3JN	3 यूहन्ना	3यूह
+JUD	यहूदा	यहूदा
+REV	प्रकाश	प्रका
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	हनोक	हनोक
+2BA	2 बारूक	2बारू
+LBA	बारूकको पत्र	बारू.प
+DAG	दानियल (ग्रीक)	दानि.ग्री
+EZA	एज्राको प्रकाश	एज्रा.प्र
+5EZ	5 एज्रा	5एज्रा
+6EZ	6 एज्रा	6एज्रा
+PS3	भजन 152-155	भज152
+JUB	यूबिलीहरू	यूबि
+1MQ	1 मेकाब्यान	1मेका
+2MQ	2 मेकाब्यान	2मेका
+3MQ	3 मेकाब्यान	3मेका
+REP	निन्दा	निन्दा
+4BA	4 बारूक	4बारू

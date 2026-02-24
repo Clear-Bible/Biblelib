@@ -1,0 +1,112 @@
+# Hausa (hau) book names and abbreviations for biblelib
+# Conventions: Littafi Mai Tsarki, Bible Society of Nigeria (BSN)
+# OT uses descriptive Hausa names where established; transliterations elsewhere
+# Abbreviations: derived from Hausa name; no published standard exists
+# Deuterocanonical and extended canon: transliterated (BSN is Protestant only)
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Farawa	Far
+EXO	Fitowa	Fit
+LEV	Lawiyawa	Law
+NUM	Ƙidaya	Ƙid
+DEU	Kubawar Doka	KD
+JOS	Yoshuwa	Yos
+JDG	Alƙalawa	Alƙ
+RUT	Rut	Rut
+1SA	1 Sama'ila	1Sam
+2SA	2 Sama'ila	2Sam
+1KI	1 Sarakuna	1Sar
+2KI	2 Sarakuna	2Sar
+1CH	1 Tarihi	1Tar
+2CH	2 Tarihi	2Tar
+EZR	Ezra	Ezr
+NEH	Nehemiya	Neh
+EST	Ester	Est
+JOB	Ayuba	Ayu
+PSA	Zabura	Zab
+PRO	Karin Magana	KM
+ECC	Mai Wa'azi	MW
+SNG	Waƙar Waƙoƙi	Waƙ
+ISA	Ishaya	Ish
+JER	Irmiya	Irm
+LAM	Makoki	Mak
+EZK	Ezekiyel	Eze
+DAN	Daniyel	Dan
+HOS	Hoshe'a	Hos
+JOL	Yowel	Yow
+AMO	Amos	Amo
+OBA	Obadiya	Oba
+JON	Yunana	Yun
+MIC	Mika	Mik
+NAM	Nahum	Nah
+HAB	Habakuk	Hab
+ZEP	Zefaniya	Zef
+HAG	Haggai	Hag
+ZEC	Zakariya	Zak
+MAL	Malaki	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Yudit	Yud
+ESG	Ester (Girik)	EstGir
+WIS	Hikmar Sulemanu	Hik
+SIR	Sirach	Sir
+BAR	Baruk	Bar
+LJE	Wasiƙar Irmiya	W.Irm
+S3Y	Waƙar Samarawan Uku	W.Uku
+SUS	Susana	Sus
+BEL	Bel da Dodon	Bel
+1MA	1 Makabi	1Mak
+2MA	2 Makabi	2Mak
+1ES	1 Ezra	1Ezr
+MAN	Addu'ar Manasse	Man
+PS2	Zabura 151	Zab151
+3MA	3 Makabi	3Mak
+2ES	2 Ezra	2Ezr
+4MA	4 Makabi	4Mak
+ODA	Oda	Oda
+PSS	Zaburan Sulemanu	Zab.Sul
+LAO	Laodisiya	Lao
+# New Testament
+MAT	Matta	Mat
+MRK	Markus	Mrk
+LUK	Luka	Luk
+JHN	Yohanna	Yoh
+ACT	Ayyukan Manzanni	Ayy
+ROM	Romawa	Rom
+1CO	1 Korintiyawa	1Kor
+2CO	2 Korintiyawa	2Kor
+GAL	Galatiyawa	Gal
+EPH	Afisiyawa	Afi
+PHP	Filibiyawa	Fil
+COL	Kolossiyawa	Kol
+1TH	1 Tasalonikiyawa	1Tas
+2TH	2 Tasalonikiyawa	2Tas
+1TI	1 Timotawus	1Tim
+2TI	2 Timotawus	2Tim
+TIT	Titus	Tit
+PHM	Filemon	Fle
+HEB	Ibraniyawa	Ibr
+JAS	Yaƙubu	Yaƙ
+1PE	1 Bitrus	1Bit
+2PE	2 Bitrus	2Bit
+1JN	1 Yohanna	1Yoh
+2JN	2 Yohanna	2Yoh
+3JN	3 Yohanna	3Yoh
+JUD	Yahuda	Yah
+REV	Wahayin Yohanna	Wah
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Hanok	Han
+2BA	Baruk 2	2Bar
+LBA	Wasiƙar Baruk	W.Bar
+DAG	Daniyel (Girik)	Dan.Gir
+EZA	Wahyin Ezra	Wah.Ezr
+5EZ	5 Ezra	5Ezr
+6EZ	6 Ezra	6Ezr
+PS3	Zabura 152-155	Zab152
+JUB	Jubili	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Zargi	Zar
+4BA	Baruk 4	4Bar

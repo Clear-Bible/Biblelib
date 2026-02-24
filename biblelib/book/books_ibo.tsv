@@ -1,0 +1,113 @@
+# Igbo (ibo) book names and abbreviations for biblelib
+# Conventions: Akwụkwọ Nsọ (Igbo Union Bible), Bible Society of Nigeria (BSN)
+# OT uses descriptive Igbo names where established; transliterations elsewhere
+# Abbreviations: derived from Igbo name; no published standard exists
+# Deuterocanonical and extended canon: transliterated (BSN is Protestant only)
+# Note: Igbo tonal orthography (ọ, ị, ụ) preserved; native-speaker review recommended
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Mmalite	Mma
+EXO	Ọpụpụ	Ọpụ
+LEV	Levaị	Lev
+NUM	Ọnụọgụ	Ọnụ
+DEU	Iwu Ọzọ	IwO
+JOS	Jọzụa	Jọz
+JDG	Ndị Ikpe	Ikp
+RUT	Rut	Rut
+1SA	1 Samụel	1Sam
+2SA	2 Samụel	2Sam
+1KI	1 Ndị Eze	1Eze
+2KI	2 Ndị Eze	2Eze
+1CH	1 Akụkọ Ihe Gara Aga	1Akk
+2CH	2 Akụkọ Ihe Gara Aga	2Akk
+EZR	Ezra	Ezr
+NEH	Nehemaịa	Neh
+EST	Ẹsta	Est
+JOB	Jọb	Jọb
+PSA	Abụ Ụkpụrụ	Abụ
+PRO	Ilu	Ilu
+ECC	Onye Nkuzi	ONk
+SNG	Abụ Kachasị Mma	AKM
+ISA	Aịzaịa	Aịz
+JER	Jeremaia	Jer
+LAM	Akwa	Akw
+EZK	Ezekiel	Ezk
+DAN	Daniẹl	Dan
+HOS	Hosea	Hos
+JOL	Joel	Joe
+AMO	Emọs	Emo
+OBA	Obadaia	Oba
+JON	Jọna	Jọna
+MIC	Maịka	Mai
+NAM	Nahum	Nah
+HAB	Habakuk	Hab
+ZEP	Zefanaia	Zef
+HAG	Hagai	Hag
+ZEC	Zakaraia	Zak
+MAL	Malaki	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Judit	Jud
+ESG	Ẹsta (Gris)	EstGrs
+WIS	Amamihe Sọlọmọn	Ama
+SIR	Sirach	Sir
+BAR	Baruk	Bar
+LJE	Leta Jeremaia	LJer
+S3Y	Abụ Ndị Nwoke Atọ	AN3
+SUS	Susana	Sus
+BEL	Bel na Dragọn	Bel
+1MA	1 Makabi	1Mak
+2MA	2 Makabi	2Mak
+1ES	1 Ezra	1Ezr
+MAN	Ekpere Manase	Man
+PS2	Abụ Ụkpụrụ 151	Abụ151
+3MA	3 Makabi	3Mak
+2ES	2 Ezra	2Ezr
+4MA	4 Makabi	4Mak
+ODA	Oda	Oda
+PSS	Abụ Ụkpụrụ Sọlọmọn	AbụSol
+LAO	Laodisia	Lao
+# New Testament
+MAT	Matịu	Mat
+MRK	Maakọ	Mak
+LUK	Lụka	Lụk
+JHN	Jọn	Jọn
+ACT	Ọrụ Ndị Ozi	Ozi
+ROM	Ndị Rọm	Rom
+1CO	1 Ndị Kọrint	1Kọr
+2CO	2 Ndị Kọrint	2Kọr
+GAL	Ndị Galeshia	Gal
+EPH	Ndị Efesọs	Efe
+PHP	Ndị Filipaị	Fil
+COL	Ndị Kọlọse	Kọl
+1TH	1 Ndị Tesalọnika	1Tes
+2TH	2 Ndị Tesalọnika	2Tes
+1TI	1 Timọti	1Tim
+2TI	2 Timọti	2Tim
+TIT	Taịtọs	Taị
+PHM	Filimọn	Flm
+HEB	Ndị Hibru	Hib
+JAS	Jiems	Jie
+1PE	1 Pitọ	1Pit
+2PE	2 Pitọ	2Pit
+1JN	1 Jọn	1Jọn
+2JN	2 Jọn	2Jọn
+3JN	3 Jọn	3Jọn
+JUD	Jụda	Jụd
+REV	Ngosipụta	Ngo
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Enọk	Eno
+2BA	Baruk 2	2Bar
+LBA	Leta Baruk	LBar
+DAG	Ezekiel (Gris)	Ezk.Grs
+EZA	Ngosipụta Ezra	Ngo.Ezr
+5EZ	5 Ezra	5Ezr
+6EZ	6 Ezra	6Ezr
+PS3	Abụ Ụkpụrụ 152-155	Abụ152
+JUB	Jubili	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Ịgụ Ịgụ	Ịgụ
+4BA	Baruk 4	4Bar

@@ -1,0 +1,112 @@
+# Vietnamese (vie) book names and abbreviations for biblelib
+# Conventions: Kinh Thánh Tin Lành 1925 (Protestant standard, Bible Society of Vietnam)
+# Hyphens in names indicate syllable divisions per standard Vietnamese Bible orthography
+# Abbreviations: standard Vietnamese Protestant abbreviations
+# Deuterocanonical names from Vietnamese Catholic Bible (Kinh Thánh, Episcopal Conference)
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Sáng Thế Ký	St
+EXO	Xuất Ai Cập Ký	Xu
+LEV	Lê Vi Ký	Lv
+NUM	Dân Số Ký	Ds
+DEU	Phục Truyền Luật Lệ Ký	Phục
+JOS	Giô-suê	Gs
+JDG	Các Quan Xét	Tl
+RUT	Ru-tơ	R
+1SA	1 Sa-mu-ên	1Sm
+2SA	2 Sa-mu-ên	2Sm
+1KI	1 Các Vua	1V
+2KI	2 Các Vua	2V
+1CH	1 Sử Ký	1Sk
+2CH	2 Sử Ký	2Sk
+EZR	E-xơ-ra	Er
+NEH	Nê-hê-mi	Ne
+EST	Ê-xơ-tê	Et
+JOB	Gióp	Gp
+PSA	Thi Thiên	Thi
+PRO	Châm Ngôn	Cn
+ECC	Truyền Đạo	Tr
+SNG	Nhã Ca	Nc
+ISA	Ê-sai	Es
+JER	Giê-rê-mi	Gr
+LAM	Ca Thương	Ca
+EZK	Ê-xê-chi-ên	Ez
+DAN	Đa-ni-ên	Dn
+HOS	Ô-sê	Os
+JOL	Giô-ên	Ge
+AMO	A-mốt	Am
+OBA	Áp-đia	Ob
+JON	Giô-na	Gn
+MIC	Mi-chê	Mk
+NAM	Na-hum	Nh
+HAB	Ha-ba-cúc	Hb
+ZEP	Sô-phô-ni	Sp
+HAG	A-ghê	Ag
+ZEC	Xa-cha-ri	Xc
+MAL	Ma-la-chi	Ml
+# Deuterocanonical books
+TOB	Tô-bi-a	Tb
+JDT	Giu-đi-tha	Gdt
+ESG	Ê-xơ-tê (Hy-văn)	EtHv
+WIS	Khôn Ngoan	Kn
+SIR	Huấn Ca	Hc
+BAR	Ba-rúc	Br
+LJE	Thư Giê-rê-mi	TGr
+S3Y	Bài Ca Ba Thiếu Niên	BC3
+SUS	Su-sa-na	Ss
+BEL	Bên và Con Rồng	BCR
+1MA	1 Ma-ca-bê	1Mcb
+2MA	2 Ma-ca-bê	2Mcb
+1ES	1 E-xơ-ra	1Er
+MAN	Lời Cầu Nguyện Ma-na-se	LCN
+PS2	Thi Thiên 151	Thi151
+3MA	3 Ma-ca-bê	3Mcb
+2ES	2 E-xơ-ra	2Er
+4MA	4 Ma-ca-bê	4Mcb
+ODA	Ô-đa	Od
+PSS	Thi Thiên Sa-lô-môn	TThSl
+LAO	Lao-đi-xê	Ld
+# New Testament
+MAT	Ma-thi-ơ	Mt
+MRK	Mác	Mc
+LUK	Lu-ca	Lc
+JHN	Giăng	Gi
+ACT	Công Vụ Các Sứ Đồ	Cv
+ROM	Rô-ma	Rm
+1CO	1 Cô-rinh-tô	1Cr
+2CO	2 Cô-rinh-tô	2Cr
+GAL	Ga-la-ti	Gl
+EPH	Ê-phê-sô	Ep
+PHP	Phi-líp	Pl
+COL	Cô-lô-se	Cl
+1TH	1 Tê-sa-lô-ni-ca	1Tx
+2TH	2 Tê-sa-lô-ni-ca	2Tx
+1TI	1 Ti-mô-thê	1Tm
+2TI	2 Ti-mô-thê	2Tm
+TIT	Tít	Tt
+PHM	Phi-lê-môn	Plm
+HEB	Hê-bơ-rơ	He
+JAS	Gia-cơ	Gc
+1PE	1 Phi-e-rơ	1Pr
+2PE	2 Phi-e-rơ	2Pr
+1JN	1 Giăng	1Gi
+2JN	2 Giăng	2Gi
+3JN	3 Giăng	3Gi
+JUD	Giu-đê	Gd
+REV	Khải Huyền	Kh
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Ê-nóc	En
+2BA	Ba-rúc 2	2Br
+LBA	Thư Ba-rúc	TBr
+DAG	Đa-ni-ên (Hy-văn)	DnHv
+EZA	Khải Huyền E-xơ-ra	KhEr
+5EZ	5 E-xơ-ra	5Er
+6EZ	6 E-xơ-ra	6Er
+PS3	Thi Thiên 152-155	Thi152
+JUB	Năm Hân Hỉ	NH
+1MQ	1 Mêcabyan	1Mq
+2MQ	2 Mêcabyan	2Mq
+3MQ	3 Mêcabyan	3Mq
+REP	Lời Khiển Trách	LKT
+4BA	Ba-rúc 4	4Br

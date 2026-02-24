@@ -1,0 +1,112 @@
+# Dutch (nld) book names and abbreviations for biblelib
+# Conventions: Herziene Statenvertaling (HSV, 2010) — widely used Protestant standard
+# Names also consistent with Nieuwe Bijbelvertaling (NBV21, 2021)
+# Abbreviations: standard Dutch Bible abbreviations
+# Deuterocanonical names from Dutch Catholic tradition
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Genesis	Gen
+EXO	Exodus	Ex
+LEV	Leviticus	Lev
+NUM	Numeri	Num
+DEU	Deuteronomium	Deut
+JOS	Jozua	Joz
+JDG	Rechters	Recht
+RUT	Ruth	Ruth
+1SA	1 Samuël	1Sam
+2SA	2 Samuël	2Sam
+1KI	1 Koningen	1Kon
+2KI	2 Koningen	2Kon
+1CH	1 Kronieken	1Kron
+2CH	2 Kronieken	2Kron
+EZR	Ezra	Ezr
+NEH	Nehemia	Neh
+EST	Ester	Est
+JOB	Job	Job
+PSA	Psalmen	Ps
+PRO	Spreuken	Spr
+ECC	Prediker	Pred
+SNG	Hooglied	Hoogl
+ISA	Jesaja	Jes
+JER	Jeremia	Jer
+LAM	Klaagliederen	Klaag
+EZK	Ezechiël	Ez
+DAN	Daniël	Dan
+HOS	Hosea	Hos
+JOL	Joël	Joël
+AMO	Amos	Am
+OBA	Obadja	Ob
+JON	Jona	Jon
+MIC	Micha	Mi
+NAM	Nahum	Nah
+HAB	Habakuk	Hab
+ZEP	Sefanja	Sef
+HAG	Haggaï	Hag
+ZEC	Zacharia	Zach
+MAL	Maleachi	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Judit	Jdt
+ESG	Ester (Grieks)	EstGr
+WIS	Wijsheid	Wijsh
+SIR	Wijsheid van Jezus Sirach	Sir
+BAR	Baruch	Bar
+LJE	Brief van Jeremia	BrJer
+S3Y	Lied van de drie jongemannen	DrieJong
+SUS	Susanna	Sus
+BEL	Bel en de draak	Bel
+1MA	1 Makkabeeën	1Makk
+2MA	2 Makkabeeën	2Makk
+1ES	1 Ezra	1Ezr
+MAN	Gebed van Manasse	GebMan
+PS2	Psalm 151	Ps151
+3MA	3 Makkabeeën	3Makk
+2ES	2 Ezra	2Ezr
+4MA	4 Makkabeeën	4Makk
+ODA	Oden	Oden
+PSS	Psalmen van Salomo	PsSal
+LAO	Laodicenzen	Laod
+# New Testament
+MAT	Matteüs	Matt
+MRK	Marcus	Marc
+LUK	Lucas	Luc
+JHN	Johannes	Joh
+ACT	Handelingen	Hand
+ROM	Romeinen	Rom
+1CO	1 Korintiërs	1Kor
+2CO	2 Korintiërs	2Kor
+GAL	Galaten	Gal
+EPH	Efeziërs	Ef
+PHP	Filippenzen	Fil
+COL	Kolossenzen	Kol
+1TH	1 Tessalonicenzen	1Tess
+2TH	2 Tessalonicenzen	2Tess
+1TI	1 Timoteüs	1Tim
+2TI	2 Timoteüs	2Tim
+TIT	Titus	Tit
+PHM	Filemon	Filem
+HEB	Hebreeën	Hebr
+JAS	Jakobus	Jak
+1PE	1 Petrus	1Pet
+2PE	2 Petrus	2Pet
+1JN	1 Johannes	1Joh
+2JN	2 Johannes	2Joh
+3JN	3 Johannes	3Joh
+JUD	Judas	Jud
+REV	Openbaring	Openb
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Henoch	Hen
+2BA	Baruch 2	2Bar
+LBA	Brief van Baruch	BrBar
+DAG	Daniël (Grieks)	DanGr
+EZA	Openbaring van Ezra	OpenEzr
+5EZ	5 Ezra	5Ezr
+6EZ	6 Ezra	6Ezr
+PS3	Psalmen 152-155	Ps152
+JUB	Jubileeën	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Berisping	Ber
+4BA	Baruch 4	4Bar
