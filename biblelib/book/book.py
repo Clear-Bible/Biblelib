@@ -52,7 +52,8 @@ from csv import DictReader
 from dataclasses import dataclass, field
 from pathlib import Path
 import re
-from typing import Any, Union
+from typing import Any, Optional, Union
+import warnings
 
 
 # This directory: where books.tsv is also located.
@@ -177,6 +178,100 @@ class Book:
     # YouVersion
     # Bible Gateway
     # Ref.ly? Different Bible book abbreviations, not sure how important
+
+
+@dataclass
+class LocalizedBooks:
+    """Book names and abbreviations localized to a specific language.
+
+    Data is loaded from ``books_<lang>.tsv`` in the same directory as
+    ``books.tsv``. The TSV file has three tab-separated columns:
+    ``usfmname``, ``name``, and ``abbrev``.
+
+    Language-level settings are stored as metadata in comment lines near
+    the top of the file using the format ``# key: value``.  Currently
+    recognised keys:
+
+    * ``cv_sep`` — chapter-verse separator character (default ``":"``)
+
+    Example::
+
+        >>> fra = LocalizedBooks("fra")
+        >>> fra.get_name("GEN")
+        'Genèse'
+        >>> fra.get_abbrev("MRK")
+        'Mc'
+        >>> fra.cv_sep
+        '.'
+
+    Language codes follow the ISO 639-3 three-letter convention used
+    elsewhere in biblelib (e.g. ``"fra"`` for French, ``"spa"`` for
+    Spanish).
+
+    """
+
+    lang: str
+    cv_sep: str = field(default=":", init=False)
+    _data: dict[str, dict[str, str]] = field(default_factory=dict, init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        """Load localization data from the TSV file."""
+        path = BOOKSPATH / f"books_{self.lang}.tsv"
+        if not path.exists():
+            raise FileNotFoundError(f"No localization file for language: {self.lang}")
+        with path.open(encoding="utf-8") as f:
+            lines = f.readlines()
+        # Parse language-level metadata from comment lines (# key: value)
+        for line in lines:
+            m = re.match(r"^#\s*cv_sep:\s*(.+)$", line.rstrip())
+            if m:
+                self.cv_sep = m.group(1)
+                break
+        reader: DictReader = DictReader(filter(lambda row: row[0] != "#", iter(lines)), dialect="excel-tab")
+        self._data = {row["usfmname"]: {"name": row["name"], "abbrev": row["abbrev"]} for row in reader}
+
+    def get_name(self, usfmname: str) -> str:
+        """Return the full localized book name for a USFM name like ``"GEN"``."""
+        entry: Optional[dict[str, str]] = self._data.get(usfmname)
+        assert entry is not None, f"No localized name for '{usfmname}' in language '{self.lang}'"
+        return entry["name"]
+
+    def get_abbrev(self, usfmname: str) -> str:
+        """Return the localized abbreviation for a USFM name like ``"GEN"``."""
+        entry: Optional[dict[str, str]] = self._data.get(usfmname)
+        assert entry is not None, f"No localized abbrev for '{usfmname}' in language '{self.lang}'"
+        return entry["abbrev"]
+
+
+_LOCALIZED_BOOKS: dict[str, Optional["LocalizedBooks"]] = {}
+
+
+def get_localized_books(lang: str) -> Optional["LocalizedBooks"]:
+    """Return a cached :class:`LocalizedBooks` instance for *lang*.
+
+    Returns ``None`` (and emits a :mod:`warnings` warning) if no
+    localization file exists for *lang*; callers should fall back to
+    English in that case.
+
+    Example::
+
+        >>> fra = get_localized_books("fra")
+        >>> fra.get_name("MAT")
+        'Matthieu'
+        >>> get_localized_books("zzz") is None  # unsupported language
+        True
+
+    """
+    if lang not in _LOCALIZED_BOOKS:
+        try:
+            _LOCALIZED_BOOKS[lang] = LocalizedBooks(lang)
+        except FileNotFoundError:
+            warnings.warn(
+                f"Language '{lang}' is not supported by biblelib; falling back to English.",
+                stacklevel=3,
+            )
+            _LOCALIZED_BOOKS[lang] = None
+    return _LOCALIZED_BOOKS[lang]
 
 
 class Books(UserDict):

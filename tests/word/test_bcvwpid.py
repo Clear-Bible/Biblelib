@@ -405,6 +405,45 @@ class TestBCVID:
         assert love.to_osisID() == "1Cor 13:1"
         assert love.to_biblia() == "1Co 13:1"
 
+    def test_to_nameref_localized(self) -> None:
+        """Test to_nameref() with language localization."""
+        gen = BCVID("01001001")
+        mrk = BCVID("41004003")
+        rev = BCVID("66001001")
+        # English default is unchanged (colon separator)
+        assert gen.to_nameref() == "Genesis 1:1"
+        assert mrk.to_nameref() == "Mark 4:3"
+        # French uses dot separator
+        assert gen.to_nameref(lang="fra") == "Genèse 1.1"
+        assert mrk.to_nameref(lang="fra") == "Marc 4.3"
+        assert rev.to_nameref(lang="fra") == "Apocalypse 1.1"
+
+    def test_to_abbrevref(self) -> None:
+        """Test to_abbrevref() for English and French."""
+        gen = BCVID("01001001")
+        mrk = BCVID("41004003")
+        # English uses biblia abbreviations with colon
+        assert gen.to_abbrevref() == "Ge 1:1"
+        assert mrk.to_abbrevref() == "Mk 4:3"
+        # French uses localized abbreviations with dot separator
+        assert gen.to_abbrevref(lang="fra") == "Gn 1.1"
+        assert mrk.to_abbrevref(lang="fra") == "Mc 4.3"
+
+    def test_missing_lang_fallback(self) -> None:
+        """Test that an unsupported language warns and falls back to English."""
+        import warnings
+        gen = BCVID("01001001")
+        mrk = BCVID("41004003")
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            nameref = gen.to_nameref(lang="qqq")
+            abbrevref = mrk.to_abbrevref(lang="qqq")
+        assert nameref == "Genesis 1:1"
+        assert abbrevref == "Mk 4:3"
+        # warning fired once (second call hits cache, no repeat)
+        assert len(caught) == 1
+        assert "qqq" in str(caught[0].message)
+
 
 class TestBCVIDRange:
     """Test basic functionality of BCVWPRange dataclass."""
@@ -449,6 +488,20 @@ class TestBCVIDRange:
         assert self.onecorrange.to_nameref() == "1 Corinthians 4:8-4:13"
         assert self.onecorrange.to_osisID() == "1Cor 4:8-4:13"
         assert self.onecorrange.to_biblia() == "1Co 4:8-4:13"
+
+    def test_to_nameref_localized(self) -> None:
+        """Test to_nameref() and to_abbrevref() with language localization."""
+        # English unchanged (colon separator)
+        assert self.markrange.to_nameref() == "Mark 4:8-4:13"
+        assert self.onecorrange.to_nameref() == "1 Corinthians 4:8-4:13"
+        # French full name with dot separator
+        assert self.markrange.to_nameref(lang="fra") == "Marc 4.8-4.13"
+        assert self.onecorrange.to_nameref(lang="fra") == "1 Corinthiens 4.8-4.13"
+        # English abbreviated (colon separator)
+        assert self.markrange.to_abbrevref() == "Mk 4:8-4:13"
+        # French abbreviated with dot separator
+        assert self.markrange.to_abbrevref(lang="fra") == "Mc 4.8-4.13"
+        assert self.onecorrange.to_abbrevref(lang="fra") == "1Co 4.8-4.13"
 
 
 class TestBCVWPID:
