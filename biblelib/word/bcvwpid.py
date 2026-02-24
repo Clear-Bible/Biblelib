@@ -9,7 +9,7 @@ variants: sometimes the Part index is omitted. Individual Bible
 editions might have different text indexed in different ways, so you
 should not assume that BCVWP value for one Bible maps directly to another.
 
->>> from biblelib.word import BCVID, BCVWPID
+>>> from biblelib.word import BCVID, BCVWPID, fromusfm, fromlogos, fromtbd, BID, BCID, simplify
 >>> bcv = BCVID("41004003")
 >>> bcv.book_ID
 "41"
@@ -19,12 +19,12 @@ should not assume that BCVWP value for one Bible maps directly to another.
 "003"
 >>> bcv < BCVID("41005001")
 True
->>> BCVID.fromusfm("Gen 3:16")
+>>> fromusfm("Gen 3:16")
 BCVID("01003016")
->>> BCVID.fromlogos("bible.1.2.3")
+>>> fromlogos("bible.1.2.3")
 BCVID("01002003")
 # From Tyndale Bible Dictionary markup
->>> BCVID.fromtbd("bref^Gen_3_16")
+>>> fromtbd("bref^Gen_3_16")
 BCVID("01003016")
 
 Similar things work with BCID (book and chapter) and BCVWPID.
@@ -861,6 +861,8 @@ def fromname(ref: str) -> BID | BCID | BCVID:
                 raise ValueError(f"Invalid BCV values: {ref}\n{e}")
 
 
+# future work: handle more of
+# [U23003 Biblical References](https://docs.google.com/document/d/1U0CrIJkU4h4pPOhhifN1y-HJU5f5r6nGD6d2rLuMeeM/)
 def from_usfm(ref: str) -> BID | BCID | BCVID | BCVWPID | BCVIDRange:
     """Return a BCV instance for a USFM-based reference.
 
