@@ -135,6 +135,11 @@ class TestPericopeDict:
         assert indices == sorted(indices)
         assert len(indices) == len(set(indices))
 
+    # ToDo: enumerate all the actual verses for a text, and ensure
+    # that get_pericope returns the correct pericope for each
+    # verse. This would be a more exhaustive test of the
+    # verse-to-pericope mapping.
+
 
 class TestPericope:
     """Tests for Pericope."""
