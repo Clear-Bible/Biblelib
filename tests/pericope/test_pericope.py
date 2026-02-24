@@ -245,3 +245,37 @@ class TestPericope:
         """Test that Pericope instances are hashable and usable in sets."""
         pset = {bsb[0], bsb[1], bsb[0]}
         assert len(pset) == 2
+
+    def test_enumerate_same_chapter(self, bsb: PericopeDict) -> None:
+        """Test enumerate() for a pericope within a single chapter."""
+        # The Parable of the Sower: Mark 4:1-9
+        sower = bsb.get_pericope(BCVID("41004003"))
+        result = sower.enumerate()
+        assert len(result) == 9
+
+    def test_enumerate_same_chapter_boundaries(self, bsb: PericopeDict) -> None:
+        """Test that enumerate() starts and ends at the correct verses."""
+        sower = bsb.get_pericope(BCVID("41004003"))
+        result = sower.enumerate()
+        assert result[0] == BCVID("41004001")
+        assert result[-1] == BCVID("41004009")
+
+    def test_enumerate_cross_chapter(self, bsb: PericopeDict) -> None:
+        """Test enumerate() for a pericope spanning a chapter boundary."""
+        # The Creation: Gen 1:1-2:3 (31 verses in Gen 1 + 3 in Gen 2)
+        creation = bsb[0]
+        result = creation.enumerate()
+        assert len(result) == 34
+
+    def test_enumerate_cross_chapter_boundaries(self, bsb: PericopeDict) -> None:
+        """Test that cross-chapter enumerate() starts and ends at the correct verses."""
+        creation = bsb[0]
+        result = creation.enumerate()
+        assert result[0] == BCVID("01001001")
+        assert result[-1] == BCVID("01002003")
+
+    def test_enumerate_returns_bcvids(self, bsb: PericopeDict) -> None:
+        """Test that all elements returned by enumerate() are BCVID instances."""
+        sower = bsb.get_pericope(BCVID("41004003"))
+        result = sower.enumerate()
+        assert all(isinstance(v, BCVID) for v in result)
