@@ -17,7 +17,7 @@ BCVID('01001001')
 >>> sower
 Pericope(index=1679, title='The Parable of the Sower')
 >>> sower.startid, sower.endid
-BCVID('41004001'), BCVID('41004009')
+(BCVID('41004001'), BCVID('41004009'))
 >>> sower.next()
 Pericope(index=1680, title='The Reason for the Parables')
 >>> sower.previous()
@@ -34,6 +34,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
+from biblelib.unit.unitrange import VerseRange
 from biblelib.word import BID, BCVID, BCVIDRange
 
 # The directory containing bundled pericope data files.
@@ -132,6 +133,22 @@ class Pericope:
     def contains(self, bcvid: BCVID) -> bool:
         """Return True if bcvid falls within this pericope's range."""
         return self.startid <= bcvid <= self.endid
+
+    def enumerate(self) -> list[Optional[BCVID]]:
+        """Return an ordered list of BCVIDs for all verses in this pericope.
+
+        Handles both same-chapter and cross-chapter pericopes.
+
+        >>> from biblelib.pericope.pericope import PericopeDict
+        >>> from biblelib.word import BCVID
+        >>> bsb = PericopeDict(language="eng", version="BSB", license="CC BY 4.0")
+        >>> sower = bsb.get_pericope(BCVID("41004003"))
+        >>> len(sower.enumerate())
+        9
+        >>> len(bsb[0].enumerate())
+        34
+        """
+        return VerseRange(startid=self.startid, endid=self.endid).enumerate_ids()
 
     def next(self) -> Optional[Pericope]:
         """Return the next Pericope in the sequence, or None if this is the last."""
