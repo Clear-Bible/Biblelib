@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.5.2
+
+- Python 3.9 has reached end-of-life, so is no longer supported.
+
 ## 0.5.1
 
 - Added `Pericope.enumerate()` to return an ordered list of `BCVID` instances
