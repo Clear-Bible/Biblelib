@@ -95,7 +95,9 @@ class _Base:
 
     def __post_init__(self) -> None:
         """Compute other values on initialization."""
-        assert len(self.ID) == self._idlen, f"length should be {self._idlen} characters: {self.ID}"
+        assert (
+            len(self.ID) == self._idlen
+        ), f"length should be {self._idlen} characters: {self.ID}"
 
     def __repr__(self) -> str:
         """Return a string representation."""
@@ -244,7 +246,9 @@ class BCID(BID):
 
         """
         assert (
-            isinstance(other, BCID) or isinstance(other, BCVID) or isinstance(other, BCVWPID)
+            isinstance(other, BCID)
+            or isinstance(other, BCVID)
+            or isinstance(other, BCVWPID)
         ), f"Invalid type with includes(): {other}"
         if isinstance(other, BCVWPID):
             return other.to_bcid == self.ID
@@ -271,9 +275,16 @@ class BCVID(BCID):
     This supports the format BBCCCVVV, where BB identifies a book,
         CCC identifies a chapter number, and VVV identifies a verse.
 
-    This dataclass does not validate whether any identifiers are in
-    the correct range: it only records the data. Use <TBD> for
-    validation. All sequence indices are one-based, not zero-based.
+    Basic validity is enforced on initialization:
+    - All characters after the first must be digits.
+    - The first character (leading digit of the book number) must be
+      in the range ``0``–``8`` or ``A``–``C`` (covering the Protestant
+      canon and deuterocanon).
+    - The chapter number must be less than 151 (Psalms has 150
+      chapters, the maximum in any supported versification).
+
+    Verse numbers are not range-checked. All sequence indices are
+    one-based, not zero-based.
 
     Attributes:
         book_ID: 2-character string identifying the Bible book using
@@ -295,7 +306,10 @@ class BCVID(BCID):
         """Compute other values on initialization."""
         super().__post_init__()
         self.verse_ID = self.ID[5:8]
-        # also test that they're all digits, in the right range, etc.
+        # simple tests, but not sufficient for validation
+        assert self.ID[1:].isdigit(), f"Invalid non-digits in BCVID: {self.ID}"
+        assert re.match("^[0-8A-C]", self.ID), f"Invalid book identifier: {self.ID}"
+        assert int(self.ID[2:5]) < 151, f"Invalid chapter identifier: {self.ID}"
 
     @property
     def to_bcvid(self) -> str:
@@ -427,7 +441,9 @@ class BCVIDRange:
         ), f"Startid {self.startid} and endid {self.endid} must be in the same book."
         # note this allows a vacuous range with the same start and
         # end: does that make sense?
-        assert self.startid <= self.endid, f"Startid {self.startid} must precede endid {self.endid}."
+        assert (
+            self.startid <= self.endid
+        ), f"Startid {self.startid} must precede endid {self.endid}."
 
     def __repr__(self) -> str:
         """Return a printed representation."""
@@ -468,7 +484,9 @@ class BCVIDRange:
             # this needs knowledge about how many Verses in a Chapter,
             # which lives in unit.unitrange. Not sure how to integrate these two:
             # maybe a special enumerate method for cross-chapter ranges?
-            raise NotImplementedError("Enumerating over chapter boundaries is not yet implemented.")
+            raise NotImplementedError(
+                "Enumerating over chapter boundaries is not yet implemented."
+            )
         else:
             return [
                 from_bcid_verse(self.chapter, n)
@@ -517,10 +535,10 @@ class BCVIDRange:
     def to_nameref(self, lang: str = "eng") -> str:
         """Return a full-name reference string, optionally localized.
 
-            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref()
-            'Mark 4:3-4:8'
-            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref(lang="fra")
-            'Marc 4.3-4.8'
+        >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref()
+        'Mark 4:3-4:8'
+        >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_nameref(lang="fra")
+        'Marc 4.3-4.8'
 
         """
         return self.to_format("name", lang=lang)
@@ -528,10 +546,10 @@ class BCVIDRange:
     def to_abbrevref(self, lang: str = "eng") -> str:
         """Return an abbreviated reference string, optionally localized.
 
-            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref()
-            'Mk 4:3-4:8'
-            >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref(lang="fra")
-            'Mc 4.3-4.8'
+        >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref()
+        'Mk 4:3-4:8'
+        >>> BCVIDRange(BCVID("41004003"), BCVID("41004008")).to_abbrevref(lang="fra")
+        'Mc 4.3-4.8'
 
         """
         style = "biblia" if lang == "eng" else "abbrev"
@@ -630,7 +648,9 @@ class BCVWPID(BCVID):
             # self.ID = self.canon_prefix + self.ID
         self.book_ID = restid[0:2]
         # TODO: add tests, presumably a closed set of values
-        assert self.canon_prefix == _get_canon_prefix(self.book_ID), f"Canon prefix must match book ID: {self.ID}"
+        assert self.canon_prefix == _get_canon_prefix(
+            self.book_ID
+        ), f"Canon prefix must match book ID: {self.ID}"
         self.chapter_ID = restid[2:5]
         self.verse_ID = restid[5:8]
         self.word_ID = restid[8:11]
@@ -723,14 +743,18 @@ def simplify(refinst: reftypes, newclass: reftypes) -> reftypes:
     For BCVWID, BCID, BID, or BCVID.
     For BCVWPID, any of the other types.
     """
-    assert refinst.__class__ in get_args(reftypes), f"{refinst} must be a reference instance"
+    assert refinst.__class__ in get_args(
+        reftypes
+    ), f"{refinst} must be a reference instance"
     validtypes = {
         "BCID": ["BID"],
         "BCVID": ["BID", "BCID"],
         # no BCVWID yet
         "BCVWPID": ["BID", "BCID", "BCVID"],
     }
-    assert refinst.__class__.__name__ in validtypes, f"{newclass} is not a valid simpler type."
+    assert (
+        refinst.__class__.__name__ in validtypes
+    ), f"{newclass} is not a valid simpler type."
     if isinstance(refinst, BCVWPID):
         if newclass == BID:
             return BID(refinst.to_bid)
@@ -813,7 +837,7 @@ def fromosis(ref: str) -> BID | BCID | BCVID:
     if "." not in ref:
         # book only
         usfmbook = BOOKS.fromosis(ref).usfmnumber
-        return BID((usfmbook))
+        return BID(usfmbook)
     else:
         bookabbrev, rest = ref.split(".", 1)
         usfmbook = BOOKS.fromosis(bookabbrev).usfmnumber
@@ -844,7 +868,7 @@ def fromname(ref: str) -> BID | BCID | BCVID:
     if len(ref) == (namematch.end() - namematch.start()):
         # book only
         usfmbook = BOOKS.fromname(ref).usfmnumber
-        return BID((usfmbook))
+        return BID(usfmbook)
     else:
         # split namematch at the end of the match
         bookname, rest = ref[: namematch.end()], ref[(namematch.end() + 1) :]
@@ -881,7 +905,7 @@ def from_usfm(ref: str) -> BID | BCID | BCVID | BCVWPID | BCVIDRange:
     if " " not in ref:
         # book only
         usfmbook = BOOKS[ref.upper()].usfmnumber
-        return BID((usfmbook))
+        return BID(usfmbook)
     else:
         bookabbrev, rest = ref.split(" ", 1)
         usfmbook = BOOKS[bookabbrev.upper()].usfmnumber
@@ -890,7 +914,10 @@ def from_usfm(ref: str) -> BID | BCID | BCVID | BCVWPID | BCVIDRange:
             # otherwise fully specified
             startref, endref = rest.split("-", 1)
             assert ":" in endref, f"Range end must include chapter and verse: {ref}"
-            return BCVIDRange(from_usfm(f"{bookabbrev} {startref}"), from_usfm(f"{bookabbrev} {endref}"))
+            return BCVIDRange(
+                from_usfm(f"{bookabbrev} {startref}"),
+                from_usfm(f"{bookabbrev} {endref}"),
+            )
         if ":" not in rest:
             # book and chapter
             return BCID(f"{usfmbook}{pad3(rest)}")
@@ -901,7 +928,9 @@ def from_usfm(ref: str) -> BID | BCID | BCVID | BCVWPID | BCVIDRange:
                 # book, chapter, verse, and word
                 versepart, wordpart = verse.split("!", 1)
                 assert int(wordpart) > 0, f"Zero word index is invalid: {ref}"
-                return BCVWPID(f"{usfmbook}{pad3(chapter)}{pad3(versepart)}{pad3(wordpart)}")
+                return BCVWPID(
+                    f"{usfmbook}{pad3(chapter)}{pad3(versepart)}{pad3(wordpart)}"
+                )
             else:
                 # book, chapter, verse, and word
                 return BCVID(f"{usfmbook}{pad3(chapter)}{pad3(verse)}")
@@ -1043,7 +1072,9 @@ def make_id(refstr: str) -> BID | BCID | BCVID | BCVWPID:
     }
     refclass = idlengths.get(len(refstr))
     if not refclass:
-        raise ValueError(f"Can't select appropriate class for {len(refstr)}-character reference {refstr}")
+        raise ValueError(
+            f"Can't select appropriate class for {len(refstr)}-character reference {refstr}"
+        )
     else:
         instance: BID | BCID | BCVID | BCVWPID = refclass(refstr)
         return instance
