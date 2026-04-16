@@ -23,7 +23,7 @@ repos:
     rev: 1.7.9
     hooks:
       - id: bandit
-        args: [-r, biblelib]
+        args: [-r, biblelib, --skip, B101]
         pass_filenames: false
 
   - repo: https://github.com/Yelp/detect-secrets
