@@ -28,9 +28,7 @@ class Mapper:
 
     """
 
-    jsonbase: str = (
-        "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/"
-    )
+    jsonbase: str = "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/"
 
     def __init__(self, fromscheme: str, toscheme: str) -> None:
         """Create mappings from one versification scheme to another."""
@@ -46,7 +44,7 @@ class Mapper:
         if not has_connection():
             print("Cannot load mapping file without network connection.")
             exit()
-        r = requests.get(mappingfile)
+        r = requests.get(mappingfile, timeout=30)
         assert r.status_code == 200, f"Failed to get content from {mappingfile}"
         schemejson: dict[str, Any] = r.json()
         return schemejson

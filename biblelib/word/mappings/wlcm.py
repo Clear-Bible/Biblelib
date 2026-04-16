@@ -71,14 +71,12 @@ class WLCMMapping:
 class WLCMMappings(UserList):
     """Manage a sequence of WLCMMapping instances."""
 
-    gitmappings = (
-        "https://raw.githubusercontent.com/Clear-Bible/macula-hebrew/main/mappings/tsv/macula_to_marble_map.tsv"
-    )
+    gitmappings = "https://raw.githubusercontent.com/Clear-Bible/macula-hebrew/main/mappings/tsv/macula_to_marble_map.tsv"
 
     def __init__(self, sourcefile: str = "") -> None:
         """Initialize WLCMMappings."""
         super().__init__()
-        r = requests.get(self.gitmappings)
+        r = requests.get(self.gitmappings, timeout=30)
         assert r.status_code == 200, f"Failed to get content from {self.gitmappings}"
         # read the stream into a list of WLCMMapping instances
         tablestr = StringIO(r.text)
@@ -97,7 +95,9 @@ class WLCMMappings(UserList):
 
         """
         # check for valid range
-        assert ("000" < marbleid[:3] < "040"), f"Invalid book range for MARBLE ID: {marbleid}"
+        assert (
+            "000" < marbleid[:3] < "040"
+        ), f"Invalid book range for MARBLE ID: {marbleid}"
         # lazy initialization of the dictionary
         if not self.marble_ids:
             for mapping in self.data:

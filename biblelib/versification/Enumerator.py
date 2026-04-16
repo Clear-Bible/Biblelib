@@ -14,7 +14,6 @@ No mapping support here yet.
 import operator
 from pathlib import Path
 import requests
-from typing import Any, Mapping
 
 from biblelib import has_connection
 
@@ -46,11 +45,16 @@ class Enumerator:
         self.mappingfile = SCHEME_URLS[self.scheme]
         # set this if books is limited to NT or OT
         self.scope: str = ""
-        r = requests.get(self.mappingfile)
+        r = requests.get(self.mappingfile, timeout=30)
         assert r.status_code == 200, f"Failed to get content from {self.mappingfile}"
         self.versedict = r.json()
 
-    def books(self, with_deuterocanon: bool = True, nt_only: bool = False, ot_only: bool = False) -> list[str]:
+    def books(
+        self,
+        with_deuterocanon: bool = True,
+        nt_only: bool = False,
+        ot_only: bool = False,
+    ) -> list[str]:
         """Return a list of USFM book names in this versification.
 
         With nt_only, only return books in the NT, excluding the
@@ -90,7 +94,10 @@ class Enumerator:
 
     def enumerate_verses(self, book: str, chapter: int) -> list[str]:
         """Return a list of USFM references for a given book and chapter."""
-        return [f"{book} {chapter}:{verse}" for verse in range(1, self.chapter_verses(book, chapter) + 1)]
+        return [
+            f"{book} {chapter}:{verse}"
+            for verse in range(1, self.chapter_verses(book, chapter) + 1)
+        ]
 
     def write_enumeration(self, outpath: Path, *args: bool, **kwargs: bool) -> None:
         """Write the enumeration to a txt file."""

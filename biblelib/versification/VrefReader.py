@@ -43,12 +43,14 @@ class VrefReader(UserList):
         if not has_connection():
             print("Cannot load vref file without network connection.")
             exit()
-        r = requests.get(self.vref_file)
+        r = requests.get(self.vref_file, timeout=30)
         assert r.status_code == 200, f"Failed to get content from {self.vref_file}"
         vref_usfm: list[str] = r.text.split("\n")
         if asbcv:
             # convert to BCVdrop the last blank string
-            self.data: list[str] = [bcvwpid.fromusfm(usfm).ID for usfm in vref_usfm if usfm]
+            self.data: list[str] = [
+                bcvwpid.fromusfm(usfm).ID for usfm in vref_usfm if usfm
+            ]
         else:
             self.data = vref_usfm
 

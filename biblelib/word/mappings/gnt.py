@@ -101,7 +101,7 @@ class GNTMappings(UserList):
     def __init__(self, sourcefile: str = "") -> None:
         """Initialize GNTMappings."""
         super().__init__()
-        r = requests.get(self.gitmappings)
+        r = requests.get(self.gitmappings, timeout=30)
         assert r.status_code == 200, f"Failed to get content from {self.gitmappings}"
         # read the stream into a list of GNTMapping instances
         tablestr = StringIO(r.text)
