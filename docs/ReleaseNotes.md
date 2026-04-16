@@ -1,5 +1,20 @@
 # Release Notes
 
+## 0.5.4
+
+- Support Pythons < 4.0.
+- Added security features.
+- `BCVID` now validates identifiers on initialization:
+  - All characters after the first must be digits.
+  - The first character of the book number must be in the range `0`–`8`
+    or `A`–`C` (Protestant canon and deuterocanon).
+  - The chapter number must be less than 151.
+  - Verse numbers are not yet range-checked.
+
+## 0.5.3
+
+(Changes here didn't get captured: 0.5.4 includes both versions.)
+
 ## 0.5.2
 
 - Python 3.9 has reached end-of-life, so is no longer supported.
