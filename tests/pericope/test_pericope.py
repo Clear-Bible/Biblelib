@@ -88,7 +88,7 @@ class TestPericopeDict:
     def test_get_pericope_not_found(self, bsb: PericopeDict) -> None:
         """Test that get_pericope raises ValueError for a verse not in any pericope."""
         with pytest.raises(ValueError, match="No pericope found"):
-            bsb.get_pericope(BCVID("99001001"))
+            bsb.get_pericope(BCVID("67001001"))
 
     def test_get_pericopes_single(self, bsb: PericopeDict) -> None:
         """Test get_pericopes for a range within a single pericope."""
