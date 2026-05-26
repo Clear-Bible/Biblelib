@@ -12,7 +12,6 @@
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from biblelib.book import Books
 from biblelib.word import BID, BCID, BCVID, simplify
@@ -91,7 +90,7 @@ class VerseRange:
 
     def __repr__(self) -> str:
         """Return a printed representation."""
-        return "<VerseRange: {self.ID}>"
+        return f"<VerseRange: {self.ID}>"
 
     @property
     def cross_chapter(self) -> bool:
