@@ -1,20 +1,12 @@
 """Return BCV(WP)ID instances from UBS Marble references.
 
-# this attempts to be smart about failing gracefully if there's no network connection
 >>> from biblelib.word import fromubs
 >>> fromubs("02306000600008")
 [BCVWPID('230600060041')]
 
 """
 
-from biblelib import has_connection
-
-# requires a network connection
-if has_connection():
-    from .mappings import Mapper
-else:
-    print("No internet connection: unable to load Mapper.")
-
+from .mappings import Mapper
 from .bcvwpid import BCVID, BCVWPID
 
 

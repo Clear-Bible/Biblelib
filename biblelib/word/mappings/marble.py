@@ -1,17 +1,41 @@
 """Map MARBLE references to WLCM and SBLGNT references."""
 
 import re
+from functools import cache
 from warnings import warn
 
 from .gnt import GNTMappings
 from .wlcm import WLCMMappings
 
 
+@cache
+def gnt_mappings() -> GNTMappings:
+    """Return the shared GNT mappings, loading them on first use.
+
+    The underlying data is downloaded and cached on first access, not
+    at import time, so importing this module has no network cost.
+    """
+    return GNTMappings()
+
+
+@cache
+def wlcm_mappings() -> WLCMMappings:
+    """Return the shared WLCM (Hebrew) mappings, loading them on first use."""
+    return WLCMMappings()
+
+
 class Mapper:
     """Map MARBLE references to WLCM and SBLGNT references."""
 
-    gnt = GNTMappings()
-    wlcm = WLCMMappings()
+    @property
+    def gnt(self) -> GNTMappings:
+        """The GNT mappings (shared, loaded on first use)."""
+        return gnt_mappings()
+
+    @property
+    def wlcm(self) -> WLCMMappings:
+        """The WLCM (Hebrew) mappings (shared, loaded on first use)."""
+        return wlcm_mappings()
 
     def to_macula(self, marbleid: str) -> list[str]:
         """Map a MARBLE reference to a list of WLCM or SBLGNT references.

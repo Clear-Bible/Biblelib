@@ -1,4 +1,8 @@
-"""Test biblelib.word.ubs. Requires a network connection."""
+"""Test biblelib.word.ubs.
+
+Values are pinned to the vendored macula-hebrew/-greek mapping commits
+(see biblelib.data); refresh them alongside the pinned data.
+"""
 
 import pytest
 
@@ -11,11 +15,11 @@ class TestFromUBS:
 
     def test_from_ubs(self) -> None:
         """Test returned values"""
-        assert fromubs("02306000600008") == [BCVWPID("23060006004")]
-        assert fromubs("02306000600008{N:001}") == [BCVWPID("23060006004")]
-        assert fromubs("02306000600008({N:001})") == [BCVWPID("23060006004")]
-        assert fromubs("04100400300008") == [BCVWPID("41004003004")]
-        assert fromubs("04100400300008") == [BCVWPID("41004003004")]
+        assert fromubs("02306000600008") == [BCVWPID("230600060041")]
+        assert fromubs("02306000600008{N:001}") == [BCVWPID("230600060041")]
+        assert fromubs("02306000600008({N:001})") == [BCVWPID("230600060041")]
+        assert fromubs("04100400300008") == [BCVWPID("410040030041")]
+        assert fromubs("04100400300008") == [BCVWPID("410040030041")]
         # verse-level reference returns BCVID
         assert fromubs("00100301500000") == [BCVID("01003015")]
         assert fromubs("04100400900000") == [BCVID("41004009")]

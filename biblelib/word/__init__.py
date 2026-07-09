@@ -12,8 +12,6 @@ The Hebrew and Greek source files are available from
 
 """
 
-from biblelib import has_connection
-
 from .bcvwpid import (
     BID,
     BCID,
@@ -57,15 +55,8 @@ _exportlist = [
     "is_bcvwpid",
     # urlmanager
     "URLManager",
+    # ubs
+    "fromubs",
 ]
-
-
-# this is a bit slow to load: is it worth it?
-# you can still load it directly with
-# from biblelib.word import ubs
-if has_connection():
-    _exportlist.append("fromubs")
-else:
-    print("Cannot load ubs.fromubs(), other functionality is okay.")
 
 __all__ = _exportlist
