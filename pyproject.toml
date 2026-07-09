@@ -23,6 +23,10 @@ classifiers=[
 python = ">=3.10,<4.0"
 pydantic = "^2.3.0"
 requests = "^2"
+pooch = "^1.8"
+
+[tool.poetry.scripts]
+biblelib-download-data = "biblelib.data:main"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
@@ -59,3 +63,8 @@ check_untyped_defs = "True"
 warn_return_any = "True"
 warn_unused_ignores = "True"
 show_error_codes = "True"
+
+# pooch does not ship type information (no py.typed marker)
+[[tool.mypy.overrides]]
+module = "pooch"
+ignore_missing_imports = "True"

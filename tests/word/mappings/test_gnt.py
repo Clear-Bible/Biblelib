@@ -32,7 +32,8 @@ class TestGNTMappings:
 
     def test_init(self) -> None:
         """Test initialization: reading, and resulting list length."""
-        # FRAGILE!
+        # Pinned to the vendored macula-greek commit (see biblelib.data);
+        # update alongside the pinned data.
         assert len(self.gnt) == 138750
 
     def test_marble2sblgnt(self) -> None:
