@@ -55,8 +55,18 @@ preview = true
 [tool.isort]
 profile = "black"
 
+[tool.pytest.ini_options]
+# The experimental spaCy corpus module has undeclared optional dependencies
+# (spacy, pandas) and is not importable in the test environment; exclude it
+# from collection. (Note: --doctest-modules is passed explicitly by `make
+# test`; it is intentionally NOT enabled here, so plain `pytest` -- used by CI
+# -- does not run source doctests.)
+addopts = "--ignore=biblelib/corpus"
+
 [tool.mypy]
 files = ["biblelib"]
+# the experimental spaCy corpus module has undeclared optional deps and is a placeholder
+exclude = ["biblelib/corpus/"]
 disallow_untyped_defs = "True"
 disallow_any_unimported = "True"
 no_implicit_optional = "True"
