@@ -42,6 +42,15 @@ These datasets include:
    (`../biblelib/units`).
 3. Versification information (`../biblelib/versification`).
 
+In addition, the word-level mapping tables used by `biblelib.word.mappings`
+are **downloaded on first use** (not bundled) from the MACULA datasets, and
+are also © Clear Bible, Inc. under CC BY 4.0:
+
+* [MACULA Greek](https://github.com/Clear-Bible/macula-greek)
+  (`mappings-GNT-stripped.tsv`)
+* [MACULA Hebrew](https://github.com/Clear-Bible/macula-hebrew)
+  (`macula_to_marble_map.tsv`)
+
 Other sources that were consulted include:
 
 * [The Copenhagen Alliance for Open Biblical Resources
@@ -64,7 +73,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 ##### Under the following terms:
 
- * **Attribution** — You must attribute the work as follows: "MACULA Greek Linguistic Datasets, available at https://github.com/Clear-Bible/macula-greek/". You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+ * **Attribution** — You must attribute the work as follows: "MACULA Greek Linguistic Datasets, available at https://github.com/Clear-Bible/macula-greek/" and "MACULA Hebrew Linguistic Datasets, available at https://github.com/Clear-Bible/macula-hebrew/". You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 
 **No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
