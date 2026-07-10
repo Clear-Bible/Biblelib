@@ -27,14 +27,32 @@ schemes](https://github.com/Copenhagen-Alliance/versification-specification/tree
   edition of the Russian Synodal Bible.
 * `rso`: The versification used by the Orthodox (or "non-canonical")
   edition of the Russian Synodal Bible.
-* `ethiopian_custom`: The versification used by the Ethiopian Orthodox Church.
+
+(The Copenhagen Alliance formerly also published an `ethiopian_custom`
+scheme, but its source is no longer available upstream, so it is not
+bundled.)
 
 See the Copenhagen Alliance source for additional details, especially
 related to the deuterocanon, and acknowledgements of the contributors.
 
+The Copenhagen Alliance scheme definitions are bundled in this
+directory as `<scheme>.json` (`eng`, `org`, `rso` — the schemes in
+`biblelib.VERSIFICATIONIDS`), so `Mapper` and `Enumerator` work
+offline. To support another scheme, add its `<scheme>.json` here.
+
 The `*-vref.txt` files in this directory *enumerate* the verses
 associated with different versification schemes, using USFM
-references.
+references. They are generated from the bundled `<scheme>.json` files
+by `Enumerator.write_enumeration()`, and a test
+(`tests/versification/test_vref_derivation.py`) asserts the committed
+`.txt` stay byte-identical to that derivation.
+
+> **Do not remove the `*-vref.txt` files.** Biblelib releases up to
+> 0.5.4 download them from their raw GitHub URL
+> (`.../Clear-Bible/Biblelib/master/biblelib/versification/*-vref.txt`)
+> at runtime, so deleting them would break already-deployed clients.
+> Current code reads the local copies; the files are kept for
+> backward compatibility.
 
 ## Other Resources
 

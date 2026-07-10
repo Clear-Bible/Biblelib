@@ -11,24 +11,23 @@ No mapping support here yet.
 
 """
 
+import json
 import operator
 from pathlib import Path
-import requests
 
-from biblelib import has_connection
-
-if not has_connection():
-    print("Cannot load Enumerator without network connection.")
+# This directory: where the bundled scheme JSON files live.
+VERSIFICATIONPATH = Path(__file__).parent
 
 
+# The scheme JSON files ship with the package. The URLs are retained for
+# provenance and are used by the data-refresh tooling. Only the schemes in
+# biblelib.VERSIFICATIONIDS (eng/org/rso) are bundled and supported; add a
+# JSON file here to support another. (The former "ethiopian_custom" scheme was
+# dropped: its upstream source no longer exists.)
 SCHEME_URLS = {
     "eng": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/eng.json",
     "org": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/org.json",
-    "rsc": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/rsc.json",
     "rso": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/rso.json",
-    "lxx": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/lxx.json",
-    "vul": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/vul.json",
-    "ethiopian_custom": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/custom-mappings/ethiopian.json",
 }
 
 
@@ -42,12 +41,12 @@ class Enumerator:
         """Instantiate an Enumerator."""
         assert scheme in SCHEME_URLS, f"Invalid scheme: {scheme}"
         self.scheme = scheme
+        # the URL is retained for provenance; the data is read from the bundled file
         self.mappingfile = SCHEME_URLS[self.scheme]
         # set this if books is limited to NT or OT
         self.scope: str = ""
-        r = requests.get(self.mappingfile, timeout=30)
-        assert r.status_code == 200, f"Failed to get content from {self.mappingfile}"
-        self.versedict = r.json()
+        with (VERSIFICATIONPATH / f"{scheme}.json").open(encoding="utf-8") as f:
+            self.versedict = json.load(f)
 
     def books(
         self,
