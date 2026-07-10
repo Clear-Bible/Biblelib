@@ -7,10 +7,9 @@ class TestEnumerator:
     def test_init(self) -> None:
         """Test the __init__ method."""
         assert self.enumerator.scheme == "org"
-        assert (
-            self.enumerator.mappingfile
-            == "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/org.json"
-        )
+        # mappingfile is the pinned Copenhagen source URL (provenance); assert the
+        # stable tail so it survives commit-pin bumps.
+        assert self.enumerator.mappingfile.endswith("standard-mappings/org.json")
         assert self.enumerator.versedict["excludedVerses"] == []
         assert self.enumerator.versedict["partialVerses"] == {}
 
