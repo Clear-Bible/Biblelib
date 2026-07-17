@@ -1,0 +1,112 @@
+# Tok Pisin (tpi) book names and abbreviations for biblelib
+# Conventions: Baibel long Tok Pisin, Bible Society of Papua New Guinea (BSPNG, 1989)
+# OT uses descriptive Tok Pisin names where established; transliterations elsewhere
+# Abbreviations: derived from Tok Pisin name; no published standard exists
+# Deuterocanonical and extended canon: transliterated (BSPNG is Protestant only)
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Stat	Sta
+EXO	Kisim Bek	KB
+LEV	Ol Lo bilong Ol Levi	Lev
+NUM	Nambas	Nam
+DEU	Sekan Lo	SL
+JOS	Josua	Jos
+JDG	Ol Jaj	Jaj
+RUT	Rut	Rut
+1SA	1 Samuel	1Sam
+2SA	2 Samuel	2Sam
+1KI	1 King	1Kin
+2KI	2 King	2Kin
+1CH	1 Kronikel	1Kro
+2CH	2 Kronikel	2Kro
+EZR	Esra	Esr
+NEH	Nehemia	Neh
+EST	Esta	Est
+JOB	Job	Job
+PSA	Ol Sam	Sam
+PRO	Ol Tok Save	Sav
+ECC	Man bilong Autim Tok	Aut
+SNG	Song bilong Ol Song	Son
+ISA	Aisaia	Ais
+JER	Jeremia	Jer
+LAM	Ol Tok Krai	Kra
+EZK	Esekiel	Ese
+DAN	Daniel	Dan
+HOS	Hosea	Hos
+JOL	Joel	Joe
+AMO	Amos	Amo
+OBA	Obadia	Oba
+JON	Jona	Jona
+MIC	Maika	Mai
+NAM	Naum	Nau
+HAB	Habakuk	Hab
+ZEP	Sefania	Sef
+HAG	Hagai	Hag
+ZEC	Sakaria	Sak
+MAL	Malaki	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Judit	Judt
+ESG	Esta (Grik)	EstGr
+WIS	Wisdom bilong Solomon	Wis
+SIR	Sirach	Sir
+BAR	Baruk	Bar
+LJE	Pas bilong Jeremia	PJer
+S3Y	Singsing bilong Tripela Yangpela Man	S3Y
+SUS	Susana	Sus
+BEL	Bel na Drakon	Bel
+1MA	1 Makabi	1Mak
+2MA	2 Makabi	2Mak
+1ES	1 Esra	1Esr
+MAN	Prea bilong Manase	PMa
+PS2	Sam 151	S151
+3MA	3 Makabi	3Mak
+2ES	2 Esra	2Esr
+4MA	4 Makabi	4Mak
+ODA	Oda	Oda
+PSS	Ol Sam bilong Solomon	SSol
+LAO	Laodisia	Lao
+# New Testament
+MAT	Matyu	Mat
+MRK	Mak	Mak
+LUK	Luk	Luk
+JHN	Jon	Jon
+ACT	Wok bilong Ol Aposel	Apo
+ROM	Rom	Rom
+1CO	1 Korin	1Kor
+2CO	2 Korin	2Kor
+GAL	Galesia	Gal
+EPH	Efesas	Efe
+PHP	Filipai	Fil
+COL	Kolos	Kol
+1TH	1 Tesalonaika	1Tes
+2TH	2 Tesalonaika	2Tes
+1TI	1 Timoti	1Tim
+2TI	2 Timoti	2Tim
+TIT	Taitus	Tai
+PHM	Filemon	Fle
+HEB	Hibru	Hib
+JAS	Jems	Jem
+1PE	1 Pita	1Pit
+2PE	2 Pita	2Pit
+1JN	1 Jon	1Jon
+2JN	2 Jon	2Jon
+3JN	3 Jon	3Jon
+JUD	Jud	Jud
+REV	Revelesen	Rev
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Enok	Eno
+2BA	Baruk 2	2Bar
+LBA	Pas bilong Baruk	PBar
+DAG	Daniel (Grik)	DanG
+EZA	Revelesen bilong Esra	REsr
+5EZ	5 Esra	5Esr
+6EZ	6 Esra	6Esr
+PS3	Sam 152-155	S152
+JUB	Jubili	Jub
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Tok Kros	TKr
+4BA	Baruk 4	4Bar
