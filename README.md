@@ -23,6 +23,30 @@ other units. Note this does _not_ include any actual Bible texts.
 $ pip install biblelib
 ```
 
+## Data
+
+Most data ships inside the package (book metadata, versification vref files and
+scheme JSON), so the library works offline out of the box.
+
+The two large Macula word-level mapping tables (used by `biblelib.word.mappings`
+and `biblelib.word.fromubs`) are the exception: they are downloaded on first use
+and cached locally, rather than bundled. They are verified against pinned SHA256
+hashes.
+
+- The cache location follows the OS convention (e.g. `~/Library/Caches/biblelib`
+  on macOS, `~/.cache/biblelib` on Linux). Set the `BIBLELIB_DATA_DIR`
+  environment variable to relocate it.
+- To pre-populate the cache while online — for offline/air-gapped use, or to
+  avoid concurrent downloads when running a parallel (pytest-xdist) test suite —
+  run the bundled command:
+
+  ```bash
+  $ biblelib-download-data
+  ```
+
+Importing `biblelib` and `biblelib.word` never triggers a download; data is
+fetched only when a mapping is actually used.
+
 ## Usage
 
 ### Book metadata
@@ -136,3 +160,6 @@ No code changes are required. The new language is available immediately via `lan
 * Versification information included consulting sources from:
     * [The Copenhagen Alliance for Open Biblical Resources](http://copenhagen-alliance.org/)
     * [Paratext](https://paratext.org/)
+* Word-level mapping data (downloaded on demand) comes from:
+    * [Clear-Bible/macula-greek](https://github.com/Clear-Bible/macula-greek): GNT word-level identifier mappings, © Clear Bible, Inc., [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
+    * [Clear-Bible/macula-hebrew](https://github.com/Clear-Bible/macula-hebrew): Macula → MARBLE Hebrew mappings, © Clear Bible, Inc., [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)

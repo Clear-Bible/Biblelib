@@ -35,7 +35,8 @@ class TestWLCMMappings:
 
     def test_init(self) -> None:
         """Test initialization: reading, and resulting list length."""
-        # FRAGILE!
+        # Pinned to the vendored macula-hebrew commit (see biblelib.data);
+        # update alongside the pinned data.
         assert len(self.wlcm) == 420059
 
     def test_marble2macula(self) -> None:

@@ -5,7 +5,6 @@ This namespace is intentionally bare: see individual packages
 
 """
 
-import requests
 import socket
 
 

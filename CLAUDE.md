@@ -50,11 +50,11 @@ Word-level reference identifiers using the BCVWP format (Book-Chapter-Verse-Word
 - `BID`, `BCID`, `BCVID`, `BCVWPID` — progressively more granular reference identifiers, all dataclasses
 - `simplify(inst, target_class)` — reduce granularity (e.g. `BCVWPID` → `BCVID`)
 - Class methods `fromusfm()`, `fromlogos()`, `fromtbd()` for parsing various reference schemes
-- `biblelib.word.ubs` — maps UBS Marble references to Macula BCVWP IDs (requires network)
-- `biblelib.word.mappings` — mapping files for GNT (`gnt.py`), WLC Morphology (`wlcm.py`), and Marble (`marble.py`)
+- `biblelib.word.ubs` — maps UBS Marble references to Macula BCVWP IDs (uses the Macula mapping tables, which are downloaded on first use — see `biblelib.data`)
+- `biblelib.word.mappings` — mapping files for GNT (`gnt.py`), WLC Morphology (`wlcm.py`), and Marble (`marble.py`). The GNT and Hebrew tables are large and downloaded on demand + cached (`biblelib.data`); loading is lazy, so importing the package triggers no download.
 
 ### `biblelib.versification`
-Versification support for `eng`, `org`, and `rso` schemes (Protestant canon). `VrefReader` reads `.txt` vref files bundled in `biblelib/versification/`. `Mapper` fetches JSON mappings from the Copenhagen Alliance GitHub repo (requires network). `Enumerator` enumerates verses across a versification.
+Versification support for `eng`, `org`, and `rso` schemes (Protestant canon). `VrefReader` reads `.txt` vref files bundled in `biblelib/versification/`. `Mapper` and `Enumerator` read Copenhagen Alliance scheme JSON also bundled in `biblelib/versification/` (`<scheme>.json`) — all offline, no network. `Enumerator` enumerates verses across a versification and can regenerate the vref files from the bundled JSON.
 
 ### `biblelib.corpus`
 Currently experimental. Contains `biblelib/corpus/eng/BSB/` (Berean Standard Bible) with a `corpus.py` for SpaCy corpus creation.
@@ -75,5 +75,5 @@ Reference rendering supports non-English languages via per-language TSV files at
 
 - **USFM 3-letter IDs** are the canonical book identifiers throughout (e.g. `GEN`, `MRK`, `REV`).
 - **BCVWP numeric strings** encode references: `BB` book, `CCC` chapter, `VVV` verse, `WWW` word, `P` part. Book numbers follow a specific mapping (not 1-based for all books) — see `books.tsv`.
-- Network-dependent features (`versification.Mapper`, `word.ubs`) check `has_connection()` before loading and fail gracefully when offline.
+- The package works offline. The only network use is the on-demand download of the two Macula word-mapping tables (`biblelib.data`, via `pooch`), fetched on first use and cached locally (override the cache dir with `BIBLELIB_DATA_DIR`; pre-seed with `biblelib-download-data`). `has_connection()` is still public but is no longer used internally.
 - Mypy is enforced with strict settings (`disallow_untyped_defs`, `disallow_any_unimported`).
