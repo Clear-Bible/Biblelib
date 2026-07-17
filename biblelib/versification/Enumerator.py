@@ -11,26 +11,28 @@ No mapping support here yet.
 
 """
 
+import json
 import operator
 from pathlib import Path
-import requests
-from typing import Any, Mapping
 
-from biblelib import has_connection
-
-if not has_connection():
-    print("Cannot load Enumerator without network connection.")
+# This directory: where the bundled scheme JSON files live.
+VERSIFICATIONPATH = Path(__file__).parent
 
 
-SCHEME_URLS = {
-    "eng": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/eng.json",
-    "org": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/org.json",
-    "rsc": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/rsc.json",
-    "rso": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/rso.json",
-    "lxx": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/lxx.json",
-    "vul": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/vul.json",
-    "ethiopian_custom": "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/custom-mappings/ethiopian.json",
-}
+# Pinned Copenhagen Alliance commit the bundled scheme JSON was taken from.
+# To refresh: run tools/refresh_versification.py (add --latest to repin to
+# Copenhagen master HEAD), review the diff, run the tests, and commit.
+COPENHAGEN_SHA = "5f3f82f3dc3cfd25fffc6ff04f3630763972258c"
+SCHEME_BASE = (
+    "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/"
+    f"{COPENHAGEN_SHA}/versification-mappings/standard-mappings"
+)
+# The scheme JSON files ship with the package; these pinned URLs are retained
+# for provenance and used by the data-refresh tooling. Only the schemes in
+# biblelib.VERSIFICATIONIDS (eng/org/rso) are bundled and supported; add a JSON
+# file + entry here to support another. (The former "ethiopian_custom" scheme
+# was dropped: its upstream source no longer exists.)
+SCHEME_URLS = {scheme: f"{SCHEME_BASE}/{scheme}.json" for scheme in ("eng", "org", "rso")}
 
 
 class Enumerator:
@@ -43,14 +45,19 @@ class Enumerator:
         """Instantiate an Enumerator."""
         assert scheme in SCHEME_URLS, f"Invalid scheme: {scheme}"
         self.scheme = scheme
+        # the URL is retained for provenance; the data is read from the bundled file
         self.mappingfile = SCHEME_URLS[self.scheme]
         # set this if books is limited to NT or OT
         self.scope: str = ""
-        r = requests.get(self.mappingfile)
-        assert r.status_code == 200, f"Failed to get content from {self.mappingfile}"
-        self.versedict = r.json()
+        with (VERSIFICATIONPATH / f"{scheme}.json").open(encoding="utf-8") as f:
+            self.versedict = json.load(f)
 
-    def books(self, with_deuterocanon: bool = True, nt_only: bool = False, ot_only: bool = False) -> list[str]:
+    def books(
+        self,
+        with_deuterocanon: bool = True,
+        nt_only: bool = False,
+        ot_only: bool = False,
+    ) -> list[str]:
         """Return a list of USFM book names in this versification.
 
         With nt_only, only return books in the NT, excluding the
@@ -90,7 +97,10 @@ class Enumerator:
 
     def enumerate_verses(self, book: str, chapter: int) -> list[str]:
         """Return a list of USFM references for a given book and chapter."""
-        return [f"{book} {chapter}:{verse}" for verse in range(1, self.chapter_verses(book, chapter) + 1)]
+        return [
+            f"{book} {chapter}:{verse}"
+            for verse in range(1, self.chapter_verses(book, chapter) + 1)
+        ]
 
     def write_enumeration(self, outpath: Path, *args: bool, **kwargs: bool) -> None:
         """Write the enumeration to a txt file."""

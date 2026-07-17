@@ -1,19 +1,25 @@
 """Define Chapter class.
 
 >>> from biblelib.unit import chapter
+>>> allchapters = chapter.Chapters()
 # how many chapters in all?
->>> len(chapter.Chapters())
+>>> len(allchapters)
 1459
->>> chapter.Chapter.chapters["66022"]
+>>> rev_22 = allchapters["66022"]
+>>> rev_22
 ChapterVerses(chapter_ID="66022", end_ID="66022021")
 # what's the last verse of Rev 22 ("66022")?
->>> chapter.Chapter.chapters["66022"].lastverse
+>>> rev_22.lastverse
 21
+# the Chapter class has a collection of books and chapters
 >>> chapter.Chapter._books["REV"]
 <Book: REV>
+>>> chapter.Chapter._chapters["66022"]
+ChapterVerses(chapter_ID="66022", end_ID="66022021")
+
 # instantiate a Chapter instance for Jude chapter 1. Note the
 # identifier must be a BCID instance
->>> jude_1 = chapter.Chapter(identifier=chapter.BCID("65001"))
+>>> jude_1 = chapter.Chapter(inst=chapter.BCID("65001"))
 >>> jude_1
 Chapter(identifier=BCID('65001'))
 >>> jude_1.parent
@@ -28,7 +34,7 @@ Chapter(identifier=BCID('65001'))
 [Verse(identifier='BCVID('65001002')'), Verse(identifier='BCVID('65001003')'), Verse(identifier='BCVID('65001004')')]
 # enumerate all the verses in the chapter
 >>> jude_1.enumerate(jude_1.lastverse)
-[Verse(identifier='BCVID('65001001')'), Verse(identifier='BCVID('65001002')'), Verse(identifier='BCVID('65001003')'), Verse(identifier='BCVID('65001004')'), Verse(identifier='BCVID('65001005')'), Verse(identifier='BCVID('65001006')'), Verse(identifier='BCVID('65001007')'), Verse(identifier='BCVID('65001008')'), Verse(identifier='BCVID('65001009')'), Verse(identifier='BCVID('65001010')'), Verse(identifier='BCVID('65001011')'), Verse(identifier='BCVID('65001012')'), Verse(identifier='BCVID('65001013')'), Verse(identifier='BCVID('65001014')'), Verse(identifier='BCVID('65001015')'), Verse(identifier='BCVID('65001016')'), Verse(identifier='BCVID('65001017')'), Verse(identifier='BCVID('65001018')'), Verse(identifier='BCVID('65001019')'), Verse(identifier='BCVID('65001020')'), Verse(identifier='BCVID('65001021')'), Verse(identifier='BCVID('65001022')'), Verse(identifier='BCVID('65001023')'), Verse(identifier='BCVID('65001024')'), Verse(identifier='BCVID('65001025')')]
+[Verse(identifier='BCVID('65001001')'), Verse(identifier='BCVID('65001002')'), Verse(identifier='BCVID('65001003')'), Verse(identifier='BCVID('65001004')'), Verse(identifier='BCVID('65001005')'), Verse(identifier='BCVID('65001006')'), Verse(identifier='BCVID('65001007')'), Verse(identifier='BCVID('65001008')'), ... ]
 
 """
 
@@ -36,7 +42,6 @@ from collections import UserDict
 from csv import DictReader
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional, Union
 
 from biblelib.word import BCID, BCVID, BCVWPID, simplify, reftypes
 from biblelib import book
@@ -133,8 +138,8 @@ class Chapter(Unit):
 
     def __init__(
         self,
-        inst: Union[BCID, BCVID, BCVWPID],
-        initlist: Optional[list] = None,
+        inst: BCID | BCVID | BCVWPID,
+        initlist: list | None = None,
         versification: Versification = Versification.ENG,
     ) -> None:
         """Instantiate a Chapter.

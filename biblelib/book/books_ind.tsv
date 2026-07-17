@@ -1,0 +1,112 @@
+# Indonesian (ind) book names and abbreviations for biblelib
+# Conventions: Terjemahan Baru (TB), Lembaga Alkitab Indonesia (LAI), 1974/rev.
+# Abbreviations: standard LAI/TB abbreviations
+# Deuterocanonical names from Indonesian Catholic Bible (Alkitab Deuterokanonika)
+# Extended canon names are transliterations
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	Kejadian	Kej
+EXO	Keluaran	Kel
+LEV	Imamat	Im
+NUM	Bilangan	Bil
+DEU	Ulangan	Ul
+JOS	Yosua	Yos
+JDG	Hakim-hakim	Hak
+RUT	Rut	Rut
+1SA	1 Samuel	1Sam
+2SA	2 Samuel	2Sam
+1KI	1 Raja-raja	1Raj
+2KI	2 Raja-raja	2Raj
+1CH	1 Tawarikh	1Taw
+2CH	2 Tawarikh	2Taw
+EZR	Ezra	Ezr
+NEH	Nehemia	Neh
+EST	Ester	Est
+JOB	Ayub	Ay
+PSA	Mazmur	Mzm
+PRO	Amsal	Ams
+ECC	Pengkhotbah	Pkh
+SNG	Kidung Agung	Kid
+ISA	Yesaya	Yes
+JER	Yeremia	Yer
+LAM	Ratapan	Rat
+EZK	Yehezkiel	Yeh
+DAN	Daniel	Dan
+HOS	Hosea	Hos
+JOL	Yoel	Yl
+AMO	Amos	Am
+OBA	Obaja	Ob
+JON	Yunus	Yun
+MIC	Mikha	Mi
+NAM	Nahum	Nah
+HAB	Habakuk	Hab
+ZEP	Zefanya	Zef
+HAG	Hagai	Hag
+ZEC	Zakharia	Za
+MAL	Maleakhi	Mal
+# Deuterocanonical books
+TOB	Tobit	Tob
+JDT	Yudit	Ydt
+ESG	Ester (Yunani)	EstYun
+WIS	Kebijaksanaan Salomo	Keb
+SIR	Sirakh	Sir
+BAR	Barukh	Bar
+LJE	Surat Yeremia	S.Yer
+S3Y	Kidung Tiga Pemuda	Kid3P
+SUS	Susana	Sus
+BEL	Bel dan Naga	Bel
+1MA	1 Makabe	1Mak
+2MA	2 Makabe	2Mak
+1ES	1 Ezra	1Ezr
+MAN	Doa Manasye	Man
+PS2	Mazmur 151	Mzm151
+3MA	3 Makabe	3Mak
+2ES	2 Ezra	2Ezr
+4MA	4 Makabe	4Mak
+ODA	Oda	Oda
+PSS	Mazmur Salomo	MzmSal
+LAO	Laodikia	Lao
+# New Testament
+MAT	Matius	Mat
+MRK	Markus	Mrk
+LUK	Lukas	Luk
+JHN	Yohanes	Yoh
+ACT	Kisah Para Rasul	Kis
+ROM	Roma	Rom
+1CO	1 Korintus	1Kor
+2CO	2 Korintus	2Kor
+GAL	Galatia	Gal
+EPH	Efesus	Ef
+PHP	Filipi	Flp
+COL	Kolose	Kol
+1TH	1 Tesalonika	1Tes
+2TH	2 Tesalonika	2Tes
+1TI	1 Timotius	1Tim
+2TI	2 Timotius	2Tim
+TIT	Titus	Tit
+PHM	Filemon	Flm
+HEB	Ibrani	Ibr
+JAS	Yakobus	Yak
+1PE	1 Petrus	1Pet
+2PE	2 Petrus	2Pet
+1JN	1 Yohanes	1Yoh
+2JN	2 Yohanes	2Yoh
+3JN	3 Yohanes	3Yoh
+JUD	Yudas	Yud
+REV	Wahyu	Why
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	Henokh	Hen
+2BA	Barukh II	2Bar
+LBA	Surat Barukh	S.Bar
+DAG	Daniel (Yunani)	DanYun
+EZA	Wahyu Ezra	Why.Ezr
+5EZ	5 Ezra	5Ezr
+6EZ	6 Ezra	6Ezr
+PS3	Mazmur 152-155	Mzm152
+JUB	Yobel	Yob
+1MQ	1 Meqabyan	1Meq
+2MQ	2 Meqabyan	2Meq
+3MQ	3 Meqabyan	3Meq
+REP	Teguran	Teg
+4BA	Barukh IV	4Bar

@@ -2,18 +2,19 @@
 
 
 
+The mapping table is large and is downloaded on first use and cached
+locally (see :mod:`biblelib.data`), rather than bundled in the package.
+
 Examples:
->>> from biblelib.words.mappings import gnt
+
+>>> from biblelib.word.mappings import gnt
 >>> gntmap = gnt.GNTMappings()
->>> len(m)
-138751
-# get the SBLGNT identifier for a MARBLE ref
->>> gntmap.marble2sblgnt("04100604500034")
+>>> len(gntmap)
+138750
+>>> gntmap.marble2sblgnt("04100604500034")  # SBLGNT id for a MARBLE ref
 'n41006045017'
 
-# Note there isn't always a mapping, since the underlying texts vary
-# in small ways. So no SBLGNT word corresponding to this UBS word.
->>> gntmap.marble2sblgnt("04000401600012")
+>>> gntmap.marble2sblgnt("04000401600012")  # not every word has a mapping
 ''
 
 
@@ -28,10 +29,11 @@ Examples:
 from collections import UserList
 from csv import DictReader
 from dataclasses import dataclass
-from io import StringIO
-import requests
+from pathlib import Path
 from unicodedata import normalize
 from warnings import warn
+
+from biblelib import data
 
 
 @dataclass
@@ -96,19 +98,21 @@ class GNTMapping:
 class GNTMappings(UserList):
     """Manage a sequence of GNTMapping instances."""
 
+    # Retained for provenance only: the upstream source of the mapping data.
     gitmappings = "https://raw.githubusercontent.com/Clear-Bible/macula-greek/main/sources/Clear/mappings/mappings-GNT-stripped.tsv"
 
     def __init__(self, sourcefile: str = "") -> None:
-        """Initialize GNTMappings."""
+        """Initialize GNTMappings.
+
+        By default the mapping data is downloaded on first use and read
+        from the local cache (see biblelib.data). Pass sourcefile to
+        read a different local TSV instead.
+        """
         super().__init__()
-        r = requests.get(self.gitmappings)
-        assert r.status_code == 200, f"Failed to get content from {self.gitmappings}"
-        # read the stream into a list of GNTMapping instances
-        tablestr = StringIO(r.text)
-        reader: DictReader = DictReader(tablestr, dialect="excel-tab")
-        # for row in reader:
-        #     self.data: list = [GNTMapping(**r) for r in reader]
-        self.data: list = [GNTMapping(**r) for r in reader]
+        path = Path(sourcefile) if sourcefile else data.fetch(data.GNT_MAPPINGS)
+        with path.open(encoding="utf-8") as f:
+            reader: DictReader = DictReader(f, dialect="excel-tab")
+            self.data: list = [GNTMapping(**r) for r in reader]
         # map MARBLE IDs to a GNTMapping instance
         self.marble_ids: dict[str, GNTMapping] = {}
         # map NA28 IDs to a GNTMapping instance

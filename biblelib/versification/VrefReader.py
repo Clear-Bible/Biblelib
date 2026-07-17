@@ -5,53 +5,63 @@
 >>> eng_nt = VrefReader("eng", "nt")
 >>> len(eng_nt)
 7959
-# default is convert to BCV references
+>>> eng_nt[1187]  # default: references are converted to BCV
+'41004009'
+>>> eng_nt = VrefReader("eng", "nt", asbcv=False)  # leave as USFM
 >>> eng_nt[1187]
-"41004009"
-# leave as USFM
->>> eng_nt = VrefReader("eng", "nt", asbcv=False)
->>> eng_nt[1187]
-"MRK 4:9"
+'MRK 4:9'
 
 """
 
 from collections import UserList
+from pathlib import Path
 
-import requests
-
-from biblelib import CANONIDS, VERSIFICATIONIDS, has_connection
+from biblelib import CANONIDS, VERSIFICATIONIDS
 from biblelib.word import bcvwpid
+
+# This directory: where the bundled *-vref.txt files live.
+VERSIFICATIONPATH = Path(__file__).parent
 
 
 class VrefReader(UserList):
-    """Read a vref file with versification data."""
+    """Read a vref file with versification data.
 
-    vrefbase: str = "https://raw.githubusercontent.com/Clear-Bible/Biblelib/master/biblelib/versification/"
+    The vref files ship with the package and are read locally: no
+    network connection is required.
 
-    def __init__(self, scheme: str, canon: str, asbcv: bool = True) -> None:
+    """
+
+    # Retained for provenance only: the upstream source of the bundled vref files.
+    #
+    # IMPORTANT: do not remove or rename the bundled `*-vref.txt` files. Older
+    # Biblelib releases (<= 0.5.4) fetch them from this raw URL at runtime, so
+    # deleting them from the repo would 404 that request and break clients that
+    # are already deployed. They are kept in sync with the bundled scheme JSON by
+    # tests/versification/test_vref_derivation.py.
+    remote_vrefbase: str = "https://raw.githubusercontent.com/Clear-Bible/Biblelib/master/biblelib/versification/"
+
+    def __init__(self, scheme: str, canon: str, asbcv: bool = True, sourcefile: str = "") -> None:
         """Read a .vref file.
 
         With asbcv=True (the default), converts references from USFM
         to BCV: otherwise they remain as USFM.
+
+        The bundled vref file for the scheme and canon is read by
+        default; pass sourcefile to read a different local file.
 
         """
         assert scheme in VERSIFICATIONIDS, f"Unsupported scheme: {scheme}"
         assert canon in CANONIDS, f"Unsupported canon: {canon}"
         self.scheme = scheme
         self.canon = canon
-        self.vref_file: str = self.get_vref_file(scheme, canon)
-        if not has_connection():
-            print("Cannot load vref file without network connection.")
-            exit()
-        r = requests.get(self.vref_file)
-        assert r.status_code == 200, f"Failed to get content from {self.vref_file}"
-        vref_usfm: list[str] = r.text.split("\n")
+        self.vref_file: Path = Path(sourcefile) if sourcefile else self.get_vref_file(scheme, canon)
+        vref_usfm: list[str] = self.vref_file.read_text(encoding="utf-8").split("\n")
         if asbcv:
-            # convert to BCVdrop the last blank string
+            # convert to BCV, dropping any trailing blank line
             self.data: list[str] = [bcvwpid.fromusfm(usfm).ID for usfm in vref_usfm if usfm]
         else:
-            self.data = vref_usfm
+            self.data = [usfm for usfm in vref_usfm if usfm]
 
-    def get_vref_file(self, scheme: str, canon: str) -> str:
-        """Return the path to a VREF file for scheme and canon."""
-        return self.vrefbase + f"{scheme}-{canon}-vref.txt"
+    def get_vref_file(self, scheme: str, canon: str) -> Path:
+        """Return the path to the bundled VREF file for scheme and canon."""
+        return VERSIFICATIONPATH / f"{scheme}-{canon}-vref.txt"

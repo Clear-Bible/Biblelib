@@ -13,10 +13,8 @@ class TestVrefReader:
         """Test the __init__ method."""
         assert self.eng_nt.scheme == "eng"
         assert self.eng_nt.canon == "nt"
-        assert (
-            self.eng_nt.vref_file
-            == "https://raw.githubusercontent.com/Clear-Bible/Biblelib/master/biblelib/versification/eng-nt-vref.txt"
-        )
+        # vref_file is now a local bundled path, not a URL
+        assert self.eng_nt.vref_file.name == "eng-nt-vref.txt"
         assert len(self.eng_nt) == 7959
         assert len(self.org_nt) == 7957
         assert self.eng_nt[1187] == "41004009"

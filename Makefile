@@ -14,8 +14,13 @@ check: ## Lint and check code by running black, isort, flake8, mypy and deptry.
 
 
 test: ## Test the code with pytest
+	@echo "🚀 Pre-seeding the data cache (avoids concurrent downloads during tests)"
+	@poetry run biblelib-download-data
 	@echo "🚀 Testing code: Running pytest"
 	@pytest --doctest-modules
+
+refresh-versification: ## Refresh bundled versification JSON + vref from Copenhagen (ARGS='--latest' to repin to master HEAD)
+	@poetry run python tools/refresh_versification.py $(ARGS)
 
 build: clean-build ## Build wheel file using poetry
 	@echo "🚀 Creating wheel file"

@@ -174,10 +174,14 @@ class TestFromUsfm:
 
     def test_fromusfm_verserange(self) -> None:
         """Test returned values"""
-        assert fromusfm("MRK 4:1-4:9") == BCVIDRange(BCVID("41004001"), BCVID("41004009"))
+        assert fromusfm("MRK 4:1-4:9") == BCVIDRange(
+            BCVID("41004001"), BCVID("41004009")
+        )
         with pytest.raises(AssertionError):
             # incomplete end reference is not supported
-            assert fromusfm("MRK 4:1-9") == BCVIDRange(BCVID("41004001"), BCVID("41004009"))
+            assert fromusfm("MRK 4:1-9") == BCVIDRange(
+                BCVID("41004001"), BCVID("41004009")
+            )
 
 
 class TestFromBiblia:
@@ -379,6 +383,21 @@ class TestBCVID:
             # 13 chars
             _ = BCVID("4300100100")
 
+    def test_validity_assertions(self) -> None:
+        """Test the validity assertions added to BCVID.__post_init__."""
+        # invalid first character: book numbers only go to 8x or A-C range
+        with pytest.raises(AssertionError):
+            _ = BCVID("90001001")
+        # non-digit characters in positions 1+
+        with pytest.raises(AssertionError):
+            _ = BCVID("0X004003")
+        # chapter number >= 151 (Psalms has 150, the maximum)
+        with pytest.raises(AssertionError):
+            _ = BCVID("01200001")
+        # valid edge cases: deuterocanon book prefix letters and chapter 150
+        assert BCVID("B7001001").book_ID == "B7"
+        assert BCVID("19150001").chapter_ID == "150"
+
     def test_order(self) -> None:
         """Test that order comparisons are correct."""
         assert self.testid == self.testid
@@ -432,6 +451,7 @@ class TestBCVID:
     def test_missing_lang_fallback(self) -> None:
         """Test that an unsupported language warns and falls back to English."""
         import warnings
+
         gen = BCVID("01001001")
         mrk = BCVID("41004003")
         with warnings.catch_warnings(record=True) as caught:
@@ -459,7 +479,9 @@ class TestBCVIDRange:
         """Test initialization and attributes."""
         assert self.markrange.startid == self.mark4_8
         assert self.markrange.endid == self.mark4_13
-        assert repr(self.markrange) == "BCVIDRange(BCVID('41004008'), BCVID('41004013'))"
+        assert (
+            repr(self.markrange) == "BCVIDRange(BCVID('41004008'), BCVID('41004013'))"
+        )
         assert self.markrange.ID == "41004008-41004013"
         assert self.markrange.book == BID("41")
         assert self.markrange.chapter == BCID("41004")
@@ -476,7 +498,9 @@ class TestBCVIDRange:
             BCVID("41004013"),
         ]
         # vacuous range
-        assert BCVIDRange(self.mark4_8, BCVID("41004008")).enumerate() == [BCVID("41004008")]
+        assert BCVIDRange(self.mark4_8, BCVID("41004008")).enumerate() == [
+            BCVID("41004008")
+        ]
         # no cross-chapter ranges yet
         with pytest.raises(NotImplementedError):
             # not implemented

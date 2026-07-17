@@ -11,16 +11,21 @@ verse 0) with verse 1, so `org` verse 1 has more word content than
 
 """
 
-import requests
+import json
+from pathlib import Path
 from typing import Any
 
-from biblelib import VERSIFICATIONIDS, has_connection
+from biblelib import VERSIFICATIONIDS
+
+# This directory: where the bundled scheme JSON files live.
+VERSIFICATIONPATH = Path(__file__).parent
 
 
 class Mapper:
     """Create mappings from one versification scheme to another.
 
-    This uses the standard-mappings data from the Copenhagen Alliance.
+    This uses the standard-mappings data from the Copenhagen Alliance,
+    which ships with the package: no network connection is required.
 
     Coverage is currently limited to `eng`, `org`, and `rso`
     versifications, and is not guaranteed for books outside the
@@ -28,9 +33,8 @@ class Mapper:
 
     """
 
-    jsonbase: str = (
-        "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/"
-    )
+    # Retained for provenance only: the upstream source of the bundled JSON.
+    jsonbase: str = "https://raw.githubusercontent.com/Copenhagen-Alliance/versification-specification/master/versification-mappings/standard-mappings/"
 
     def __init__(self, fromscheme: str, toscheme: str) -> None:
         """Create mappings from one versification scheme to another."""
@@ -41,14 +45,11 @@ class Mapper:
         self.fromjson: dict[str, dict[str, str]] = self._load_scheme(self.fromscheme)
 
     def _load_scheme(self, scheme: str) -> dict[str, Any]:
-        """Load json data for scheme."""
-        mappingfile = f"{self.jsonbase}/{scheme}.json"
-        if not has_connection():
-            print("Cannot load mapping file without network connection.")
-            exit()
-        r = requests.get(mappingfile)
-        assert r.status_code == 200, f"Failed to get content from {mappingfile}"
-        schemejson: dict[str, Any] = r.json()
+        """Load bundled json data for scheme."""
+        assert scheme in VERSIFICATIONIDS, f"Unsupported scheme: {scheme}"
+        mappingpath = VERSIFICATIONPATH / f"{scheme}.json"
+        with mappingpath.open(encoding="utf-8") as f:
+            schemejson: dict[str, Any] = json.load(f)
         return schemejson
 
     # # WORKING HERE

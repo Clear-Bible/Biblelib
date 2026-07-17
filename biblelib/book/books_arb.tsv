@@ -1,0 +1,112 @@
+# Arabic (arb) book names and abbreviations for biblelib
+# Conventions: Van Dyck Bible (Smith-Van Dyck, 1865) — dominant Protestant Arabic standard
+# Abbreviations: derived from initial letters/syllables; no single published standard exists
+# Deuterocanonical names from Arabic Catholic tradition (Dar al-Mashreq / Jesuit Bible)
+# Extended canon names are transliterations from Greek/Latin
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	التكوين	تك
+EXO	الخروج	خر
+LEV	اللاويين	لا
+NUM	العدد	عد
+DEU	التثنية	تث
+JOS	يشوع	يش
+JDG	القضاة	قض
+RUT	راعوث	رع
+1SA	صموئيل الأول	1صم
+2SA	صموئيل الثاني	2صم
+1KI	الملوك الأول	1مل
+2KI	الملوك الثاني	2مل
+1CH	أخبار الأيام الأول	1أخ
+2CH	أخبار الأيام الثاني	2أخ
+EZR	عزرا	عز
+NEH	نحميا	نح
+EST	أستير	أس
+JOB	أيوب	أي
+PSA	المزامير	مز
+PRO	الأمثال	أم
+ECC	الجامعة	جا
+SNG	نشيد الأنشاد	نش
+ISA	إشعياء	إش
+JER	إرميا	إر
+LAM	مراثي إرميا	مرا
+EZK	حزقيال	حز
+DAN	دانيال	دا
+HOS	هوشع	هو
+JOL	يوئيل	يوئ
+AMO	عاموس	عا
+OBA	عوبديا	عو
+JON	يونان	يون
+MIC	ميخا	مي
+NAM	ناحوم	نا
+HAB	حبقوق	حب
+ZEP	صفنيا	صف
+HAG	حجي	حج
+ZEC	زكريا	زك
+MAL	ملاخي	ملا
+# Deuterocanonical books
+TOB	طوبيا	طو
+JDT	يهوديت	يهو
+ESG	أستير (يونانية)	أسيو
+WIS	الحكمة	حك
+SIR	يشوع بن سيراخ	سي
+BAR	باروخ	با
+LJE	رسالة إرميا	ر.إر
+S3Y	ترنيمة الفتية الثلاثة	تف.ثل
+SUS	سوسنة	سو
+BEL	بيل والتنين	بيل
+1MA	المكابيين الأول	1مك
+2MA	المكابيين الثاني	2مك
+1ES	عزرا اليوناني	1عز
+MAN	صلاة منسّى	من
+PS2	المزمور 151	مز151
+3MA	المكابيين الثالث	3مك
+2ES	عزرا اللاتيني	2عز
+4MA	المكابيين الرابع	4مك
+ODA	الأودات	أود
+PSS	مزامير سليمان	مز.سل
+LAO	لاودكية	لاو
+# New Testament
+MAT	متى	مت
+MRK	مرقس	مر
+LUK	لوقا	لو
+JHN	يوحنا	يو
+ACT	أعمال الرسل	أع
+ROM	رومية	رو
+1CO	كورنثوس الأولى	1كو
+2CO	كورنثوس الثانية	2كو
+GAL	غلاطية	غل
+EPH	أفسس	أف
+PHP	فيلبي	في
+COL	كولوسي	كول
+1TH	تسالونيكي الأولى	1تس
+2TH	تسالونيكي الثانية	2تس
+1TI	تيموثاوس الأولى	1تي
+2TI	تيموثاوس الثانية	2تي
+TIT	تيطس	تط
+PHM	فيلمون	فل
+HEB	العبرانيين	عب
+JAS	يعقوب	يع
+1PE	بطرس الأولى	1بط
+2PE	بطرس الثانية	2بط
+1JN	يوحنا الأولى	1يو
+2JN	يوحنا الثانية	2يو
+3JN	يوحنا الثالثة	3يو
+JUD	يهوذا	يه
+REV	الرؤيا	رؤ
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	أخنوخ	أخن
+2BA	باروخ الثاني	2با
+LBA	رسالة باروخ	ر.با
+DAG	دانيال (يوناني)	دا.يو
+EZA	رؤيا عزرا	رؤ.عز
+5EZ	عزرا الخامس	5عز
+6EZ	عزرا السادس	6عز
+PS3	المزامير 152-155	مز152
+JUB	اليوبيل	يوب
+1MQ	ميكابيان الأول	1مق
+2MQ	ميكابيان الثاني	2مق
+3MQ	ميكابيان الثالث	3مق
+REP	الإدانة	إدا
+4BA	باروخ الرابع	4با
