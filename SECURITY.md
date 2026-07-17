@@ -12,7 +12,7 @@ Please do **not** open a public GitHub issue for suspected security vulnerabilit
 
 Instead, report vulnerabilities privately to the maintainers at:
 
-- sean.boisen@biblica.com
+- sboisen@gloo.us
 
 Please include:
 
