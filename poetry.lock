@@ -100,10 +100,7 @@ files = [
 ]
 
 [package.dependencies]
-cffi = [
-    {version = ">=1.0.1", markers = "python_version < \"3.14\""},
-    {version = ">=2.0.0b1", markers = "python_version >= \"3.14\""},
-]
+cffi = {version = ">=1.0.1", markers = "python_version < \"3.14\""}
 
 [[package]]
 name = "arrow"
@@ -3076,5 +3073,5 @@ test = ["websockets"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10,<4.0"
-content-hash = "3361aad57be152e8b5466a8130bd79fd8c049f49cbf324b00b26ed1238a607f1"
+python-versions = ">=3.10,<3.14"
+content-hash = "c2c788530a3cb0de968462bedfe8bd3f8099471cbf92cee224fe64b0fc631308"
