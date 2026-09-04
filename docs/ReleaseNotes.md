@@ -1,5 +1,67 @@
 # Release Notes
 
+## 0.6.0
+
+**Biblelib now works fully offline.** Versification data ships inside the package; the two large Macula word-mapping tables download on first use and cache locally, so importing `biblelib` no longer triggers network activity.
+
+### Features
+
+- New `biblelib.data` module (Jake Wegner) for on-demand download + local caching of the Macula word-mapping tables via `pooch`, verified against pinned SHA256 hashes:
+  - GNT mappings from `Clear-Bible/macula-greek` (pinned commit)
+  - WLCM→Marble mapping from `Clear-Bible/macula-hebrew` (pinned commit)
+  - Cache lives in an OS-standard location (`pooch.os_cache("biblelib")`); override with the new `BIBLELIB_DATA_DIR` env var
+  - Public API: `fetch(name)`, `download_all()`, `main()`
+- New console script `biblelib-download-data` to pre-seed the cache for offline, air-gapped, or CI use. Errors point users at the script or at setting `BIBLELIB_DATA_DIR` to a pre-populated cache.
+- Bundled Copenhagen Alliance versification JSON (`eng.json`, `org.json`, `rso.json`) pinned to a specific Copenhagen commit. `VrefReader`, `Mapper`, and `Enumerator` now read these locally instead of fetching over the network.
+- New refresh tooling: `tools/refresh_versification.py` plus `make refresh-versification` re-downloads the pinned (or latest) Copenhagen scheme JSON, regenerates the derived vref `.txt`, and repins the commit hash.
+- Rick Brannan added 9 new localization languages (PR #5) via new `books_*.tsv` files:
+  - `apd` (Sudanese Arabic), `bis` (Bislama), `hau` (Hausa), `ibo` (Igbo),
+    `nep` (Nepali), `nld` (Dutch), `tpi` (Tok Pisin), `vie` (Vietnamese),
+    `zlm` (Malay)
+  - Usable through the existing `BCVID.to_nameref(lang=...)` / `to_abbrevref(lang=...)` API — no code changes required.
+
+### Bug fixes
+
+- `VerseRange.__repr__` returned the literal string `<VerseRange: {self.ID}>` instead of the interpolated value; now a proper f-string.
+- `fromubs()` word-part output: a UBS word ref now returns a `BCVWPID` with part (e.g. `BCVWPID('230600060041')`) instead of a spurious trailing `4` (`'23060006004'`).
+
+### Behavior changes / refactoring
+
+- Importing `biblelib` / `biblelib.word` no longer triggers network activity. `marble.Mapper` mapping tables load lazily on first real use.
+- `has_connection()` import gates removed from `biblelib/word/__init__.py`, `ubs.py`, and `mappings/__init__.py`. `fromubs` and `Mapper` are now always available regardless of connectivity. `has_connection()` is retained as public API but no longer used internally.
+- `ethiopian_custom` versification scheme dropped (upstream source no longer exists); only `eng`/`org`/`rso` remain.
+- `VrefReader` gained a `sourcefile` kwarg; `vref_file` is now a local `Path` instead of a URL.
+- `Mapper` and `Enumerator` read bundled `<scheme>.json` locally instead of fetching Copenhagen Alliance JSON over the network.
+- Python version constraint narrowed: `>=3.10,<4.0` → `>=3.10,<3.14`.
+- `biblelib/unit/chapter.py`: doctest modernization and type-hint cleanup (`Optional[...]`/`Union[...]` → `X | None` syntax). `Chapter` now exposes `_books` / `_chapters` class collections.
+
+### Dependencies
+
+- Runtime: added `pooch = "^1.8"`; `pydantic` bumped 2.11.7 → 2.13.4.
+- Dev: added `filelock = "^3.12"`; `pytest` loosened to `>=7.1.2,<10.0.0`.
+- Various lockfile-only bumps via dependabot.
+
+### Testing / tooling
+
+- New `tests/conftest.py` pre-seeds the data cache at pytest startup under a `filelock` (safe for pytest-xdist parallel runs; skips gracefully when offline).
+- New `tests/versification/test_vref_derivation.py` drift-guards between bundled JSON and committed vref files (parametrized over eng/org/rso × nt/ot/protestant).
+- `Makefile`: `make test` now pre-seeds the data cache first; new `make refresh-versification` target.
+- `pyproject.toml`: the experimental `biblelib/corpus` module is now excluded from both pytest collection and mypy.
+
+### Documentation
+
+- `README.md` — new "Data" section documenting the download/caching behavior, `BIBLELIB_DATA_DIR`, and `biblelib-download-data`; language table extended.
+- `biblelib/versification/ReadMe.md` — documents bundling, the dropped `ethiopian_custom`, and the "do not delete vref files" guarantee.
+- `LICENSE.md` — attribution now also covers MACULA Hebrew (`macula_to_marble_map.tsv`).
+- `SECURITY.md` — updated maintainer email.
+
+### Notes for users upgrading from 0.5.4
+
+- `Mapper` / `Enumerator` / `VrefReader` no longer hit the network. Their `vref_file` / `mappingfile` attributes changed from URLs to local paths (URLs retained for provenance).
+- `ethiopian_custom` scheme removed.
+- `fromubs()` part output corrected: BCVWPID values with a part suffix change (e.g. `…06004` → `…060041`).
+- Python support tightened to `< 3.14`.
+
 ## 0.5.4
 
 - Support Pythons < 4.0.
