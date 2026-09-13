@@ -610,6 +610,16 @@ class BCVWPID(BCVID):
     # this is not part of the overall ID, and is computed based on
     # book
     canon_prefix: str = ""
+    # Whether the identifier as supplied actually carried these. Both
+    # are otherwise filled in - the prefix inferred from the book
+    # number, the part index defaulted to "1" - so without recording
+    # what was given there is no way to hand back the identifier a data
+    # source published, only a normalized form of it.
+    # compare=False: these record how an identifier was written, not
+    # which word it denotes, so two identifiers for the same word are
+    # still equal if one was supplied with a prefix and the other not.
+    _had_canon_prefix: bool = field(init=False, default=False, compare=False, repr=False)
+    _had_part_ID: bool = field(init=False, default=False, compare=False, repr=False)
     # the longth of the bcvwp ID
     _idlen = 11
 
@@ -637,6 +647,7 @@ class BCVWPID(BCVID):
         assert is_bcvwpid(self.ID), f"Invalid identifier: {self.ID}"
         # assert 13 >= len(self.ID) >= 11, f"Invalid length: {self.ID}"
         if self.ID.startswith("o") or self.ID.startswith("n"):
+            self._had_canon_prefix = True
             self.canon_prefix = self.ID[0]
             restid = self.ID = self.ID[1:]
         else:
@@ -655,10 +666,33 @@ class BCVWPID(BCVID):
         self.verse_ID = restid[5:8]
         self.word_ID = restid[8:11]
         if len(restid) == 12:
+            self._had_part_ID = True
             self.part_ID = restid[11]
         else:
             self.part_ID = "1"
             self.ID += self.part_ID
+
+    @property
+    def source_id(self) -> str:
+        """Return the identifier exactly as it was supplied.
+
+        get_id() returns a standardized rendering, which is what you
+        want when you need a known shape. This returns what the data
+        source actually published, which is what you want when handing
+        an identifier back to that source or writing it into data others
+        will resolve against it.
+
+        Neither a canon prefix nor a part index is added if the supplied
+        identifier did not carry one.
+
+        >>> BCVWPID("n40001001001").source_id
+        'n40001001001'
+        >>> BCVWPID("n40001001001").get_id()
+        '400010010011'
+
+        """
+        strid = self.ID if self._had_part_ID else self.ID[:-1]
+        return f"{self.canon_prefix}{strid}" if self._had_canon_prefix else strid
 
     def get_id(self, prefix: bool = False, part_index: bool = True) -> str:
         """Return a string identifier for the instance.

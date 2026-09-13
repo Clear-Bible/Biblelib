@@ -617,6 +617,50 @@ class TestBCVWPID:
         assert self.testid.to_usfm(with_word=True) == "JHN 1:1!5"
 
 
+class TestSourceID:
+    """Test that the identifier as supplied is recoverable."""
+
+    def test_round_trips(self) -> None:
+        """Test that source_id reproduces exactly what was given.
+
+        Identifiers belong to whoever published the text they point
+        into. Code integrating data from several sources has to be able
+        to hand back the identifier it was given, or its output no
+        longer resolves against the source it came from.
+        """
+        for given in (
+            # Macula Greek: canon prefix, no part index
+            "n40001001001",
+            # Macula Hebrew: canon prefix and part index
+            "o010010010011",
+            # bare, no part index
+            "40001001001",
+            # bare, with part index
+            "400010010011",
+        ):
+            assert BCVWPID(given).source_id == given
+
+    def test_an_absent_part_is_not_invented(self) -> None:
+        """Test that source_id does not add a part index that was not given."""
+        assert BCVWPID("40001001001").source_id == "40001001001"
+
+    def test_an_absent_prefix_is_not_invented(self) -> None:
+        """Test that source_id does not add a canon prefix that was not given."""
+        assert BCVWPID("400010010011").source_id == "400010010011"
+
+    def test_the_canonical_form_is_unaffected(self) -> None:
+        """Test that get_id() still returns the standardized form.
+
+        source_id is additional to the canonical rendering, not a
+        replacement for it: callers asking for a particular shape still
+        get one.
+        """
+        given = BCVWPID("n40001001001")
+        assert given.get_id() == "400010010011"
+        assert given.get_id(prefix=True) == "n400010010011"
+        assert given.get_id(part_index=False) == "40001001001"
+
+
 class TestSimplify:
     """Test simplify()."""
 
