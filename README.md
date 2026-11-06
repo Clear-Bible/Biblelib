@@ -91,6 +91,7 @@ rng.to_abbrevref()           # 'Mk 4:3-4:8'
 | `apd` | Sudanese Arabic | Van Dyck Bible (OT); Biblica Sudanese Arabic NT |
 | `arb` | Arabic | Van Dyck Bible (Smith-Van Dyck, 1865) |
 | `bis` | Bislama | Baibel long Bislama (BSSP, 1995) |
+| `fas` | Farsi (Persian) | Open Persian Contemporary Bible 2022 (OPCB, Biblica) |
 | `fra` | French | Bible en français courant / Louis Segond |
 | `hau` | Hausa | Littafi Mai Tsarki (Bible Society of Nigeria) |
 | `hin` | Hindi | Bible Society of India Hindi Old Version (Re-edited) |
