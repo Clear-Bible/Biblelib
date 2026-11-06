@@ -436,6 +436,8 @@ class TestBCVID:
         assert gen.to_nameref(lang="fra") == "Genèse 1.1"
         assert mrk.to_nameref(lang="fra") == "Marc 4.3"
         assert rev.to_nameref(lang="fra") == "Apocalypse 1.1"
+        # Farsi (Western digits, colon separator)
+        assert mrk.to_nameref(lang="fas") == "مرقس 4:3"
 
     def test_to_abbrevref(self) -> None:
         """Test to_abbrevref() for English and French."""
@@ -447,6 +449,7 @@ class TestBCVID:
         # French uses localized abbreviations with dot separator
         assert gen.to_abbrevref(lang="fra") == "Gn 1.1"
         assert mrk.to_abbrevref(lang="fra") == "Mc 4.3"
+        assert mrk.to_abbrevref(lang="fas") == "مرق 4:3"
 
     def test_missing_lang_fallback(self) -> None:
         """Test that an unsupported language warns and falls back to English."""

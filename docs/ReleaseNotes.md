@@ -1,5 +1,11 @@
 # Release Notes
 
+## Unreleased
+
+### Features
+
+- Added Farsi (`fas`) localization via new `biblelib/book/books_fas.tsv` (draft). Protestant canon names follow the Biblica Open Persian Contemporary Bible 2022 (OPCB) with vowel diacritics removed; abbreviations are drafted (no published standard) and deuterocanonical/extended-canon rows are not drawn from OPCB, so they need native review. Chapter and verse use Western digits and a colon separator. Usable through `BCVID.to_nameref(lang="fas")` / `to_abbrevref(lang="fas")` with no code changes.
+
 ## 0.6.0
 
 **Biblelib now works fully offline.** Versification data ships inside the package; the two large Macula word-mapping tables download on first use and cache locally, so importing `biblelib` no longer triggers network activity.

@@ -1,0 +1,116 @@
+# Persian/Farsi (fas) book names and abbreviations for biblelib
+# DRAFT - needs review by a native/liturgical Persian reader before release.
+# Conventions: Protestant canon names follow the Biblica Open Persian Contemporary Bible 2022 (OPCB);
+#   name = USFM \h/\toc2 short title with vowel diacritics (tashkil) removed, to ease matching and typing.
+# Abbreviations: no single published standard exists. Derived from OPCB \toc3 short titles where those are
+#   already short, otherwise truncated to the first 3-4 letters (Henry Martyn/Persian Bible style).
+#   Ordinals use Persian digits as in OPCB (e.g. ۱ سموئیل); ordinal names are spelled out (اول، دوم، سوم).
+# Deuterocanonical and extended-canon rows are NOT in OPCB; they are drafted from general knowledge of
+#   Persian Catholic/Orthodox usage and transliteration, and have lower confidence.
+# cv_sep: :
+# Protestant canon
+usfmname	name	abbrev
+GEN	پیدایش	پید
+EXO	خروج	خرو
+LEV	لاویان	لاو
+NUM	اعداد	اعد
+DEU	تثنیه	تث
+JOS	یوشع	یوش
+JDG	داوران	داو
+RUT	روت	روت
+1SA	اول سموئیل	۱سمو
+2SA	دوم سموئیل	۲سمو
+1KI	اول پادشاهان	۱پاد
+2KI	دوم پادشاهان	۲پاد
+1CH	اول تواریخ	۱توا
+2CH	دوم تواریخ	۲توا
+EZR	عزرا	عزر
+NEH	نحمیا	نحم
+EST	استر	است
+JOB	ایوب	ایو
+PSA	مزامیر	مز
+PRO	امثال	امث
+ECC	جامعه	جام
+SNG	غزل غزلها	غزل
+ISA	اشعیا	اشع
+JER	ارمیا	ارم
+LAM	مراثی	مرا
+EZK	حزقیال	حزق
+DAN	دانیال	دان
+HOS	هوشع	هوش
+JOL	یوئیل	یوئ
+AMO	عاموس	عام
+OBA	عوبدیا	عوب
+JON	یونس	یون
+MIC	میکاه	میک
+NAM	ناحوم	ناح
+HAB	حبقوق	حبق
+ZEP	صفنیا	صفن
+HAG	حجی	حجی
+ZEC	زکریا	زکر
+MAL	ملاکی	ملا
+# Deuterocanonical books
+TOB	طوبیت	طوب
+JDT	یهودیت	یهود
+ESG	استر (یونانی)	استریو
+WIS	حکمت سلیمان	حکم
+SIR	بن‌سیراخ	سیر
+BAR	باروک	بار
+LJE	نامهٔ ارمیا	نارم
+S3Y	سرود سه جوان	سرود
+SUS	سوسنا	سوس
+BEL	بل و اژدها	بل
+1MA	اول مکابیان	۱مکا
+2MA	دوم مکابیان	۲مکا
+1ES	اول عزرا (یونانی)	۱عزر
+MAN	دعای منسی	منس
+PS2	مزمور ۱۵۱	مز۱۵۱
+3MA	سوم مکابیان	۳مکا
+2ES	دوم عزرا (لاتین)	۲عزر
+4MA	چهارم مکابیان	۴مکا
+ODA	سرودها	سرو
+PSS	مزامیر سلیمان	مزسل
+LAO	نامه به لائودیکیان	لائو
+# New Testament
+MAT	متی	متی
+MRK	مرقس	مرق
+LUK	لوقا	لوقا
+JHN	یوحنا	یوح
+ACT	اعمال رسولان	اعم
+ROM	رومیان	روم
+1CO	اول قرنتیان	۱قر
+2CO	دوم قرنتیان	۲قر
+GAL	غلاطیان	غلا
+EPH	افسسیان	افس
+PHP	فیلیپیان	فیل
+COL	کولسیان	کول
+1TH	اول تسالونیکیان	۱تس
+2TH	دوم تسالونیکیان	۲تس
+1TI	اول تیموتائوس	۱تیمو
+2TI	دوم تیموتائوس	۲تیمو
+TIT	تیتوس	تیت
+PHM	فیلیمون	فیلیم
+HEB	عبرانیان	عبر
+JAS	یعقوب	یعق
+1PE	اول پطرس	۱پطر
+2PE	دوم پطرس	۲پطر
+1JN	اول یوحنا	۱یوح
+2JN	دوم یوحنا	۲یوح
+3JN	سوم یوحنا	۳یوح
+JUD	یهودا	یهو
+REV	مکاشفه	مکا
+# Extended canon (Ethiopian, Syriac, etc.)
+ENO	اخنوخ	اخن
+2BA	دوم باروک (مکاشفه)	۲بار
+LBA	نامهٔ باروک	نبار
+DAG	دانیال (یونانی)	دانیو
+EZA	مکاشفهٔ عزرا	مکعز
+5EZ	پنجم عزرا	۵عزر
+6EZ	ششم عزرا	۶عزر
+PS3	مزامیر ۱۵۲–۱۵۵	مز۱۵۲
+JUB	یوبیل‌ها	یوب
+1MQ	اول مکابیان اتیوپیایی	۱مقب
+2MQ	دوم مکابیان اتیوپیایی	۲مقب
+3MQ	سوم مکابیان اتیوپیایی	۳مقب
+REP	توبیخ	توب
+4BA	چهارم باروک	۴بار
