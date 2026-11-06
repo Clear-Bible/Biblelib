@@ -256,3 +256,29 @@ class TestLocalizedBooks:
         fra1 = get_localized_books("fra")
         fra2 = get_localized_books("fra")
         assert fra1 is fra2
+
+
+class TestLocalizedBooksFas:
+    """Test the Farsi (fas) localization."""
+
+    fas = LocalizedBooks("fas")
+
+    def test_init(self) -> None:
+        """Test that the Farsi localization file loads and spot-check names."""
+        assert self.fas.lang == "fas"
+        assert self.fas.get_name("GEN") == "پیدایش"
+        assert self.fas.get_abbrev("GEN") == "پید"
+        assert self.fas.get_name("MRK") == "مرقس"
+        assert self.fas.get_name("1CO") == "اول قرنتیان"
+        assert self.fas.get_abbrev("1CO") == "۱قر"
+        assert self.fas.get_name("REV") == "مکاشفه"
+
+    def test_cv_sep(self) -> None:
+        """Test that Farsi uses a colon chapter-verse separator."""
+        assert self.fas.cv_sep == ":"
+
+    def test_covers_all_books(self) -> None:
+        """Test that every USFM book ID has a Farsi name and abbreviation."""
+        for usfmname in book.Books().keys():
+            assert self.fas.get_name(usfmname)
+            assert self.fas.get_abbrev(usfmname)
